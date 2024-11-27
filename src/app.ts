@@ -1,3 +1,4 @@
+import { errorHandler } from "@buxlo/common";
 import { IServer } from "./domin/interfaces/IServer";
 import { connectDB, disconnectDB } from "./infrastructure/database/mongodb/connection";
 import { redisClientInstance } from "./infrastructure/database/redis/connection";
@@ -8,12 +9,17 @@ export class App{
 
     async initialize():Promise<void>{
         this.registerRoutes()
+        this.registerErrorHandler()
         await this.connectDB();
 
     }
 
     private registerRoutes():void{        
         this.server.registerRoutes('/api/user' , userRoutes);
+    }
+
+    private registerErrorHandler(): void{
+        this.server.registerErrorHandler( errorHandler as any )
     }
 
     async start(port: number):Promise<void>{

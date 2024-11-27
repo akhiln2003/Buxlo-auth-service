@@ -1,11 +1,30 @@
-import { validateSchema } from "@buxlo/common";
+import { validateReq } from "@buxlo/common";
 import { Router } from "express";
 import { SignUpController } from "../controller/user/signUpController";
 import { signUpSchema } from "../../schema/userSchemas";
+import { DIContainer } from "../../infrastructure/di/DIContainer";
+import { otpSchema } from "../../schema/otpSchemas";
 
 
 const router = Router();
-const signUpController = new SignUpController();
+const container = new DIContainer();
 
-router.post("/signup",validateSchema(signUpSchema), async (req, res) => await signUpController.signUp(req, res) );
+
+// Inject dependencies into the SignUpController
+const signUpController = new SignUpController(
+    container.getUserUseCase(),
+    container.getTemporaryStoreUseCase(),
+    container.getEmailServiceUseCase()
+);
+
+// const 
+
+router.post("/signup", validateReq(signUpSchema), async (req, res) => await signUpController.signUp(req, res));
+router.post('/verifyOtp' , validateReq(otpSchema) , async(req,res)=> {})
+
+
+
+
+
+
 export { router as userRoutes };

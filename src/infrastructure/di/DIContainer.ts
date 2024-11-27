@@ -8,24 +8,29 @@ import { UserRepository } from "../repositories/UserRepository";
 
 
 class DIContainer {
-    private static _authRepository = new UserRepository();
-    private static _rediseService = new RedisUserRepository();
-    private static _otpService = new OTPService()
-    private static _nodeMailerService = new NodeMailerService();
+    private _authRepository: UserRepository;
+    private _rediseService: RedisUserRepository;
+    private _otpService: OTPService;
+    private _nodeMailerService: NodeMailerService;
+
+    constructor() {
+        this._authRepository = new UserRepository();
+        this._rediseService = new RedisUserRepository();
+        this._otpService = new OTPService();
+        this._nodeMailerService = new NodeMailerService()
+    }
 
 
-    
 
-   
 
-    static getUserUseCase() {        
+    getUserUseCase() {
         return new GetUser(this._authRepository)
     }
 
-    static getTemporaryStorUseCase() {
+    getTemporaryStoreUseCase() {
         return new RegisterUserTemporarily(this._rediseService, this._otpService)
     }
-    static getEmailServiceUseCase(){
+    getEmailServiceUseCase() {
         return new SendOtpEmailUseCase(this._nodeMailerService)
     }
 

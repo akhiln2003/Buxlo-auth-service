@@ -20,6 +20,10 @@ export class ExpressWebServer implements IServer {
     registerRoutes(path: string, router: any): void {        
         this.app.use(path, router);
     }
+
+    registerErrorHandler(middleware:any):void{
+        this.app.use(middleware)
+    }
     async start(port: number): Promise<void> {
         return new Promise(res => {
             this.server.listen(port, () => {
