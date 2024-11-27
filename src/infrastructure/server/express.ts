@@ -1,9 +1,7 @@
-import { IServer } from '@/domine/interfaces/IServer';
-import { userRoutes } from '@/presentation/routes/userAuthRouts';
 import cookieParser from 'cookie-parser';
 import express, { Application } from 'express';
 import { createServer } from 'http'
-import path from 'path';
+import { IServer } from '../../domin/interfaces/IServer';
 export class ExpressWebServer implements IServer {
     private app: Application;
     private server: any;

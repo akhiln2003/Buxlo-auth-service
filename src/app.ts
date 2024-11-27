@@ -1,4 +1,6 @@
-import { IServer } from "./domine/interfaces/IServer";
+import { IServer } from "./domin/interfaces/IServer";
+import { connectDB, disconnectDB } from "./infrastructure/database/mongodb/connection";
+import { redisClientInstance } from "./infrastructure/database/redis/connection";
 import { userRoutes } from "./presentation/routes/userAuthRouts";
 
 export class App{
@@ -6,6 +8,8 @@ export class App{
 
     async initialize():Promise<void>{
         this.registerRoutes()
+        await this.connectDB();
+
     }
 
     private registerRoutes():void{        
@@ -17,8 +21,18 @@ export class App{
     }
 
     async shutdown():Promise<void>{
+        await disconnectDB();
         console.log("Shut dow server");
         
+    }
+    private async connectDB() {
+        try {
+            await connectDB();
+            await redisClientInstance.connect();
+        } catch (error) {
+            console.log('Server could not be started', error);
+            process.exit(1);
+        }
     }
 }
 

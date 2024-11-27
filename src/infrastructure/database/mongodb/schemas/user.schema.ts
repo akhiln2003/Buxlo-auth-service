@@ -13,6 +13,7 @@ interface AuthDoc extends mongoose.Document {
     name: string;
     email: string;
     password: string;
+    role?: 'user' | 'mentor';
     avatar?: string;
     isBlocked: boolean;
     isAdmin: boolean;
@@ -20,7 +21,7 @@ interface AuthDoc extends mongoose.Document {
     updatedAt: Date;
 }
 
-    // Mongoose Model with a custom build method
+// Mongoose Model with a custom build method
 interface AuthModal extends mongoose.Model<AuthAttr> {
     build(attributes: AuthAttr): AuthDoc;
 }
@@ -45,25 +46,30 @@ const authSchema = new mongoose.Schema({
     isAdmin: {
         type: Boolean,
         default: false
-    }
-},{
-    toJSON:{
-        transform(_,ret){
+    },
+    role: {
+        type: String,
+        enum: ['user', 'mentor'],
+        default: 'user',
+    },
+}, {
+    toJSON: {
+        transform(_, ret) {
             ret.id = ret._id;
             delete ret._id;
-            delete ret.__v; 
+            delete ret.__v;
             delete ret.password;
         }
     },
-    timestamps:true
+    timestamps: true
 });
- 
-const Auth = mongoose.model< AuthDoc , AuthModal >("Auth" , authSchema);
 
-authSchema.statics.build = ( attrs: AuthAttr )=>{
+const Auth = mongoose.model<AuthDoc, AuthModal>("Auth", authSchema);
+
+authSchema.statics.build = (attrs: AuthAttr) => {
     return new Auth(attrs)
 };
 
 
 
-export{Auth}
+export { Auth }

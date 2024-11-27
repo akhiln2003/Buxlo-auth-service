@@ -1,5 +1,5 @@
-import { User } from "../../domine/entities/User";
-import { IUserRepository } from "../../domine/interfaces/IUserRepository";
+import { User } from "../../domin/entities/User";
+import { IUserRepository } from "../../domin/interfaces/IUserRepository";
 import { Auth } from "../database";
 
 export class UserRepository implements IUserRepository{

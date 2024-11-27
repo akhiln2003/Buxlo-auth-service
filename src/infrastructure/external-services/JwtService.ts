@@ -1,4 +1,4 @@
-import { User } from '@/domine/entities/User';
+import { User } from '@/domin/entities/User';
 import JWT from 'jsonwebtoken';
 
 

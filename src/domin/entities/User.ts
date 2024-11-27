@@ -5,8 +5,9 @@ export class User {
         public email : string ,
         public password : string , 
         public isAdmin : boolean ,
-        public avathar : string ,
-        public isBlocked: boolean
+        public avatar : string ,
+        public isBlocked: boolean,
+        public role?: 'user' | 'mentor'
 
     ){}
 }
