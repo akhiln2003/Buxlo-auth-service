@@ -1,12 +1,14 @@
-// src/controller/user/SignUpController.ts
 import { Request, Response } from "express";
+import { IgetUser } from "../../../application/interfaces/IgetUser";
+import { IregisterUserTemporarily } from "../../../application/interfaces/IregisterUserTemporarily";
+import { IsendOtpEmailUseCase } from "../../../application/interfaces/IemailService";
 
 export class SignUpController {
-    private getUserUseCase: any;
-    private temporaryStoreAndOtpUseCase: any;
-    private sendOtpEmailUseCase: any;
+    private getUserUseCase: IgetUser;
+    private temporaryStoreAndOtpUseCase: IregisterUserTemporarily;
+    private sendOtpEmailUseCase: IsendOtpEmailUseCase;
 
-    constructor(getUserUseCase: any, temporaryStoreAndOtpUseCase: any, sendOtpEmailUseCase: any) {
+    constructor(getUserUseCase: IgetUser, temporaryStoreAndOtpUseCase: IregisterUserTemporarily, sendOtpEmailUseCase: IsendOtpEmailUseCase) {
         this.getUserUseCase = getUserUseCase;
         this.temporaryStoreAndOtpUseCase = temporaryStoreAndOtpUseCase;
         this.sendOtpEmailUseCase = sendOtpEmailUseCase;

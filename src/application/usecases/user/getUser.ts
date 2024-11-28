@@ -1,9 +1,11 @@
-import { IUserRepository } from "../../../domin/interfaces/IUserRepository";
+import { IuserRepository } from "../../../domin/interfaces/IuserRepository";
+import { IgetUser } from "../../interfaces/IgetUser";
 
 
-export class GetUser{
-    constructor( private userRepositary: IUserRepository ){}
+export class GetUser implements IgetUser {
+    constructor(private userRepositary: IuserRepository) {}
 
-    async execute({ email }: { email : string }): Promise<any>{
-        return await this.userRepositary.findByEmail(email);    }
+    async execute({ email }: { email: string }): Promise<any> {
+        return await this.userRepositary.findByEmail(email);
+    }
 }

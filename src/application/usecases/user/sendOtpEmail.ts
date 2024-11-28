@@ -1,12 +1,12 @@
-import { IemailService, SendOtpEmailInput } from "../../interfaces/IemailService";
+import { IemailService, IsendOtpEmailInput, IsendOtpEmailUseCase,  } from "../../interfaces/IemailService";
 
 
 
 
-export class SendOtpEmailUseCase {
+export class SendOtpEmailUseCase implements IsendOtpEmailUseCase {
     constructor(private emailService: IemailService) { }
 
-    async execute(input: SendOtpEmailInput): Promise<void | boolean> {
+    async execute(input: IsendOtpEmailInput): Promise<void | boolean> {
         try {
             const subject = "Your OTP Code";
             const body = `<body style="margin: 0; padding: 0; font-family: 'Amazon Ember', Arial, sans-serif;">

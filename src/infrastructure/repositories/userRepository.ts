@@ -1,8 +1,8 @@
 import { User } from "../../domin/entities/User";
-import { IUserRepository } from "../../domin/interfaces/IUserRepository";
+import { IuserRepository } from "../../domin/interfaces/IuserRepository";
 import { Auth } from "../database";
 
-export class UserRepository implements IUserRepository{
+export class UserRepository implements IuserRepository{
     async create(user: User): Promise<any> {
         const newUser = Auth.build(user);
         return await newUser.save();

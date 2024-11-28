@@ -1,5 +1,5 @@
 import { RedisClientType } from "redis";
-import { IredisRepository } from "../../domin/interfaces/ICacheUserRepo";
+import { IredisRepository } from "../../domin/interfaces/IcacheUserRepo";
 import { redisClientInstance } from "../database/redis/connection";
 import { User } from "../../domin/entities/User";
 

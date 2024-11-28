@@ -1,8 +1,9 @@
-import { User } from '@/domin/entities/User';
 import JWT from 'jsonwebtoken';
+import { User } from '../../domin/entities/User';
+import { ItokenService } from '../../domin/interfaces/ItokenService';
 
 
-export class JwtService {
+export class JwtService implements ItokenService {
     private readonly accessTokenSecret: string;
     private readonly refreshTokenSecret: string;
 

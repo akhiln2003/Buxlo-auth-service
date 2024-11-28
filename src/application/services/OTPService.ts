@@ -1,4 +1,4 @@
-import { IOtpService } from "../interfaces/IOtpService";
+import { IOtpService } from "../interfaces/Iotp";
 
 
 export class OTPService implements IOtpService{

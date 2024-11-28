@@ -1,7 +1,7 @@
 import cookieParser from 'cookie-parser';
 import express, { Application } from 'express';
 import { createServer } from 'http'
-import { IServer } from '../../domin/interfaces/IServer';
+import { IServer } from '../../domin/interfaces/Iserver';
 export class ExpressWebServer implements IServer {
     private app: Application;
     private server: any;

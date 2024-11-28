@@ -1,5 +1,5 @@
 import { errorHandler } from "@buxlo/common";
-import { IServer } from "./domin/interfaces/IServer";
+import { IServer } from "./domin/interfaces/Iserver";
 import { connectDB, disconnectDB } from "./infrastructure/database/mongodb/connection";
 import { redisClientInstance } from "./infrastructure/database/redis/connection";
 import { userRoutes } from "./presentation/routes/userAuthRouts";
