@@ -15,29 +15,28 @@ export class OtpVerification implements IotpVerification {
 
     async execute({ otp, email}:IotpVerificationParams): Promise<IotpVerificationResponse>{
         try {
-            const storedOTP = await this.redisRepository.getOtp(email);
+            const storedOTP = await this.redisRepository.getOtp(email);                     // finding otp from redis stor
             if(!storedOTP) return { success: false , message:"OTP not found or has expired"};
             
             if( otp != storedOTP ) return { success: false, message: "Invalid OTP provided" };
             
-            const unverifiedUser = await this.redisRepository.getUnverifiedUser(email) ;
+            const unverifiedUser = await this.redisRepository.getUnverifiedUser(email) ;        // finding unverified user from redis
             
             if (!unverifiedUser)  return { success: false, message: "No unverified user found" };
             
+            // Creating new User 
             const user = new User(
                 unverifiedUser.name,
                 unverifiedUser.email,
                 unverifiedUser.password,
                 unverifiedUser.avatar 
-            )
-            console.log("before newUser ");
+            );
+           
+            const newUser = await this.userRepository.create(user);          // Add new user in mongoDb
+            await this.redisRepository.removeUnverifiedUser(email);          // removing unverifiedUser from redis 
+            const accessToken = this.jwtservice.generateAccessToken(user);   // generating access token
+            const refreshToken = this.jwtservice.generateRefreshToken(user); // generating referesh token
 
-            const newUser = await this.userRepository.create(user);
-            console.log("newUser : " , user);
-
-            await this.redisRepository.removeUnverifiedUser(email);
-            const accessToken = this.jwtservice.generateAccessToken(user);
-            const refreshToken = this.jwtservice.generateRefreshToken(user);
             return { success: true , accessToken,refreshToken , user:newUser}
         } catch (err) {
             console.error('Error from OTP varification : ' , err);
