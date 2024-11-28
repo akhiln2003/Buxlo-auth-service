@@ -17,26 +17,30 @@ export class OtpVerification implements IotpVerification {
         try {
             const storedOTP = await this.redisRepository.getOtp(email);
             if(!storedOTP) return { success: false , message:"OTP not found or has expired"};
-
-            if( otp !== storedOTP ) return { success: false, message: "Invalid OTP provided" };
-
+            
+            if( otp != storedOTP ) return { success: false, message: "Invalid OTP provided" };
+            
             const unverifiedUser = await this.redisRepository.getUnverifiedUser(email) ;
+            
             if (!unverifiedUser)  return { success: false, message: "No unverified user found" };
-
+            
             const user = new User(
                 unverifiedUser.name,
                 unverifiedUser.email,
                 unverifiedUser.password,
                 unverifiedUser.avatar 
             )
+            console.log("before newUser ");
 
             const newUser = await this.userRepository.create(user);
+            console.log("newUser : " , user);
+
             await this.redisRepository.removeUnverifiedUser(email);
             const accessToken = this.jwtservice.generateAccessToken(user);
             const refreshToken = this.jwtservice.generateRefreshToken(user);
             return { success: true , accessToken,refreshToken , user:newUser}
         } catch (err) {
-            console.error('Error from email varification : ' , err);
+            console.error('Error from OTP varification : ' , err);
             return { success: false , message:"Internal server error"}
             
         }

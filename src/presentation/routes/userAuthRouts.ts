@@ -27,7 +27,7 @@ const otpVerifyController = new OtpVerifyController(
 /////////////////////////////////////
 
 router.post("/signup", validateReq(signUpSchema), async (req, res) => await signUpController.signUp(req, res));
-// router.post('/verifyOtp' , validateReq(otpSchema) , async(req,res)=> await otpVerifyController.verify(req,res))
+router.post('/verifyOtp' , validateReq(otpSchema) , async(req,res)=> await otpVerifyController.verify(req,res));
 
 
 

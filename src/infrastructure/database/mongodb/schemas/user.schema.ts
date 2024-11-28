@@ -13,16 +13,16 @@ interface AuthDoc extends mongoose.Document {
     name: string;
     email: string;
     password: string;
-    role?: 'user' | 'mentor';
     avatar?: string;
-    isBlocked: boolean;
     isAdmin: boolean;
+    isBlocked: boolean;
+    role: 'user' | 'mentor';
     createdAt: Date;
     updatedAt: Date;
 }
 
 // Mongoose Model with a custom build method
-interface AuthModal extends mongoose.Model<AuthAttr> {
+interface AuthModel extends mongoose.Model<AuthDoc> {
     build(attributes: AuthAttr): AuthDoc;
 }
 
@@ -64,12 +64,11 @@ const authSchema = new mongoose.Schema({
     timestamps: true
 });
 
-const Auth = mongoose.model<AuthDoc, AuthModal>("Auth", authSchema);
-
+// Attach the `build` method to the schema's static methods
 authSchema.statics.build = (attrs: AuthAttr) => {
-    return new Auth(attrs)
+    return new Auth(attrs); // Return a new Auth instance
 };
 
+const Auth = mongoose.model<AuthDoc, AuthModel>("Auth", authSchema);
 
-
-export { Auth }
+export { Auth };

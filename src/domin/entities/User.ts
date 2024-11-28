@@ -6,7 +6,7 @@ export class User {
         public avatar? : string ,
         public isAdmin : boolean = false ,
         public isBlocked: boolean = false,
-        public role: 'user' | 'mentor' = 'user',
+        public role? : string,
         public id? : string ,
 
     ){}
