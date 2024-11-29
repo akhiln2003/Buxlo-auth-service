@@ -17,17 +17,17 @@ export class SignUpController {
     async signUp(req: Request, res: Response) {
         try {
             const { email, password, name, avatar } = req.body;
-
+            
             // Check if user exists
             const userExist = await this.getUserUseCase.execute({ email });
             if (userExist) {
-                 res.status(400).json({ error: "User already exists" });
-                 return
+                res.status(400).json({ error: "User already exists" });
+                return
             }
-
+            
             // Store user temporarily and generate OTP
             const otp = await this.temporaryStoreAndOtpUseCase.execute({ name, email, password, avatar }) as string;
-
+            
             // Send OTP via email
             await this.sendOtpEmailUseCase.execute({ email, name, otp });
             console.log("Your OTP is: "  , otp );

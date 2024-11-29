@@ -16,7 +16,7 @@ export class OtpVerification implements IotpVerification {
     async execute({ otp, email}:IotpVerificationParams): Promise<IotpVerificationResponse>{
         try {
             const storedOTP = await this.redisRepository.getOtp(email);                     // finding otp from redis stor
-            if(!storedOTP) return { success: false , message:"OTP not found or has expired"};
+            if(!storedOTP) return { success: false , message:"OTP , email not found or has expired"};
             
             if( otp != storedOTP ) return { success: false, message: "Invalid OTP provided" };
             
