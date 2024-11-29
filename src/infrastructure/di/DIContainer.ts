@@ -1,11 +1,12 @@
 import { IsendOtpEmailUseCase } from "../../application/interfaces/IemailService";
 import { IgetUser } from "../../application/interfaces/IgetUser";
-import { IotpVerification } from "../../application/interfaces/Iotp";
+import { IotpVerification, IresendOtpUseCase } from "../../application/interfaces/Iotp";
 import { IregisterUserTemporarily } from "../../application/interfaces/IregisterUserTemporarily";
 import { OTPService } from "../../application/services/OTPService";
 import { GetUser } from "../../application/usecases/user/getUser";
 import { OtpVerification } from "../../application/usecases/user/otpVerification";
 import { RegisterUserTemporarily } from "../../application/usecases/user/registerUserTemporarily";
+import { ResendOtpUseCase } from "../../application/usecases/user/resendOtp";
 import { SendOtpEmailUseCase } from "../../application/usecases/user/sendOtpEmail";
 import { JwtService } from "../external-services/JwtService";
 import { NodeMailerService } from "../external-services/nodeMailerService";
@@ -32,15 +33,18 @@ class DIContainer {
 
 
 
-    getUserUseCase():IgetUser{
+    getUserUseCase(): IgetUser{
         return new GetUser(this._authRepository)
     }
 
     getTemporaryStoreUseCase():IregisterUserTemporarily {
         return new RegisterUserTemporarily(this._rediseService, this._otpService)
     }
-    getEmailServiceUseCase(): IsendOtpEmailUseCase {
+    getSendEmailServiceUseCase(): IsendOtpEmailUseCase {
         return new SendOtpEmailUseCase(this._nodeMailerService)
+    }
+    getResendOtpUseCase(): IresendOtpUseCase{
+        return new ResendOtpUseCase(this._rediseService,this._otpService)
     }
     verifyUserUseCase(): IotpVerification{
         return new OtpVerification(this._rediseService , this._authRepository , this.__jwtService);

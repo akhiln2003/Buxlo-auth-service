@@ -1,13 +1,13 @@
 import { User } from "../../domin/entities/User";
 
-export interface IotpVerification {
-    execute({ otp, email }: IotpVerificationParams): Promise<IotpVerificationResponse>
-}
-
-
 
 export interface IOtpService {
     generateOtp(): string;
+}
+
+
+export interface IotpVerification {
+    execute({ otp, email }: IotpVerificationParams): Promise<IotpVerificationResponse>
 }
 
 export interface IotpVerificationParams {
@@ -21,4 +21,9 @@ export interface IotpVerificationResponse {
     message?: string;
     refreshToken?: string;
     accessToken?: string
+}
+
+
+export interface IresendOtpUseCase{
+    execute(user: Pick< User , 'email'>):Promise<string | void>
 }
