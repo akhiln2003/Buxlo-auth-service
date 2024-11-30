@@ -21,7 +21,7 @@ export class SignUpController {
             // Check if user exists
             const userExist = await this.getUserUseCase.execute({ email });
             if (userExist) {
-                res.status(400).json({ error: "User already exists" });
+                res.status(409).json({ error: "User already exists" });
                 return
             }
             
