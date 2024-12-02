@@ -32,9 +32,9 @@ const resendOtpController = new ResendOtpController(
 
 /////////////////////////////////////
 
-router.post("/signup", validateReq(signUpSchemaDto), async (req, res) => await signUpController.signUp(req, res));
-router.post('/verifyotp' , validateReq(otpSchemaDto) , async(req,res)=> await otpVerifyController.verify(req,res));
-router.post('/resendotp' , validateReq(resendOtpSchemaDto) , async( req , res )=> await resendOtpController.resend(req,res));
+router.post("/signup", validateReq(signUpSchemaDto),signUpController.signUp);
+router.post('/verifyotp' , validateReq(otpSchemaDto) , otpVerifyController.verify);
+router.post('/resendotp' , validateReq(resendOtpSchemaDto) , resendOtpController.resend);
 
 
 
