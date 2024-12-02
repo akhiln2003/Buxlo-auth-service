@@ -5,7 +5,8 @@ import { DIContainer } from "../../infrastructure/di/DIContainer";
 import {  otpSchemaDto, resendOtpSchemaDto } from "../../zodSchemaDto/user/otpDto";
 import { OtpVerifyController } from "../controller/user/verifyUserController";
 import { ResendOtpController } from "../controller/user/resendOtpController";
-import { signUpSchemaDto } from "../../zodSchemaDto/user/registorShemas";
+import { signUpDto } from "../../zodSchemaDto/user/signUpDto";
+import { signInDto } from "../../zodSchemaDto/user/signInDto";
 
 
 const router = Router();
@@ -32,9 +33,10 @@ const resendOtpController = new ResendOtpController(
 
 /////////////////////////////////////
 
-router.post("/signup", validateReq(signUpSchemaDto),signUpController.signUp);
+router.post("/signup", validateReq(signUpDto),signUpController.signUp);
 router.post('/verifyotp' , validateReq(otpSchemaDto) , otpVerifyController.verify);
 router.post('/resendotp' , validateReq(resendOtpSchemaDto) , resendOtpController.resend);
+router.post('/signin' , validateReq(signInDto) )
 
 
 
