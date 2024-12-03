@@ -7,7 +7,7 @@ export class OtpVerifyController {
         this.verifyUserUseCase = verifyUserUseCase
     }
 
-    async verify(req: Request, res: Response): Promise<void> {
+     verify = async(req: Request, res: Response): Promise<void> => {
         try {
             const { otp, email } = req.body;
             const response = await this.verifyUserUseCase.execute({ otp, email });

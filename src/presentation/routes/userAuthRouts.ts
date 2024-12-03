@@ -24,19 +24,20 @@ const signUpController = new SignUpController(
 
 const otpVerifyController = new OtpVerifyController(
     diContainer.verifyUserUseCase()
-)
+);
 
 const resendOtpController = new ResendOtpController(
     diContainer.getSendEmailServiceUseCase(),
     diContainer.getResendOtpUseCase()
-)
+);
+
 
 /////////////////////////////////////
 
 router.post("/signup", validateReq(signUpDto),signUpController.signUp);
 router.post('/verifyotp' , validateReq(otpSchemaDto) , otpVerifyController.verify);
 router.post('/resendotp' , validateReq(resendOtpSchemaDto) , resendOtpController.resend);
-router.post('/signin' , validateReq(signInDto) )
+router.post('/signin' , validateReq(signInDto) ,  )
 
 
 

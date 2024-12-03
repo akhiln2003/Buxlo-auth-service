@@ -29,7 +29,8 @@ export class OtpVerification implements IotpVerification {
                 unverifiedUser.name,
                 unverifiedUser.email,
                 unverifiedUser.password,
-                unverifiedUser.avatar 
+                unverifiedUser.role,
+                unverifiedUser.avatar,
             );
            
             const newUser = await this.userRepository.create(user);          // Add new user in mongoDb

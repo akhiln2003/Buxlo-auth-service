@@ -11,12 +11,13 @@ export class JwtService implements ItokenService {
         this.accessTokenSecret = process.env.JWT_ACCESS_SECRET as string,
         this.refreshTokenSecret = process.env.JWT_REFRESH_SECRET as string
     }
-    generateAccessToken( user: Pick< User , 'id' | 'email'>):string{
+    generateAccessToken( user: Pick< User , 'id' | 'email' |'role'>):string{
         const payload = {
             id: user.id,
             email: user.email,
-
+            role: user.role
         }
+        
         const options = {
             expiresIn: '1m'
         }

@@ -12,7 +12,7 @@ export class ResendOtpController {
         this.sendEmailServiceUseCase = getEmailServiceUseCase;
     }
 
-    async resend(req: Request, res: Response) {
+     resend = async(req: Request, res: Response) =>{
         try {
             const { email, name } = req.body;
 

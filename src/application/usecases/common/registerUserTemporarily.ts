@@ -10,7 +10,7 @@ export class RegisterUserTemporarily implements IregisterUserTemporarily {
         private otpService: IOtpService
     ) { };
 
-    async execute(user: Pick<User, "password" | "email" | "avatar" | "name"> ):Promise<string | void>  {
+    async execute(user: Pick<User, "password" | "email" | "avatar" | "name" | "role"> ):Promise<string | void>  {
         try {
             let hashPassword = await Password.toHash(user.password) as string;
             await this.redisRepository.saveUnverifiedUser(user.email, {
