@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { boolean } from "zod";
 
 
 interface AuthAttr {
@@ -46,6 +47,10 @@ const authSchema = new mongoose.Schema({
     isAdmin: {
         type: Boolean,
         default: false
+    },
+    isBlocked:{
+        type: Boolean,
+        default:false
     },
     role: {
         type: String,
