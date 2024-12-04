@@ -16,13 +16,13 @@ export class OtpVerification implements IotpVerification {
     async execute({ otp, email}:IotpVerificationParams): Promise<IotpVerificationResponse>{
         try {
             const storedOTP = await this.redisRepository.getOtp(email);                     // finding otp from redis stor
-            if(!storedOTP) return { success: false , message:"OTP , email not found or has expired"};
+            if(!storedOTP) return { success: false , message:"OTP not found or has expired. try with currect otp"};
             
-            if( otp != storedOTP ) return { success: false, message: "Invalid OTP provided" };
+            if( otp != storedOTP ) return { success: false, message: "Invalid OTP provided. Try with currect otp" };
             
             const unverifiedUser = await this.redisRepository.getUnverifiedUser(email) ;        // finding unverified user from redis
             
-            if (!unverifiedUser)  return { success: false, message: "No unverified user found" };
+            if (!unverifiedUser)  return { success: false, message: "No  user found restart the process onese more" };
             
             // Creating new User 
             const user = new User(
