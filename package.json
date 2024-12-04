@@ -30,7 +30,7 @@
     "typescript-eslint": "^8.15.0"
   },
   "dependencies": {
-    "@buxlo/common": "^1.0.22",
+    "@buxlo/common": "^1.0.24",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
     "cookie-parser": "^1.4.7",
