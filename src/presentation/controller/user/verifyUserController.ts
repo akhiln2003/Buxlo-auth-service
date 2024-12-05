@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import { IotpVerification } from "../../../application/interfaces/Iotp"
+import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode"
 
 export class OtpVerifyController {
     private verifyUserUseCase: IotpVerification
@@ -23,14 +24,14 @@ export class OtpVerifyController {
                     secure: process.env.NODE_ENV !== "development",
                     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
                 });
-                 res.status(200).json({ userVerified: response.user });
+                 res.status(HttpStatusCode.OK).json({ userVerified: response.user });
             }
             else{
-                 res.status(400).json({ message: response.message });
+                 res.status(HttpStatusCode.BadRequest).json({ message: response.message });
             }
         } catch (err) {
             console.error("Error in OTP verification controller:", err);
-             res.status(500).json({ message: "Internal server error" });
+             res.status(HttpStatusCode.InternalServerError).json({ message: "Internal server error" });
         }
     }
 

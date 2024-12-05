@@ -4,6 +4,7 @@ import { IregisterUserTemporarily } from "../../../application/interfaces/Iregis
 import { IsendOtpEmailUseCase } from "../../../application/interfaces/IemailService";
 import { USER_ROLE } from "../../../shared/enums/role";
 import { log } from "console";
+import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 
 export class SignUpController {
 
@@ -22,7 +23,7 @@ export class SignUpController {
             const userExist = await this.getUserUseCase.execute({ email });
             
             if (userExist) {
-                res.status(409).json({ error: "User already exists" });
+                res.status(HttpStatusCode.Conflict).json({ error: "User already exists" });
                 return
             }
 
@@ -34,10 +35,10 @@ export class SignUpController {
             console.log("Your OTP is: ", otp);
 
 
-            res.status(200).json({ message: "OTP sent to email.", email });
+            res.status(HttpStatusCode.OK).json({ message: "OTP sent to email.", email });
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: "An error occurred during sign-up" });
+            res.status(HttpStatusCode.InternalServerError).json({ error: "An error occurred during sign-up" });
         }
     }
 }

@@ -1,6 +1,7 @@
 import { Request, Response } from "express-serve-static-core";
 import { IsendOtpEmailUseCase } from "../../../application/interfaces/IemailService";
 import { IresendOtpUseCase } from "../../../application/interfaces/Iotp";
+import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 
 export class ResendOtpController {
 
@@ -20,10 +21,10 @@ export class ResendOtpController {
             await this.sendEmailServiceUseCase.execute({ email, name, otp })                // sending otp to email
             console.log("Your OTP is: "  , otp );
             
-            res.status(200).json({ message: "OTP has been resent to your email. Please check your inbox." });
+            res.status(HttpStatusCode.OK).json({ message: "OTP has been resent to your email. Please check your inbox." });
         } catch (err) {
             console.error("Error from resend Otp : ", err);
-            res.status(500).json({ message: "Invalid server error try again later" });
+            res.status(HttprCode.InternalServerError).json({ message: "Invalid server error try again later" });
         }
     }
 }
