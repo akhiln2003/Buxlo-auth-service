@@ -24,7 +24,7 @@ export class ResendOtpController {
             res.status(HttpStatusCode.OK).json({ message: "OTP has been resent to your email. Please check your inbox." });
         } catch (err) {
             console.error("Error from resend Otp : ", err);
-            res.status(HttprCode.InternalServerError).json({ message: "Invalid server error try again later" });
+            res.status(HttpStatusCode.InternalServerError).json({ message: "Invalid server error try again later" });
         }
     }
 }
