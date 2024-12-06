@@ -8,8 +8,8 @@ export class App{
     constructor(private server:IServer) {};
 
     async initialize():Promise<void>{
-        this.registerRoutes()
-        this.registerErrorHandler()
+        this.registerRoutes();
+        this.registerErrorHandler();
         await this.connectDB();
 
     }
@@ -19,11 +19,11 @@ export class App{
     }
 
     private registerErrorHandler(): void{
-        this.server.registerErrorHandler( errorHandler as any )
+        this.server.registerErrorHandler( errorHandler as any );
     }
 
     async start(port: number):Promise<void>{
-        await this.server.start(port)
+        await this.server.start(port);
     }
 
     async shutdown():Promise<void>{
@@ -46,4 +46,4 @@ export class App{
 
 
 
-export default App
+export default App;

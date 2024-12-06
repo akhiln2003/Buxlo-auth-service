@@ -26,9 +26,9 @@ const shutdownHandler = async () =>{
         process.exit(1);
         
     }
-}
+};
 
 
 
-process.on('SIGINT', shutdownHandler)
-process.on('SIGTERM', shutdownHandler)
+process.on('SIGINT', shutdownHandler);
+process.on('SIGTERM', shutdownHandler);

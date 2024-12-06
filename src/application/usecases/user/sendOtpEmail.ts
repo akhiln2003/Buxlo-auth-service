@@ -1,15 +1,16 @@
-import { IemailService, IsendOtpEmailInput, IsendOtpEmailUseCase,  } from "../../interfaces/IemailService";
-
-
-
+import {
+  IemailService,
+  IsendOtpEmailInput,
+  IsendOtpEmailUseCase
+} from "../../interfaces/IemailService";
 
 export class SendOtpEmailUseCase implements IsendOtpEmailUseCase {
-    constructor(private emailService: IemailService) { }
+  constructor(private emailService: IemailService) {}
 
-    async execute(input: IsendOtpEmailInput): Promise<void | boolean> {
-        try {
-            const subject = "Your OTP Code";
-            const body = `<body style="margin: 0; padding: 0; font-family: 'Amazon Ember', Arial, sans-serif;">
+  async execute(input: IsendOtpEmailInput): Promise<void | boolean> {
+    try {
+      const subject = "Your OTP Code";
+      const body = `<body style="margin: 0; padding: 0; font-family: 'Amazon Ember', Arial, sans-serif;">
                                 <div style="max-width: 600px; margin: 0 auto; background-color: #f0f0f0; border-radius: 8px; overflow: hidden;">
                                     <div style="background-color: #232f3e; color: #fff; padding: 40px; text-align: center;">
                                         <img src="https://via.placeholder.com/200x50" alt="Buxlo Logo" style="max-width: 200px; margin-bottom: 20px;">
@@ -23,12 +24,12 @@ export class SendOtpEmailUseCase implements IsendOtpEmailUseCase {
                                     </div>
                                     <div style="background-color: #232f3e; color: #fff; padding: 20px; text-align: center; font-size: 14px;">&copy; 2023 Buxlo. All rights reserved.</div>
                                 </div>
-                            </body>`
-            await this.emailService.sendMail(input.email, subject, body);
-            return true
-        } catch (error) {
-            console.log(error);
-            return true
-        }
+                            </body>`;
+      await this.emailService.sendMail(input.email, subject, body);
+      return true;
+    } catch (error) {
+      console.error(error);
+      return true;
     }
+  }
 }

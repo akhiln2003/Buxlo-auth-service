@@ -1,4 +1,3 @@
 import { Auth } from "./mongodb/schemas/user.schema";
 
-
-export {Auth};
+export { Auth };

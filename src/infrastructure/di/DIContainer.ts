@@ -19,14 +19,14 @@ class DIContainer {
     private _rediseService: RedisUserRepository;
     private _otpService: OTPService;
     private _nodeMailerService: NodeMailerService;
-    private __jwtService: JwtService
+    private __jwtService: JwtService;
 
     constructor() {
         this._authRepository = new UserRepository();
         this._rediseService = new RedisUserRepository();
         this._otpService = new OTPService();
-        this._nodeMailerService = new NodeMailerService()
-        this.__jwtService = new JwtService()
+        this._nodeMailerService = new NodeMailerService();
+        this.__jwtService = new JwtService();
     }
 
     
@@ -34,21 +34,23 @@ class DIContainer {
 
 
     getUserUseCase(): IgetUser{
-        return new GetUserUseCase(this._authRepository)
+        return new GetUserUseCase(this._authRepository);
     }
 
     getTemporaryStoreUseCase():IregisterUserTemporarily {
-        return new RegisterUserTemporarily(this._rediseService, this._otpService)
+        return new RegisterUserTemporarily(this._rediseService, this._otpService);
     }
     getSendEmailServiceUseCase(): IsendOtpEmailUseCase {
-        return new SendOtpEmailUseCase(this._nodeMailerService)
+        return new SendOtpEmailUseCase(this._nodeMailerService);
     }
     getResendOtpUseCase(): IresendOtpUseCase{
-        return new ResendOtpUseCase(this._rediseService,this._otpService)
+        return new ResendOtpUseCase(this._rediseService,this._otpService);
     }
     verifyUserUseCase(): IotpVerification{
         return new OtpVerification(this._rediseService , this._authRepository , this.__jwtService);
     }
+
+    
     
 
 }
@@ -56,4 +58,4 @@ class DIContainer {
 
 
 
-export { DIContainer }
+export { DIContainer };

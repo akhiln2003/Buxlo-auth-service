@@ -9,20 +9,20 @@ const connectDB = async () => {
     const MONGO_URI = process.env.MONGODB_URI;    
     try {
         await mongoose.connect(`${MONGO_URI}/Auth`);
-        console.log("connected to mongodb")
+        console.log("connected to mongodb");
     } catch (error) {
         console.error('Database connection failed:', error);
         process.exit(1);
     }
-}
+};
 
 const disconnectDB = async () => {
     try {
         await mongoose.disconnect();
-        console.log("mongo disconnected")
+        console.log("mongo disconnected");
     } catch (error) {
-        console.log("err while disconnecting db : " , error)
+        console.error("err while disconnecting db : " , error);
     }
-}
+};
 
-export { connectDB, disconnectDB }
+export { connectDB, disconnectDB };
