@@ -26,7 +26,6 @@ export class SignInUserUseCase implements IsignInUserUseCase {
     }
     
     if (await Password.compare(password, user.password)) {      
-      console.log("dvdfvd");
       const accessToken =  this.jwtService.generateAccessToken(user);
       const refreshToken = this.jwtService.generateRefreshToken(user);
 

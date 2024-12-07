@@ -58,7 +58,6 @@ const authSchema = new mongoose.Schema(
     role: {
       type: String,
       enum: ["user", "mentor"],
-      default: "user"
     }
   },
   {
