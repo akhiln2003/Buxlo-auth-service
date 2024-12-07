@@ -49,6 +49,7 @@ export class OtpVerification implements IotpVerification {
         unverifiedUser.email,
         unverifiedUser.password,
         unverifiedUser.role,
+        unverifiedUser.isBlocked,
         unverifiedUser.avatar
       );
 

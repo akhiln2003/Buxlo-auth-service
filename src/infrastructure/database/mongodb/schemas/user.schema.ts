@@ -14,6 +14,7 @@ interface AuthDoc extends mongoose.Document {
   avatar?: string;
   isAdmin: boolean;
   isBlocked: boolean;
+  isGoogle: boolean;
   role: "user" | "mentor";
   createdAt: Date;
   updatedAt: Date;
@@ -48,6 +49,11 @@ const authSchema = new mongoose.Schema(
     isBlocked: {
       type: Boolean,
       default: false
+    },
+    isGoogle:{
+      type: Boolean,
+      default: false,
+      required: true
     },
     role: {
       type: String,
