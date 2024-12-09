@@ -18,11 +18,11 @@ export class SignUpController {
       // Check if user exists
 
       const userExist = await this.getUserUseCase.execute({ email });
-
+      
       if (userExist && userExist.role == USER_ROLE.USER) {
         res
           .status(HttpStatusCode.Conflict)
-          .json({ error: "User already exists" });
+          .json({ error: "User already exist with this email" });
         return;
       }
 

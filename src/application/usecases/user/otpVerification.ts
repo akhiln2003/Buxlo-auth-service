@@ -40,7 +40,7 @@ export class OtpVerification implements IotpVerification {
       if (!unverifiedUser)
         return {
           success: false,
-          message: "No  user found restart the process onese more"
+          message: "No user found restart the sign up process onese more"
         };
 
       // Creating new User
