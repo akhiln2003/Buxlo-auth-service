@@ -41,7 +41,7 @@ export class JwtService implements ItokenService {
     );
   }
 
-  verifyRefreshToken(token: string): unknown {
-    return JWT.verify(token, this.refreshTokenSecret);
+  verifyRefreshToken(token: string , secret: string): unknown {
+    return JWT.verify(token, secret);
   }
 }

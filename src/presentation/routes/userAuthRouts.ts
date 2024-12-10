@@ -11,6 +11,8 @@ import { SignInController } from "../controller/user/signInController";
 import { singOutController } from "../controller/user/singOutController";
 import { forgotPasswordDto } from "../../zodSchemaDto/user/forgotPasswordDto";
 import { ForgotPassword } from "../controller/user/forgotPasswordController";
+import { setNewPasswordDto } from "../../zodSchemaDto/user/setNewPasswordDto";
+import { SetNewPasswordController } from "../controller/user/setNewPasswordController";
 
 
 const router = Router();
@@ -47,9 +49,17 @@ const forgotPasswordController  =  new ForgotPassword(
 );
 
 
+const setNewPasswordController = new SetNewPasswordController(
+    diContainer.setNewPasswordUseCase()
+);
+
 /////////////////////////////////////
 
-
+router.use((req,res,next)=> {
+    console.log(req.url , ' ' , req.method );
+    next();
+    
+});
 
 router.post("/signup", validateReq(signUpDto) , signUpController.signUp);
 router.post('/verifyotp', validateReq(otpSchemaDto), otpVerifyController.verify);
@@ -57,7 +67,7 @@ router.post('/resendotp', validateReq(resendOtpSchemaDto), resendOtpController.r
 router.post('/signin', validateReq(signInDto), signInController.signIn);
 router.post('/signout' , signOutController.singOut );
 router.post('/forgotpassword' , validateReq(forgotPasswordDto) , forgotPasswordController.forgot );
-
+router.post('/setnewpassword' , validateReq(setNewPasswordDto) , setNewPasswordController.setPassword);
 
 
 

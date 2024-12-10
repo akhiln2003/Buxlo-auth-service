@@ -20,6 +20,8 @@ import { SignInUserUseCase } from "../../application/usecases/user/signInUser";
 import { IforgotPassword } from "../../application/interfaces/IforgotPassword";
 import { ForgotPasswordUseCase } from "../../application/usecases/user/forgotPasswordUseCase";
 import { SendForgotPasswordEmailUseCase } from "../../application/usecases/user/sendForgotPasswodEmail";
+import { SetNewPasswordUseCase } from "../../application/usecases/user/setNewPasswordUseCase";
+import { IsetNewPasswordUseCase } from "../../application/interfaces/IsetNewPasswordUseCase";
 
 class DIContainer {
   private _authRepository: UserRepository;
@@ -63,7 +65,11 @@ class DIContainer {
     return new SignInUserUseCase(this._authRepository, this.__jwtService);
   }
   forgotPasswordUseCase():IforgotPassword{
-    return new ForgotPasswordUseCase( this._authRepository , this._nodeMailerService , this.__jwtService );
+    return new ForgotPasswordUseCase( this._authRepository  , this.__jwtService );
+  }
+
+  setNewPasswordUseCase(): IsetNewPasswordUseCase{
+    return new SetNewPasswordUseCase(this._authRepository , this.__jwtService);
   }
 }
 

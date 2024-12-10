@@ -19,7 +19,12 @@ export class UserRepository implements IuserRepository {
     return Auth.findOne({ email });
   }
 
-  async update(user: User): Promise<void> {
-    await Auth.findByIdAndUpdate(user.id, user);
+  async update(_id: string, query: object):Promise<User | null>  {
+    return await Auth.findByIdAndUpdate(
+      _id,
+      {
+        $set: query,
+      }
+    ).select('-password');
   }
 }
