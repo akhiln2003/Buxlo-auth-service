@@ -1,4 +1,4 @@
-import { IsendOtpEmailUseCase } from "../../application/interfaces/IemailService";
+import { IsendForgotPasswordEmailUseCase, IsendOtpEmailUseCase } from "../../application/interfaces/IemailService";
 import { IgetUser } from "../../application/interfaces/IgetUser";
 import {
   IotpVerification,
@@ -17,6 +17,9 @@ import { UserRepository } from "../repositories/userRepository";
 import { GetUserUseCase } from "../../application/usecases/user/getUser";
 import { IsignInUserUseCase } from "../../application/interfaces/IsignInUserUseCase";
 import { SignInUserUseCase } from "../../application/usecases/user/signInUser";
+import { IforgotPassword } from "../../application/interfaces/IforgotPassword";
+import { ForgotPasswordUseCase } from "../../application/usecases/user/forgotPasswordUseCase";
+import { SendForgotPasswordEmailUseCase } from "../../application/usecases/user/sendForgotPasswodEmail";
 
 class DIContainer {
   private _authRepository: UserRepository;
@@ -40,8 +43,11 @@ class DIContainer {
   getTemporaryStoreUseCase(): IregisterUserTemporarily {
     return new RegisterUserTemporarily(this._rediseService, this._otpService);
   }
-  getSendEmailServiceUseCase(): IsendOtpEmailUseCase {
+  getSendOtpEmailServiceUseCase(): IsendOtpEmailUseCase {
     return new SendOtpEmailUseCase(this._nodeMailerService);
+  }
+  getSendForgotPasswordEmailServiceUseCase(): IsendForgotPasswordEmailUseCase {
+    return new SendForgotPasswordEmailUseCase(this._nodeMailerService);
   }
   getResendOtpUseCase(): IresendOtpUseCase {
     return new ResendOtpUseCase(this._rediseService, this._otpService);
@@ -55,6 +61,9 @@ class DIContainer {
   }
   signInUserUseCase(): IsignInUserUseCase {
     return new SignInUserUseCase(this._authRepository, this.__jwtService);
+  }
+  forgotPasswordUseCase():IforgotPassword{
+    return new ForgotPasswordUseCase( this._authRepository , this._nodeMailerService , this.__jwtService );
   }
 }
 

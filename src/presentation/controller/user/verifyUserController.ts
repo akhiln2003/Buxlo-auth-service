@@ -23,7 +23,7 @@ export class OtpVerifyController {
           secure: process.env.NODE_ENV !== "development",
           maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
-        res.status(HttpStatusCode.OK).json({ userVerified: response.user });
+        res.status(HttpStatusCode.OK).json({ user : response.user });
       } else {
         res
           .status(HttpStatusCode.BadRequest)
