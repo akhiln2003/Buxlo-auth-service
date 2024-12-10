@@ -16,7 +16,7 @@ export class SignInUserUseCase implements IsignInUserUseCase {
   ): Promise<User | any> {
     const user = await this.userRepository.findByEmail(email);
     
-    if (!user) {
+    if (!user || user.isAdmin ) {
       return {
         notfount: true,
       };
