@@ -12,7 +12,7 @@ export class ForgotPasswordController {
   forgot = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { email } = req.body;
-      const role = USER_ROLE.USER;
+      const role = USER_ROLE.MENTOR;
       const response = await this.forgotPasswordUseCase.execute(email , role);
       if (response?.notfount) {
         throw new NotFountError("This email is invalid");

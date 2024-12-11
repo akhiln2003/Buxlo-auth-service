@@ -13,10 +13,12 @@ export class SignInUserUseCase implements IsignInUserUseCase {
   async execute(
     email: string,
     password: string,
+    role: string,
+    isAdmin: boolean
   ): Promise<User | any> {
     const user = await this.userRepository.findByEmail(email);
     
-    if (!user || user.isAdmin ) {
+    if (!user || user.role !== role || user.isAdmin !== isAdmin ) {
       return {
         notfount: true,
       };

@@ -1,3 +1,3 @@
 export interface IforgotPassword {
-    execute( email: string ): Promise<any>;
+    execute( email: string , role: string ): Promise<any>;
 }

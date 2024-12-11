@@ -9,7 +9,7 @@ export class SignInController {
   signIn = async (req: Request, res: Response) => {
     try {
       const { email, password } = req.body;
-      const role = USER_ROLE.USER , isAdmin = false;
+      const role = USER_ROLE.MENTOR , isAdmin = false;
       const user = await this.signInUserUseCase.execute(email, password , role , isAdmin);
 
       // if the user not existing in db return response ( status code and message )

@@ -1,16 +1,16 @@
-import { validateReq } from "@buxlo/common";
 import { Router } from "express";
-import { SignUpController } from "../controller/user/signUpController";
 import { DIContainer } from "../../infrastructure/di/DIContainer";
+import { validateReq } from "@buxlo/common";
+import { signUpDto } from "../../zodSchemaDto/user/signUpDto";
+import { SignUpController } from "../controller/Mentor/signUpController";
 import { otpSchemaDto, resendOtpSchemaDto } from "../../zodSchemaDto/user/otpDto";
 import { OtpVerifyController } from "../controller/common/verifyUserController";
 import { ResendOtpController } from "../controller/common/resendOtpController";
-import { signUpDto } from "../../zodSchemaDto/user/signUpDto";
+import { SignInController } from "../controller/Mentor/signInController";
 import { signInDto } from "../../zodSchemaDto/user/signInDto";
-import { SignInController } from "../controller/user/signInController";
 import { singOutController } from "../controller/common/singOutController";
 import { forgotPasswordDto } from "../../zodSchemaDto/user/forgotPasswordDto";
-import { ForgotPasswordController } from "../controller/user/forgotPasswordController";
+import { ForgotPasswordController } from "../controller/Mentor/forgotPasswordController";
 import { setNewPasswordDto } from "../../zodSchemaDto/user/setNewPasswordDto";
 import { SetNewPasswordController } from "../controller/common/setNewPasswordController";
 
@@ -18,6 +18,7 @@ import { SetNewPasswordController } from "../controller/common/setNewPasswordCon
 
 const router = Router();
 const diContainer = new DIContainer();
+
 
 
 // Inject dependencies into the Controller
@@ -49,20 +50,20 @@ const forgotPasswordController  =  new ForgotPasswordController(
     diContainer.getSendForgotPasswordEmailServiceUseCase()
 );
 
-
 const setNewPasswordController = new SetNewPasswordController(
     diContainer.setNewPasswordUseCase()
 );
 
-/////////////////////////////////////
 
-router.use((req,res,next)=> {
-    console.log(req.url , ' ' , req.method );
+//////////////////////////////////////////
+
+router.use((req,res,next)=>{
+    console.log(req.url , req.method);
     next();
     
 });
 
-router.post("/signup", validateReq(signUpDto) , signUpController.signUp);
+router.post('/signup' , validateReq(signUpDto) , signUpController.signUp );
 router.post('/verifyotp', validateReq(otpSchemaDto), otpVerifyController.verify);
 router.post('/resendotp', validateReq(resendOtpSchemaDto), resendOtpController.resend);
 router.post('/signin', validateReq(signInDto), signInController.signIn);
@@ -75,4 +76,19 @@ router.post('/setnewpassword' , validateReq(setNewPasswordDto) , setNewPasswordC
 
 
 
-export { router as userRoutes };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export { router as mentorRoutes };
