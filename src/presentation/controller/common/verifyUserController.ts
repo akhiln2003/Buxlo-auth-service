@@ -3,10 +3,7 @@ import { IotpVerification } from "../../../application/interfaces/Iotp";
 import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 
 export class OtpVerifyController {
-  private verifyUserUseCase: IotpVerification;
-  constructor(verifyUserUseCase: IotpVerification) {
-    this.verifyUserUseCase = verifyUserUseCase;
-  }
+  constructor(private verifyUserUseCase: IotpVerification) {}
 
   verify = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -23,7 +20,7 @@ export class OtpVerifyController {
           secure: process.env.NODE_ENV !== "development",
           maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
-        res.status(HttpStatusCode.OK).json({ user : response.user });
+        res.status(HttpStatusCode.OK).json({ user: response.user });
       } else {
         res
           .status(HttpStatusCode.BadRequest)

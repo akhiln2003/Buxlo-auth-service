@@ -3,6 +3,7 @@ import { IServer } from "./domin/interfaces/Iserver";
 import { connectDB, disconnectDB } from "./infrastructure/database/mongodb/connection";
 import { redisClientInstance } from "./infrastructure/database/redis/connection";
 import { userRoutes } from "./presentation/routes/userAuthRouts";
+import { mentorRoutes } from "./presentation/routes/mentorAuthRouts";
 
 export class App{
     constructor(private server:IServer) {};
@@ -16,6 +17,7 @@ export class App{
 
     private registerRoutes():void{        
         this.server.registerRoutes('/api/user' , userRoutes);
+        this.server.registerRoutes('/api/mentor' , mentorRoutes);
     }
 
     private registerErrorHandler(): void{
