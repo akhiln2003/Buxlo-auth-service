@@ -2,7 +2,6 @@ import { User } from "../../../domin/entities/User";
 import { ItokenService } from "../../../domin/interfaces/ItokenService";
 import { IuserRepository } from "../../../domin/interfaces/IuserRepository";
 import { IgoogleAuthUseCase } from "../../interfaces/IgoogleAuthUseCase";
-import { IotpVerificationResponse } from "../../interfaces/Iotp";
 import { Password } from "../../services/passwordHash";
 
 export class GoogelAuthUseCase implements IgoogleAuthUseCase {
@@ -14,14 +13,13 @@ export class GoogelAuthUseCase implements IgoogleAuthUseCase {
   async execute(
     token: string,
     role: string
-  ): Promise<IotpVerificationResponse> {
+  ): Promise<any> {
     try {
       const validat = await this.jwtService.verifyGoogleToken(token);
 
       if (!validat) {
         return {
-          success: false,
-          message: "Sonthing when wrong",
+          validat: true,
         };
       }
 
@@ -52,7 +50,7 @@ export class GoogelAuthUseCase implements IgoogleAuthUseCase {
       }
     } catch (error) {
       console.error("Error from OTP varification : ", error);
-      return { success: false, message: "Internal server error" };
+      return { InternalServer: true, error };
     }
   }
 }

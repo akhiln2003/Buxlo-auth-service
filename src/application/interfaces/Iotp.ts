@@ -17,9 +17,13 @@ export interface IotpVerificationParams {
 }
 
 export interface IotpVerificationResponse {
-  success: boolean;
+  success?: boolean;
+  gone?: boolean;
+  incorrect?:boolean;
+  unverifiedUser?:boolean;
+  InternalServer?: boolean;
+  error?: any;
   user?: User | null;
-  message?: string;
   refreshToken?: string;
   accessToken?: string;
 }

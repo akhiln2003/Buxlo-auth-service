@@ -5,7 +5,7 @@ import { IuserRepository } from "../../../domin/interfaces/IuserRepository";
 import {
   IotpVerification,
   IotpVerificationParams,
-  IotpVerificationResponse
+  IotpVerificationResponse,
 } from "../../interfaces/Iotp";
 
 export class OtpVerification implements IotpVerification {
@@ -17,30 +17,26 @@ export class OtpVerification implements IotpVerification {
 
   async execute({
     otp,
-    email
+    email,
   }: IotpVerificationParams): Promise<IotpVerificationResponse> {
     try {
       const storedOTP = await this.redisRepository.getOtp(email); // finding otp from redis stor
       if (!storedOTP)
         return {
-          success: false,
-          message: "OTP not found or has expired. try with currect otp"
+          gone: true,
         };
 
       if (otp != storedOTP)
         return {
-          success: false,
-          message: "Invalid OTP provided. Try with currect otp"
+          incorrect: true,
         };
 
-      const unverifiedUser = await this.redisRepository.getUnverifiedUser(
-        email
-      ); // finding unverified user from redis
+      const unverifiedUser =
+        await this.redisRepository.getUnverifiedUser(email); // finding unverified user from redis
 
       if (!unverifiedUser)
         return {
-          success: false,
-          message: "No user found restart the sign up process onese more"
+          unverifiedUser: true,
         };
 
       // Creating new User
@@ -59,9 +55,9 @@ export class OtpVerification implements IotpVerification {
       const refreshToken = this.jwtservice.generateRefreshToken(user); // generating referesh token
 
       return { success: true, accessToken, refreshToken, user: newUser };
-    } catch (err) {
-      console.error("Error from OTP varification : ", err);
-      return { success: false, message: "Internal server error" };
+    } catch (error) {
+      console.error("Error from OTP varification : ", error);
+      return { InternalServer: true, error };
     }
   }
 }
