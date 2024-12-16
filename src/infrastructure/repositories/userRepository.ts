@@ -14,6 +14,10 @@ export class UserRepository implements IuserRepository {
     return await Auth.findById(id);
   }
 
+  async findOne(query: object): Promise<User | null> {
+    return await Auth.findOne(query);
+  }
+
 
 
   // find user by ther emailId

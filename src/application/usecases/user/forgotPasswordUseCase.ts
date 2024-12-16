@@ -10,14 +10,14 @@ export class ForgotPasswordUseCase implements IforgotPassword {
   ) {}
   async execute(email: string , role: string , ): Promise<any> {
     try {
-      const user = await this.userRepositary.findByEmail(email);
-      if (!user || user.role !== role ) {
+      const user = await this.userRepositary.findOne({ email , role });
+      if (!user) {
         return {
           notfount: true,
         };
       }
       const token = this.jwtservice.generateResentPasswordToken(user);
-      const resetPasswordUrl = `${process.env.FORGOT_PASSWORD_FRONTEND_BASE_URL}${role == USER_ROLE.MENTOR  ? "/menter" :""}/${token}`;
+      const resetPasswordUrl = `${process.env.FORGOT_PASSWORD_FRONTEND_BASE_URL}${role == USER_ROLE.MENTOR  ? "mentor/" :""}resetpassword/${token}`;
       return { resetPasswordUrl , user };
     } catch (error) {
       return {
