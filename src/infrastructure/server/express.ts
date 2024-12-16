@@ -13,7 +13,7 @@ export class ExpressWebServer implements IServer {
     this.app.use(cookieParser());
     this.app.use(
       cors({
-        origin: "http://localhost:5173", // Frontend origin
+        origin: "http://localhost:5173",  // Frontend origin
         methods: ["GET", "POST", "PUT", "DELETE"], // Allowed methods
         credentials: true, // If you're sending cookies or authorization headers
       })

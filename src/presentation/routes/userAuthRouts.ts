@@ -13,6 +13,8 @@ import { forgotPasswordDto } from "../../zodSchemaDto/user/forgotPasswordDto";
 import { ForgotPasswordController } from "../controller/user/forgotPasswordController";
 import { setNewPasswordDto } from "../../zodSchemaDto/user/setNewPasswordDto";
 import { SetNewPasswordController } from "../controller/common/setNewPasswordController";
+import { googleAuthDto } from "../../zodSchemaDto/user/googleAuthDto";
+import { GoogleAuthController } from "../controller/user/googleAuthController";
 
 
 
@@ -54,10 +56,15 @@ const setNewPasswordController = new SetNewPasswordController(
     diContainer.setNewPasswordUseCase()
 );
 
+
+const googleAuthController = new GoogleAuthController(
+    diContainer.googelAuthUseCase()
+);
+
 /////////////////////////////////////
 
 router.use((req,res,next)=> {
-    console.log(req.url , ' ' , req.method );
+    console.log("user",req.url , ' ' , req.method );
     next();
     
 });
@@ -69,6 +76,7 @@ router.post('/signin', validateReq(signInDto), signInController.signIn);
 router.post('/signout' , signOutController.singOut );
 router.post('/forgotpassword' , validateReq(forgotPasswordDto) , forgotPasswordController.forgot );
 router.post('/setnewpassword' , validateReq(setNewPasswordDto) , setNewPasswordController.setPassword);
+router.post('/googleauth', validateReq(googleAuthDto) , googleAuthController.auth);
 
 
 

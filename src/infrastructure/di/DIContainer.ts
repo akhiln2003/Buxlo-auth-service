@@ -22,6 +22,12 @@ import { ForgotPasswordUseCase } from "../../application/usecases/user/forgotPas
 import { SendForgotPasswordEmailUseCase } from "../../application/usecases/user/sendForgotPasswodEmail";
 import { SetNewPasswordUseCase } from "../../application/usecases/user/setNewPasswordUseCase";
 import { IsetNewPasswordUseCase } from "../../application/interfaces/IsetNewPasswordUseCase";
+import { IgoogleAuthUseCase } from "../../application/interfaces/IgoogleAuthUseCase";
+import { GoogelAuthUseCase } from "../../application/usecases/user/googleAuthUseCase";
+import { IlistUser } from "../../application/interfaces/IlistUserUsecase";
+import { ListUserUseCase } from "../../application/usecases/user/lilstUserUseCase";
+import { FetchUsersUseCase } from "../../application/usecases/user/fetchUsersUseCase";
+import { BlockAndUnblockUseCase } from "../../application/usecases/user/blockAndUnblockUseCase";
 
 class DIContainer {
   private _authRepository: UserRepository;
@@ -40,6 +46,9 @@ class DIContainer {
 
   getUserUseCase(): IgetUser {
     return new GetUserUseCase(this._authRepository);
+  }
+  fetchUsersUseCase(){
+    return new FetchUsersUseCase(this._authRepository);
   }
 
   getTemporaryStoreUseCase(): IregisterUserTemporarily {
@@ -70,6 +79,18 @@ class DIContainer {
 
   setNewPasswordUseCase(): IsetNewPasswordUseCase{
     return new SetNewPasswordUseCase(this._authRepository , this.__jwtService);
+  }
+
+  googelAuthUseCase(): IgoogleAuthUseCase{
+    return new GoogelAuthUseCase( this.__jwtService , this._authRepository);
+  }
+
+  listUserUseCase(): IlistUser {
+    return new ListUserUseCase(this._authRepository);
+  }
+
+  blockAndUnBlockUseCase(){
+    return new BlockAndUnblockUseCase(this._authRepository);
   }
 }
 

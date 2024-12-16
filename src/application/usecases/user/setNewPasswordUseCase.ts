@@ -10,7 +10,7 @@ export class SetNewPasswordUseCase implements IsetNewPasswordUseCase {
   ) {}
   async execute(password: string, token: string): Promise<any> {
     try {
-      const { id } = (await this.jwtservice.verifyRefreshToken(
+      const { id } = (await this.jwtservice.verifyToken(
         token,
         process.env.JWT_FORGOTPASSWORD_SECRET as string
       )) as {

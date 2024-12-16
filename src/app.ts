@@ -4,6 +4,7 @@ import { connectDB, disconnectDB } from "./infrastructure/database/mongodb/conne
 import { redisClientInstance } from "./infrastructure/database/redis/connection";
 import { userRoutes } from "./presentation/routes/userAuthRouts";
 import { mentorRoutes } from "./presentation/routes/mentorAuthRouts";
+import { adminRoutes } from "./presentation/routes/adminAuthRouts";
 
 export class App{
     constructor(private server:IServer) {};
@@ -18,6 +19,7 @@ export class App{
     private registerRoutes():void{        
         this.server.registerRoutes('/api/user' , userRoutes);
         this.server.registerRoutes('/api/mentor' , mentorRoutes);
+        this.server.registerRoutes('/api/admin' , adminRoutes );
     }
 
     private registerErrorHandler(): void{
