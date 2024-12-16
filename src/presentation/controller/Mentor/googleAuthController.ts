@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { IgoogleAuthUseCase } from "../../../application/interfaces/IgoogleAuthUseCase";
 import { USER_ROLE } from "../../../shared/enums/role";
 import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
@@ -6,7 +6,7 @@ import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 export class GoogleAuthController {
   constructor(private googleAuthUseCase: IgoogleAuthUseCase) {}
 
-  auth = async (req: Request, res: Response) => {
+  auth = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { token } = req.body;
       // console.log("token" , token);
@@ -30,10 +30,8 @@ export class GoogleAuthController {
           .json({ message: response.message });
       }
     } catch (error) {
-        console.error("Error in OTP verification controller:", error);
-        res
-          .status(HttpStatusCode.InternalServerError)
-          .json({ message: "Internal server error" });
+      console.error("Error in OTP verification controller:", error);
+      next(error);
     }
   };
 }

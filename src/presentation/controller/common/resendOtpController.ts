@@ -1,4 +1,4 @@
-import { Request, Response } from "express-serve-static-core";
+import { NextFunction, Request, Response } from "express-serve-static-core";
 import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 import { IsendOtpEmailUseCase } from "../../../application/interfaces/IemailService";
 import { IresendOtpUseCase } from "../../../application/interfaces/Iotp";
@@ -9,7 +9,7 @@ export class ResendOtpController {
     private resendOtpUseCase: IresendOtpUseCase
   ) {}
 
-  resend = async (req: Request, res: Response) => {
+  resend = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { email, name } = req.body;
 
@@ -22,9 +22,7 @@ export class ResendOtpController {
       });
     } catch (err) {
       console.error("Error from resend Otp : ", err);
-      res
-        .status(HttpStatusCode.InternalServerError)
-        .json({ message: "Invalid server error try again later" });
+      next(err);
     }
   };
 }

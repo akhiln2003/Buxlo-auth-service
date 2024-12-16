@@ -1,31 +1,36 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 import { IsignInUserUseCase } from "../../../application/interfaces/IsignInUserUseCase";
 import { USER_ROLE } from "../../../shared/enums/role";
+import { BlockError, NotAuthorizedError, NotFountError } from "@buxlo/common";
 
 export class SignInController {
   constructor(private signInUserUseCase: IsignInUserUseCase) {}
 
-  signIn = async (req: Request, res: Response) => {
+  signIn = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { email, password } = req.body;
-      const role = USER_ROLE.MENTOR , isAdmin = false;
-      const user = await this.signInUserUseCase.execute(email, password , role , isAdmin);
+      const role = USER_ROLE.MENTOR,
+        isAdmin = false;
+      const user = await this.signInUserUseCase.execute(
+        email,
+        password,
+        role,
+        isAdmin
+      );
 
       // if the user not existing in db return response ( status code and message )
       if (user.notfount) {
-        res
-          .status(HttpStatusCode.NotFound)
-          .json({ error: "This email is invalid" });
-          return;
+        throw new NotFountError("This email is invalid");
       }
       // if the user password  nto matching db return response ( status code and message )
       if (user.passwordNotMatch) {
-        res.status(HttpStatusCode.Unauthorized).json({
-          error:
-            "Invalid credentials. Please check your password and try again.",
-        });
-        return;
+        throw new NotAuthorizedError(
+          "Invalid credentials. Please check your password and try again."
+        );
+      }
+      if (user.isBlocked) {
+        throw new BlockError();
       }
       res.cookie("userAccessToken", user.accessToken, {
         httpOnly: true,
@@ -44,9 +49,7 @@ export class SignInController {
       // await
     } catch (error) {
       console.error("Error in OTP verification controller:", error);
-      res
-        .status(HttpStatusCode.InternalServerError)
-        .json({ message: "Internal server error", error: error });
+      next(error);
     }
   };
 }

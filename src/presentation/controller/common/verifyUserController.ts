@@ -1,11 +1,15 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { IotpVerification } from "../../../application/interfaces/Iotp";
 import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 
 export class OtpVerifyController {
   constructor(private verifyUserUseCase: IotpVerification) {}
 
-  verify = async (req: Request, res: Response): Promise<void> => {
+  verify = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const { otp, email } = req.body;
       const response = await this.verifyUserUseCase.execute({ otp, email });
@@ -28,9 +32,7 @@ export class OtpVerifyController {
       }
     } catch (err) {
       console.error("Error in OTP verification controller:", err);
-      res
-        .status(HttpStatusCode.InternalServerError)
-        .json({ message: "Internal server error" });
+      next(err);
     }
   };
 }

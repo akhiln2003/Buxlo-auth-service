@@ -1,4 +1,3 @@
-import { BlockError } from "@buxlo/common";
 import { User } from "../../../domin/entities/User";
 import { ItokenService } from "../../../domin/interfaces/ItokenService";
 import { IuserRepository } from "../../../domin/interfaces/IuserRepository";
@@ -24,7 +23,9 @@ export class SignInUserUseCase implements IsignInUserUseCase {
       };
     }
     if (user?.isBlocked) {
-      throw new BlockError();
+      return {
+        isBlocked: true,
+      };
     }
     
     if (await Password.compare(password, user.password)) {      

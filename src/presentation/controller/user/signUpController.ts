@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { IgetUser } from "../../../application/interfaces/IgetUser";
 import { IregisterUserTemporarily } from "../../../application/interfaces/IregisterUserTemporarily";
 import { IsendOtpEmailUseCase } from "../../../application/interfaces/IemailService";
@@ -11,14 +11,14 @@ export class SignUpController {
     private temporaryStoreAndOtpUseCase: IregisterUserTemporarily,
     private sendOtpEmailUseCase: IsendOtpEmailUseCase
   ) {}
-  signUp = async (req: Request, res: Response) => {
+  signUp = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { email, password, name, avatar } = req.body;
 
       // Check if user exists
 
       const userExist = await this.getUserUseCase.execute({ email });
-      
+
       if (userExist && userExist.role == USER_ROLE.USER) {
         res
           .status(HttpStatusCode.Conflict)
@@ -44,9 +44,7 @@ export class SignUpController {
         .json({ message: "OTP sent to email.", email });
     } catch (error) {
       console.error(error);
-      res
-        .status(HttpStatusCode.InternalServerError)
-        .json({ error: "An error occurred during sign-up" });
+      next(error);
     }
   };
 }

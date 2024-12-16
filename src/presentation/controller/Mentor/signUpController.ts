@@ -1,4 +1,4 @@
-import { Request, Response } from "express-serve-static-core";
+import { NextFunction, Request, Response } from "express-serve-static-core";
 import { IgetUser } from "../../../application/interfaces/IgetUser";
 import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 import { IregisterUserTemporarily } from "../../../application/interfaces/IregisterUserTemporarily";
@@ -12,7 +12,7 @@ export class SignUpController {
     private sendOtpEmailUseCase: IsendOtpEmailUseCase
   ) {}
 
-  signUp = async (req: Request, res: Response) => {
+  signUp = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { email, password, name, avatar } = req.body;
 
@@ -42,9 +42,7 @@ export class SignUpController {
         .json({ message: "OTP sent to email.", email });
     } catch (error) {
       console.error(error);
-      res
-      .status(HttpStatusCode.InternalServerError)
-      .json({ error: "An error occurred during sign-up" });
+      next(error);
     }
   };
 }
