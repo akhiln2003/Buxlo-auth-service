@@ -4,7 +4,8 @@ import { IgetUser } from "../../interfaces/IgetUser";
 export class GetUserUseCase implements IgetUser {
   constructor(private userRepositary: IuserRepository) {}
 
-  async execute({ email }: { email: string }): Promise<any> {
-    return await this.userRepositary.findByEmail(email);
+  async execute({email , role}: { email: string; role: string; }): Promise<any> {
+    return await this.userRepositary.findOne({email , role});
+
   }
 }

@@ -4,6 +4,7 @@ import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 import { IregisterUserTemporarily } from "../../../application/interfaces/IregisterUserTemporarily";
 import { USER_ROLE } from "../../../shared/enums/role";
 import { IsendOtpEmailUseCase } from "../../../application/interfaces/IemailService";
+import { ConflictError } from "@buxlo/common";
 
 export class SignUpController {
   constructor(
@@ -15,14 +16,12 @@ export class SignUpController {
   signUp = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { email, password, name, avatar } = req.body;
-
+      const role = USER_ROLE.MENTOR;
       // Check if user exists
-      const userExist = await this.getUserUseCase.execute(email);
-      if (userExist && userExist.role == USER_ROLE.USER && !userExist.isAdmin) {
-        res
-          .status(HttpStatusCode.Conflict)
-          .json({ error: "User already exist with this email" });
-        return;
+      const userExist = await this.getUserUseCase.execute({ email, role });
+      
+      if (userExist) {
+       throw new ConflictError("User already exist with this email");
       }
 
       // Store user temporarily and generate OTP

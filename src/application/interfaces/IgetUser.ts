@@ -1,3 +1,3 @@
 export interface IgetUser {
-    execute(params: { email: string }): Promise<any>;
+    execute(params: { email: string , role: string }): Promise<any>;
 }
