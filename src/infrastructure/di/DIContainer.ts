@@ -28,6 +28,8 @@ import { IlistUser } from "../../application/interfaces/IlistUserUsecase";
 import { ListUserUseCase } from "../../application/usecases/user/lilstUserUseCase";
 import { FetchUsersUseCase } from "../../application/usecases/user/fetchUsersUseCase";
 import { BlockAndUnblockUseCase } from "../../application/usecases/user/blockAndUnblockUseCase";
+import { SetTokensUseCase } from "../../application/usecases/user/setTokensUseCase";
+import { IsetTokensUseCase } from "../../application/interfaces/IsetTokensUseCase";
 
 class DIContainer {
   private _authRepository: UserRepository;
@@ -69,6 +71,9 @@ class DIContainer {
       this._authRepository,
       this.__jwtService
     );
+  }
+  setTokensUseCase():IsetTokensUseCase{
+    return new SetTokensUseCase(this.__jwtService);
   }
   signInUserUseCase(): IsignInUserUseCase {
     return new SignInUserUseCase(this._authRepository, this.__jwtService);

@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const PORT : number = Number(process.env.PORT) || 4000;
+const PORT : number = Number(process.env.PORT) || 4001;
 const server = new ExpressWebServer();
 const app = new App(server);
 

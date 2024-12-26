@@ -27,6 +27,7 @@ router.use((req,res,next)=> {
 
 const signInController = new SignInController(
     diContainer.signInUserUseCase(),
+    diContainer.setTokensUseCase()
 );
 
 const listusrUserController = new ListUserController(

@@ -3,9 +3,10 @@ import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 import { IsignInUserUseCase } from "../../../application/interfaces/IsignInUserUseCase";
 import { USER_ROLE } from "../../../shared/enums/role";
 import { BlockError, NotAuthorizedError, NotFountError } from "@buxlo/common";
+import { IsetTokensUseCase } from "../../../application/interfaces/IsetTokensUseCase";
 
 export class SignInController {
-  constructor(private signInUserUseCase: IsignInUserUseCase) {}
+  constructor(private signInUserUseCase: IsignInUserUseCase , private setTokensUseCase:IsetTokensUseCase) {}
 
   signIn = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -32,23 +33,15 @@ export class SignInController {
       if (user.isBlocked) {
         throw new BlockError();
       }
-      res.cookie("userAccessToken", user.accessToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV !== "development",
-        maxAge: 15 * 60 * 1000, // 15 minutes
-      });
-      res.cookie("userRefreshToken", user.refreshToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV !== "development",
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-      });
+      this.setTokensUseCase.execute(res,user.accessToken , user.refreshToken);
+
       res
         .status(HttpStatusCode.OK)
         .json({ message: "Login successful.", user: user.user });
 
       // await
     } catch (error) {
-      console.error("Error in OTP verification controller:", error);
+      console.error(error);
       next(error);
     }
   };

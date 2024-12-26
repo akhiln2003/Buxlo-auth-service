@@ -15,6 +15,7 @@ import { setNewPasswordDto } from "../../zodSchemaDto/user/setNewPasswordDto";
 import { SetNewPasswordController } from "../controller/common/setNewPasswordController";
 import { googleAuthDto } from "../../zodSchemaDto/user/googleAuthDto";
 import { GoogleAuthController } from "../controller/user/googleAuthController";
+import { RefresgTokenController } from "../controller/common/authTokenController";
 
 
 
@@ -32,7 +33,8 @@ const signUpController = new SignUpController(
 
 
 const otpVerifyController = new OtpVerifyController(
-    diContainer.verifyUserUseCase()
+    diContainer.verifyUserUseCase(),
+    diContainer.setTokensUseCase()
 );
 
 const resendOtpController = new ResendOtpController(
@@ -42,6 +44,7 @@ const resendOtpController = new ResendOtpController(
 
 const signInController = new SignInController(
     diContainer.signInUserUseCase(),
+    diContainer.setTokensUseCase()
 );
 
 const signOutController = new singOutController();
@@ -61,6 +64,8 @@ const googleAuthController = new GoogleAuthController(
     diContainer.googelAuthUseCase()
 );
 
+const tokenController = new RefresgTokenController();
+
 /////////////////////////////////////
 
 router.use((req,res,next)=> {
@@ -77,8 +82,7 @@ router.post('/signout' , signOutController.singOut );
 router.post('/forgotpassword' , validateReq(forgotPasswordDto) , forgotPasswordController.forgot );
 router.post('/setnewpassword' , validateReq(setNewPasswordDto) , setNewPasswordController.setPassword);
 router.post('/googleauth', validateReq(googleAuthDto) , googleAuthController.auth);
-
-
+router.post('/refreshtoken' , tokenController.validate);
 
 
 

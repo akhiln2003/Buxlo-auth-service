@@ -33,7 +33,8 @@ const signUpController = new SignUpController(
 
 
 const otpVerifyController = new OtpVerifyController(
-    diContainer.verifyUserUseCase()
+    diContainer.verifyUserUseCase(),
+    diContainer.setTokensUseCase()
 );
 
 const resendOtpController = new ResendOtpController(
@@ -43,6 +44,7 @@ const resendOtpController = new ResendOtpController(
 
 const signInController = new SignInController(
     diContainer.signInUserUseCase(),
+    diContainer.setTokensUseCase()
 );
 
 const signOutController = new singOutController();
