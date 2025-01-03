@@ -49,24 +49,25 @@ export class JwtService implements ItokenService {
     return JWT.verify(token, secret);
   }
 
-   setTokens(res: Response, accessToken: string, refreshToken: string): void {
+  setTokens(res: Response, accessToken?: string, refreshToken?: string): void {
     const isProduction = process.env.NODE_ENV === "production";
-  
-    res.cookie("userAccessToken", accessToken, {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: "strict", // strict for added CSRF protection
-      maxAge: 15 * 60 * 1000, // 15 minutes
-    });
-  
-    res.cookie("userRefreshToken", refreshToken, {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: "strict", // strict for added CSRF protection
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-    });
+    if (accessToken) {
+      res.cookie("userAccessToken", accessToken, {
+        httpOnly: true,
+        secure: isProduction,
+        sameSite: "strict", // strict for added CSRF protection
+        maxAge: 15 * 60 * 1000, // 15 minutes
+      });
+    }
+    if (refreshToken) {
+      res.cookie("userRefreshToken", refreshToken, {
+        httpOnly: true,
+        secure: isProduction,
+        sameSite: "strict", // strict for added CSRF protection
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      });
+    }
   }
-  
 
   async verifyGoogleToken(token: string) {
     const client = new OAuth2Client(this.googleClientId);

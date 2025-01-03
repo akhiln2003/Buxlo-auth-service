@@ -64,11 +64,6 @@ const googleAuthController = new GoogleAuthController(
 
 //////////////////////////////////////////
 
-router.use((req,res,next)=>{
-    console.log("mentor",req.url , req.method);
-    next();
-    
-});
 
 router.post('/signup' , validateReq(signUpDto) , signUpController.signUp );
 router.post('/verifyotp', validateReq(otpSchemaDto), otpVerifyController.verify);

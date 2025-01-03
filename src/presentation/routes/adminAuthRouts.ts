@@ -17,11 +17,6 @@ import { FetchMentorController } from "../controller/admin/fetchmentorsControlle
 const router = Router();
 const diContainer = new DIContainer();
 
-router.use((req,res,next)=> {
-    console.log("admin",req.url , ' ' , req.method );
-    next();
-    
-});
 
 // Inject dependencies into the Controller
 
@@ -56,11 +51,11 @@ const blockAndUnblockController = new BlockAndUnblockController(
 
 
 router.post('/signin', validateReq(signInDto), signInController.signIn);
-router.get('/userlist', listusrUserController.listUser );
+router.get('/profile/userlist', listusrUserController.listUser );
 router.post('/signout' , signOutController.singOut );
-router.get('/fetchusers' ,  fetchUsersController.fetchUsers);
-router.get('/fetchmentor' , fetchmentorsController.fetchUsers);
-router.put('/blockandunblock' ,  validateReq(blockAndUnblockDto) , blockAndUnblockController.action);
+router.get('/profile/fetchusers' ,  fetchUsersController.fetchUsers);
+router.get('/profile/fetchmentor' , fetchmentorsController.fetchUsers);
+router.put('/profile/blockandunblock' ,  validateReq(blockAndUnblockDto) , blockAndUnblockController.action);
 
 
 

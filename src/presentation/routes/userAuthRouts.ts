@@ -64,15 +64,13 @@ const googleAuthController = new GoogleAuthController(
     diContainer.googelAuthUseCase()
 );
 
-const tokenController = new RefresgTokenController();
+const tokenController = new RefresgTokenController(
+    diContainer.authTokenUseCase(),
+    diContainer.setTokensUseCase()
+);
 
 /////////////////////////////////////
 
-router.use((req,res,next)=> {
-    console.log("user",req.url , ' ' , req.method );
-    next();
-    
-});
 
 router.post("/signup", validateReq(signUpDto) , signUpController.signUp);
 router.post('/verifyotp', validateReq(otpSchemaDto), otpVerifyController.verify);

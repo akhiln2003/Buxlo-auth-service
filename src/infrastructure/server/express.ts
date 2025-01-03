@@ -23,7 +23,9 @@ export class ExpressWebServer implements IServer {
 
     this.server = createServer(this.app);
   }
-
+  registerMiddleware(middleware: any): void {
+    this.app.use(middleware);
+}
   registerRoutes(path: string, router: any): void {
     this.app.use(path, router);
   }
