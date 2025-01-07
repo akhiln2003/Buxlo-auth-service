@@ -3,6 +3,7 @@ import { IotpVerification } from "../../../application/interfaces/Iotp";
 import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 import { BadRequest, GoneError, InternalServerError } from "@buxlo/common";
 import { IsetTokensUseCase } from "../../../application/interfaces/IsetTokensUseCase";
+import { registerUser } from "../../../infrastructure/rpc/grpc/client";
 
 export class OtpVerifyController {
   constructor(
@@ -32,6 +33,14 @@ export class OtpVerifyController {
         );
       }
       if (response.success) {
+        await registerUser({
+          id: response.user!.id,
+          name: response.user!.name,
+          email: response.user!.email,
+          avatar: response.user!.avatar,
+          role: response.user!.role,
+          isGoogle: response.user!.isGoogle,
+        });
         this.setTokensUseCase.execute(
           res,
           response.accessToken as string,

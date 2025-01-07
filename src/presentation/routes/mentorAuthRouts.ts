@@ -59,7 +59,9 @@ const setNewPasswordController = new SetNewPasswordController(
 );
 
 const googleAuthController = new GoogleAuthController(
-    diContainer.googelAuthUseCase()
+    diContainer.googelAuthUseCase(),
+    diContainer.setTokensUseCase()
+
 );
 
 //////////////////////////////////////////
