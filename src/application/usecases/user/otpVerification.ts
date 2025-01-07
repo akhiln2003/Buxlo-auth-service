@@ -1,7 +1,7 @@
-import { User } from "../../../domin/entities/User";
-import { IredisRepository } from "../../../domin/interfaces/IcacheUserRepo";
-import { ItokenService } from "../../../domin/interfaces/ItokenService";
-import { IuserRepository } from "../../../domin/interfaces/IuserRepository";
+import { User } from "../../../domain/entities/User";
+import { IredisRepository } from "../../../domain/interfaces/IcacheUserRepo";
+import { ItokenService } from "../../../domain/interfaces/ItokenService";
+import { IuserRepository } from "../../../domain/interfaces/IuserRepository";
 import {
   IotpVerification,
   IotpVerificationParams,

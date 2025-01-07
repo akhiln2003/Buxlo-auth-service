@@ -1,7 +1,7 @@
 import { RedisClientType } from "redis";
-import { IredisRepository } from "../../domin/interfaces/IcacheUserRepo";
+import { IredisRepository } from "../../domain/interfaces/IcacheUserRepo";
 import { redisClientInstance } from "../database/redis/connection";
-import { User } from "../../domin/entities/User";
+import { User } from "../../domain/entities/User";
 
 export class RedisUserRepository implements IredisRepository {
   private readonly redisClient: RedisClientType;

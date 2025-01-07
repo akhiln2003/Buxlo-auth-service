@@ -1,4 +1,4 @@
-import { IuserRepository } from "../../../domin/interfaces/IuserRepository";
+import { IuserRepository } from "../../../domain/interfaces/IuserRepository";
 import { IgetUser } from "../../interfaces/IgetUser";
 
 export class GetUserUseCase implements IgetUser {

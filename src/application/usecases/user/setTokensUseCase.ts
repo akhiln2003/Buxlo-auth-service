@@ -1,5 +1,5 @@
 import { Response } from "express";
-import { ItokenService } from "../../../domin/interfaces/ItokenService";
+import { ItokenService } from "../../../domain/interfaces/ItokenService";
 import { IsetTokensUseCase } from "../../interfaces/IsetTokensUseCase";
 
 export class SetTokensUseCase implements IsetTokensUseCase {

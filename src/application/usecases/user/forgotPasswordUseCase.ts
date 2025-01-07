@@ -1,5 +1,5 @@
-import { ItokenService } from "../../../domin/interfaces/ItokenService";
-import { IuserRepository } from "../../../domin/interfaces/IuserRepository";
+import { ItokenService } from "../../../domain/interfaces/ItokenService";
+import { IuserRepository } from "../../../domain/interfaces/IuserRepository";
 import { USER_ROLE } from "../../../shared/enums/role";
 import { IforgotPassword } from "../../interfaces/IforgotPassword";
 

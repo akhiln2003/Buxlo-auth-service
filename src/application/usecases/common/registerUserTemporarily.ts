@@ -1,5 +1,5 @@
-import { User } from "../../../domin/entities/User";
-import { IredisRepository } from "../../../domin/interfaces/IcacheUserRepo";
+import { User } from "../../../domain/entities/User";
+import { IredisRepository } from "../../../domain/interfaces/IcacheUserRepo";
 import { IOtpService } from "../../interfaces/Iotp";
 import { IregisterUserTemporarily } from "../../interfaces/IregisterUserTemporarily";
 import { Password } from "../../services/passwordHash";

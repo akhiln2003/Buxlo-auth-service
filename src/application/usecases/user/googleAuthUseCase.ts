@@ -1,6 +1,6 @@
-import { User } from "../../../domin/entities/User";
-import { ItokenService } from "../../../domin/interfaces/ItokenService";
-import { IuserRepository } from "../../../domin/interfaces/IuserRepository";
+import { User } from "../../../domain/entities/User";
+import { ItokenService } from "../../../domain/interfaces/ItokenService";
+import { IuserRepository } from "../../../domain/interfaces/IuserRepository";
 import { IgoogleAuthUseCase } from "../../interfaces/IgoogleAuthUseCase";
 import { Password } from "../../services/passwordHash";
 

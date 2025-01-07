@@ -1,6 +1,6 @@
 import JWT from "jsonwebtoken";
-import { User } from "../../domin/entities/User";
-import { ItokenService } from "../../domin/interfaces/ItokenService";
+import { User } from "../../domain/entities/User";
+import { ItokenService } from "../../domain/interfaces/ItokenService";
 import { OAuth2Client } from "google-auth-library";
 import { Response } from "express";
 

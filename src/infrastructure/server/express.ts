@@ -1,7 +1,7 @@
 import cookieParser from "cookie-parser";
 import express, { Application } from "express";
 import { createServer } from "http";
-import { IServer } from "../../domin/interfaces/Iserver";
+import { IServer } from "../../domain/interfaces/Iserver";
 import cors from "cors";
 
 export class ExpressWebServer implements IServer {

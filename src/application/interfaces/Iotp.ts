@@ -1,4 +1,4 @@
-import { User } from "../../domin/entities/User";
+import { User } from "../../domain/entities/User";
 
 export interface IOtpService {
   generateOtp(): string;

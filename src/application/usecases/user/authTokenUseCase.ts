@@ -1,4 +1,4 @@
-import { ItokenService } from "../../../domin/interfaces/ItokenService";
+import { ItokenService } from "../../../domain/interfaces/ItokenService";
 import { IauthTokenUseCase } from "../../interfaces/IauthTokenUseCase";
 
 export class AuthTokenUseCase implements IauthTokenUseCase {

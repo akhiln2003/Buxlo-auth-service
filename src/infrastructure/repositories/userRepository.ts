@@ -1,5 +1,5 @@
-import { User } from "../../domin/entities/User";
-import { IuserRepository } from "../../domin/interfaces/IuserRepository";
+import { User } from "../../domain/entities/User";
+import { IuserRepository } from "../../domain/interfaces/IuserRepository";
 import { Auth } from "../database";
 
 export class UserRepository implements IuserRepository {

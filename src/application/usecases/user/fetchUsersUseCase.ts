@@ -1,4 +1,4 @@
-import { IuserRepository } from "../../../domin/interfaces/IuserRepository";
+import { IuserRepository } from "../../../domain/interfaces/IuserRepository";
 import { IfetchUserUseCase } from "../../interfaces/IfetchUserUseCase";
 
 export class FetchUsersUseCase implements IfetchUserUseCase {
