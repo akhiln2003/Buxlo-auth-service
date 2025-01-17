@@ -35,11 +35,11 @@ export class OtpVerifyController {
       if (response.success) {
         await registerUser({
           id: response.user!.id,
-          name: response.user!.name,
           email: response.user!.email,
-          avatar: response.user!.avatar,
+          name: response.user!.name,
           role: response.user!.role,
           isGoogle: response.user!.isGoogle,
+          avatar: response.user!.avatar,
         });
         this.setTokensUseCase.execute(
           res,
