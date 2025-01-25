@@ -15,7 +15,6 @@ export class GoogleAuthController {
   auth = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { token } = req.body;
-      // console.log("token" , token);
       const role = USER_ROLE.MENTOR;
       const response = await this.googleAuthUseCase.execute(token, role);
       if (response.validat) {

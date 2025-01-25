@@ -19,7 +19,6 @@ export class AuthTokenUseCase implements IauthTokenUseCase {
         accessToken,
       };
 
-      console.log(response);
     } catch (error) {
       console.error(error);
       return { notAuth: true };
