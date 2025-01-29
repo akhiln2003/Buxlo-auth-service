@@ -1,4 +1,3 @@
-import { validateReq } from "@buxlo/common";
 import { Router } from "express";
 import { SignUpController } from "../controller/user/signUpController";
 import { DIContainer } from "../../infrastructure/di/DIContainer";
@@ -16,6 +15,7 @@ import { SetNewPasswordController } from "../controller/common/setNewPasswordCon
 import { googleAuthDto } from "../../zodSchemaDto/user/googleAuthDto";
 import { GoogleAuthController } from "../controller/user/googleAuthController";
 import { RefresgTokenController } from "../controller/common/authTokenController";
+import { validateReqBody } from "@buxlo/common";
 
 
 
@@ -74,14 +74,14 @@ const tokenController = new RefresgTokenController(
 /////////////////////////////////////
 
 
-router.post("/signup", validateReq(signUpDto) , signUpController.signUp);
-router.post('/verifyotp', validateReq(otpSchemaDto), otpVerifyController.verify);
-router.post('/resendotp', validateReq(resendOtpSchemaDto), resendOtpController.resend);
-router.post('/signin', validateReq(signInDto), signInController.signIn);
+router.post("/signup", validateReqBody(signUpDto) , signUpController.signUp);
+router.post('/verifyotp', validateReqBody(otpSchemaDto), otpVerifyController.verify);
+router.post('/resendotp', validateReqBody(resendOtpSchemaDto), resendOtpController.resend);
+router.post('/signin', validateReqBody(signInDto), signInController.signIn);
 router.post('/signout' , signOutController.singOut );
-router.post('/forgotpassword' , validateReq(forgotPasswordDto) , forgotPasswordController.forgot );
-router.post('/setnewpassword' , validateReq(setNewPasswordDto) , setNewPasswordController.setPassword);
-router.post('/googleauth', validateReq(googleAuthDto) , googleAuthController.auth);
+router.post('/forgotpassword' , validateReqBody(forgotPasswordDto) , forgotPasswordController.forgot );
+router.post('/setnewpassword' , validateReqBody(setNewPasswordDto) , setNewPasswordController.setPassword);
+router.post('/googleauth', validateReqBody(googleAuthDto) , googleAuthController.auth);
 router.post('/refreshtoken' , tokenController.validate);
 
 
