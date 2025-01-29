@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { DIContainer } from "../../infrastructure/di/DIContainer";
-import { validateReq } from "@buxlo/common";
 import { signUpDto } from "../../zodSchemaDto/user/signUpDto";
 import { SignUpController } from "../controller/Mentor/signUpController";
 import { otpSchemaDto, resendOtpSchemaDto } from "../../zodSchemaDto/user/otpDto";
@@ -15,6 +14,7 @@ import { setNewPasswordDto } from "../../zodSchemaDto/user/setNewPasswordDto";
 import { SetNewPasswordController } from "../controller/common/setNewPasswordController";
 import { googleAuthDto } from "../../zodSchemaDto/user/googleAuthDto";
 import { GoogleAuthController } from "../controller/Mentor/googleAuthController";
+import { validateReqBody } from "@buxlo/common";
 
 
 
@@ -67,14 +67,14 @@ const googleAuthController = new GoogleAuthController(
 //////////////////////////////////////////
 
 
-router.post('/signup' , validateReq(signUpDto) , signUpController.signUp );
-router.post('/verifyotp', validateReq(otpSchemaDto), otpVerifyController.verify);
-router.post('/resendotp', validateReq(resendOtpSchemaDto), resendOtpController.resend);
-router.post('/signin', validateReq(signInDto), signInController.signIn);
+router.post('/signup' , validateReqBody(signUpDto) , signUpController.signUp );
+router.post('/verifyotp', validateReqBody(otpSchemaDto), otpVerifyController.verify);
+router.post('/resendotp', validateReqBody(resendOtpSchemaDto), resendOtpController.resend);
+router.post('/signin', validateReqBody(signInDto), signInController.signIn);
 router.post('/signout' , signOutController.singOut );
-router.post('/forgotpassword' , validateReq(forgotPasswordDto) , forgotPasswordController.forgot );
-router.post('/setnewpassword' , validateReq(setNewPasswordDto) , setNewPasswordController.setPassword);
-router.post('/googleauth', validateReq(googleAuthDto) , googleAuthController.auth);
+router.post('/forgotpassword' , validateReqBody(forgotPasswordDto) , forgotPasswordController.forgot );
+router.post('/setnewpassword' , validateReqBody(setNewPasswordDto) , setNewPasswordController.setPassword);
+router.post('/googleauth', validateReqBody(googleAuthDto) , googleAuthController.auth);
 
 
 

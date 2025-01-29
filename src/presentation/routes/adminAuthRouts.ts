@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { DIContainer } from "../../infrastructure/di/DIContainer";
-import { validateReq } from "@buxlo/common";
 import { signInDto } from "../../zodSchemaDto/user/signInDto";
 import { SignInController } from "../controller/admin/signInController";
 import { ListUserController } from "../controller/admin/listUserController";
@@ -9,6 +8,7 @@ import { FetchUserController } from "../controller/admin/fetchUserController";
 import { blockAndUnblockDto } from "../../zodSchemaDto/user/blockAndUnblockDto";
 import { BlockAndUnblockController } from "../controller/admin/blockAndUnblockController";
 import { FetchMentorController } from "../controller/admin/fetchmentorsController";
+import { validateReqBody } from "@buxlo/common";
 // import { fetchUserDto } from "../../zodSchemaDto/user/fetchUserDto";
 
 
@@ -50,12 +50,12 @@ const blockAndUnblockController = new BlockAndUnblockController(
 //////////////////////////////////////////
 
 
-router.post('/signin', validateReq(signInDto), signInController.signIn);
+router.post('/signin', validateReqBody(signInDto), signInController.signIn);
 router.get('/profile/userlist', listusrUserController.listUser );
 router.post('/signout' , signOutController.singOut );
 router.get('/profile/fetchusers' ,  fetchUsersController.fetchUsers);
 router.get('/profile/fetchmentor' , fetchmentorsController.fetchUsers);
-router.put('/profile/blockandunblock' ,  validateReq(blockAndUnblockDto) , blockAndUnblockController.action);
+router.put('/profile/blockandunblock' ,  validateReqBody(blockAndUnblockDto) , blockAndUnblockController.action);
 
 
 
