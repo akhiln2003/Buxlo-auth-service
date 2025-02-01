@@ -7,4 +7,5 @@ export interface IuserRepository {
   update(_id: string , query:object): Promise<User | null> ;
   findByRole(role: string) : Promise< User[]| null>
   findOne( query: object ):Promise< User | null >
+  find(role:string , page:number , searchData:string | undefined):Promise<{ users: User[]; totalPages: number } | null> 
 }

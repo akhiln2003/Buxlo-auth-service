@@ -8,7 +8,8 @@ import { FetchUserController } from "../controller/admin/fetchUserController";
 import { blockAndUnblockDto } from "../../zodSchemaDto/user/blockAndUnblockDto";
 import { BlockAndUnblockController } from "../controller/admin/blockAndUnblockController";
 import { FetchMentorController } from "../controller/admin/fetchmentorsController";
-import { validateReqBody } from "@buxlo/common";
+import { validateReqBody, validateReqQueryParams } from "@buxlo/common";
+import { fetchUsersAndMentorDto } from "../../zodSchemaDto/user/fetchUsersAndMentorDto";
 // import { fetchUserDto } from "../../zodSchemaDto/user/fetchUserDto";
 
 
@@ -53,8 +54,8 @@ const blockAndUnblockController = new BlockAndUnblockController(
 router.post('/signin', validateReqBody(signInDto), signInController.signIn);
 router.get('/profile/userlist', listusrUserController.listUser );
 router.post('/signout' , signOutController.singOut );
-router.get('/profile/fetchusers' ,  fetchUsersController.fetchUsers);
-router.get('/profile/fetchmentor' , fetchmentorsController.fetchUsers);
+router.get('/profile/fetchusers' , validateReqQueryParams(fetchUsersAndMentorDto) ,  fetchUsersController.fetchUsers);
+router.get('/profile/fetchmentor' ,  validateReqQueryParams(fetchUsersAndMentorDto) , fetchmentorsController.fetchMentors);
 router.put('/profile/blockandunblock' ,  validateReqBody(blockAndUnblockDto) , blockAndUnblockController.action);
 
 

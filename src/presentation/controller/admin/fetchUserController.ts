@@ -9,7 +9,8 @@ export class FetchUserController {
   fetchUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const role = USER_ROLE.USER;
-      const data = await this.fetchUserUseCase.execute(role);
+      const { page , searchData } = req.query;
+      const data = await this.fetchUserUseCase.execute(role , Number(page) , String(searchData));
 
       res.status(HttpStatusCode.OK).json({ data });
     } catch (error) {
