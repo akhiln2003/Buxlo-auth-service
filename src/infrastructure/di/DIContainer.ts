@@ -1,4 +1,7 @@
-import { IsendForgotPasswordEmailUseCase, IsendOtpEmailUseCase } from "../../application/interfaces/IemailService";
+import {
+  IsendForgotPasswordEmailUseCase,
+  IsendOtpEmailUseCase,
+} from "../../application/interfaces/IemailService";
 import { IgetUser } from "../../application/interfaces/IgetUser";
 import {
   IotpVerification,
@@ -32,6 +35,8 @@ import { SetTokensUseCase } from "../../application/usecases/user/setTokensUseCa
 import { IsetTokensUseCase } from "../../application/interfaces/IsetTokensUseCase";
 import { IauthTokenUseCase } from "../../application/interfaces/IauthTokenUseCase";
 import { AuthTokenUseCase } from "../../application/usecases/user/authTokenUseCase";
+import { UserUpdatedProducer } from "../MessageBroker/kafka/producer/userUpdateProducer";
+import { messageBroker } from "../MessageBroker/config";
 
 class DIContainer {
   private _authRepository: UserRepository;
@@ -39,6 +44,7 @@ class DIContainer {
   private _otpService: OTPService;
   private _nodeMailerService: NodeMailerService;
   private __jwtService: JwtService;
+  private _userUpdatedProducer: UserUpdatedProducer;
 
   constructor() {
     this._authRepository = new UserRepository();
@@ -46,12 +52,15 @@ class DIContainer {
     this._otpService = new OTPService();
     this._nodeMailerService = new NodeMailerService();
     this.__jwtService = new JwtService();
+    this._userUpdatedProducer = new UserUpdatedProducer(
+      messageBroker.getKafkaClient().producer
+    );
   }
 
   getUserUseCase(): IgetUser {
     return new GetUserUseCase(this._authRepository);
   }
-  fetchUsersUseCase(){
+  fetchUsersUseCase() {
     return new FetchUsersUseCase(this._authRepository);
   }
 
@@ -74,32 +83,32 @@ class DIContainer {
       this.__jwtService
     );
   }
-  setTokensUseCase():IsetTokensUseCase{
+  setTokensUseCase(): IsetTokensUseCase {
     return new SetTokensUseCase(this.__jwtService);
   }
-  authTokenUseCase():IauthTokenUseCase{
+  authTokenUseCase(): IauthTokenUseCase {
     return new AuthTokenUseCase(this.__jwtService);
   }
   signInUserUseCase(): IsignInUserUseCase {
     return new SignInUserUseCase(this._authRepository, this.__jwtService);
   }
-  forgotPasswordUseCase():IforgotPassword{
-    return new ForgotPasswordUseCase( this._authRepository  , this.__jwtService );
+  forgotPasswordUseCase(): IforgotPassword {
+    return new ForgotPasswordUseCase(this._authRepository, this.__jwtService);
   }
 
-  setNewPasswordUseCase(): IsetNewPasswordUseCase{
-    return new SetNewPasswordUseCase(this._authRepository , this.__jwtService);
+  setNewPasswordUseCase(): IsetNewPasswordUseCase {
+    return new SetNewPasswordUseCase(this._authRepository, this.__jwtService);
   }
 
-  googelAuthUseCase(): IgoogleAuthUseCase{
-    return new GoogelAuthUseCase( this.__jwtService , this._authRepository);
+  googelAuthUseCase(): IgoogleAuthUseCase {
+    return new GoogelAuthUseCase(this.__jwtService, this._authRepository);
   }
 
   listUserUseCase(): IlistUser {
     return new ListUserUseCase(this._authRepository);
   }
 
-  blockAndUnBlockUseCase(){
+  blockAndUnBlockUseCase() {
     return new BlockAndUnblockUseCase(this._authRepository);
   }
 }

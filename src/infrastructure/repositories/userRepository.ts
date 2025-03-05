@@ -59,4 +59,17 @@ export class UserRepository implements IuserRepository {
       $set: query,
     }).select("-password");
   }
+  async deleteUserProfileData(
+    userId: string,
+    data: { avatar?: string }
+  ): Promise<User | null> {
+    try {
+      const updatedUser = await Auth.findByIdAndUpdate(userId, {
+        $unset: data,
+      });
+      return updatedUser;
+    } catch (error: any) {
+      throw new Error(`db error to update user: ${error.message}`);
+    }
+  }
 }

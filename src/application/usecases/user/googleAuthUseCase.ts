@@ -7,7 +7,7 @@ import { Password } from "../../services/passwordHash";
 export class GoogelAuthUseCase implements IgoogleAuthUseCase {
   constructor(
     private jwtService: ItokenService,
-    private userRepository: IuserRepository
+    private userRepository: IuserRepository,
   ) {}
 
   async execute(

@@ -2,7 +2,10 @@ import { Router } from "express";
 import { DIContainer } from "../../infrastructure/di/DIContainer";
 import { signUpDto } from "../../zodSchemaDto/user/signUpDto";
 import { SignUpController } from "../controller/Mentor/signUpController";
-import { otpSchemaDto, resendOtpSchemaDto } from "../../zodSchemaDto/user/otpDto";
+import {
+  otpSchemaDto,
+  resendOtpSchemaDto,
+} from "../../zodSchemaDto/user/otpDto";
 import { OtpVerifyController } from "../controller/common/verifyUserController";
 import { ResendOtpController } from "../controller/common/resendOtpController";
 import { SignInController } from "../controller/Mentor/signInController";
@@ -16,83 +19,106 @@ import { googleAuthDto } from "../../zodSchemaDto/user/googleAuthDto";
 import { GoogleAuthController } from "../controller/Mentor/googleAuthController";
 import { validateReqBody } from "@buxlo/common";
 
+export class MentorRouter {
+  private router: Router;
+  private diContainer: DIContainer;
 
+  // Controllers
+  private signUpController!: SignUpController;
+  private otpVerifyController!: OtpVerifyController;
+  private resendOtpController!: ResendOtpController;
+  private signInController!: SignInController;
+  private signOutController!: singOutController;
+  private forgotPasswordController!: ForgotPasswordController;
+  private setNewPasswordController!: SetNewPasswordController;
+  private googleAuthController!: GoogleAuthController;
 
-const router = Router();
-const diContainer = new DIContainer();
+  constructor() {
+    this.router = Router();
+    this.diContainer = new DIContainer();
+    this.initializeControllers();
+    this.initializeRoutes();
+  }
 
+  private initializeControllers(): void {
+    this.signUpController = new SignUpController(
+      this.diContainer.getUserUseCase(),
+      this.diContainer.getTemporaryStoreUseCase(),
+      this.diContainer.getSendOtpEmailServiceUseCase()
+    );
 
+    this.otpVerifyController = new OtpVerifyController(
+      this.diContainer.verifyUserUseCase(),
+      this.diContainer.setTokensUseCase()
+    );
 
-// Inject dependencies into the Controller
+    this.resendOtpController = new ResendOtpController(
+      this.diContainer.getSendOtpEmailServiceUseCase(),
+      this.diContainer.getResendOtpUseCase()
+    );
 
-const signUpController = new SignUpController(
-    diContainer.getUserUseCase(),
-    diContainer.getTemporaryStoreUseCase(),
-    diContainer.getSendOtpEmailServiceUseCase()
-);
+    this.signInController = new SignInController(
+      this.diContainer.signInUserUseCase(),
+      this.diContainer.setTokensUseCase()
+    );
 
+    this.signOutController = new singOutController();
 
-const otpVerifyController = new OtpVerifyController(
-    diContainer.verifyUserUseCase(),
-    diContainer.setTokensUseCase()
-);
+    this.forgotPasswordController = new ForgotPasswordController(
+      this.diContainer.forgotPasswordUseCase(),
+      this.diContainer.getSendForgotPasswordEmailServiceUseCase()
+    );
 
-const resendOtpController = new ResendOtpController(
-    diContainer.getSendOtpEmailServiceUseCase(),
-    diContainer.getResendOtpUseCase()
-);
+    this.setNewPasswordController = new SetNewPasswordController(
+      this.diContainer.setNewPasswordUseCase()
+    );
 
-const signInController = new SignInController(
-    diContainer.signInUserUseCase(),
-    diContainer.setTokensUseCase()
-);
+    this.googleAuthController = new GoogleAuthController(
+      this.diContainer.googelAuthUseCase(),
+      this.diContainer.setTokensUseCase()
+    );
+  }
 
-const signOutController = new singOutController();
+  private initializeRoutes(): void {
+    this.router.post(
+      "/signup",
+      validateReqBody(signUpDto),
+      this.signUpController.signUp
+    );
+    this.router.post(
+      "/verifyotp",
+      validateReqBody(otpSchemaDto),
+      this.otpVerifyController.verify
+    );
+    this.router.post(
+      "/resendotp",
+      validateReqBody(resendOtpSchemaDto),
+      this.resendOtpController.resend
+    );
+    this.router.post(
+      "/signin",
+      validateReqBody(signInDto),
+      this.signInController.signIn
+    );
+    this.router.post("/signout", this.signOutController.singOut);
+    this.router.post(
+      "/forgotpassword",
+      validateReqBody(forgotPasswordDto),
+      this.forgotPasswordController.forgot
+    );
+    this.router.post(
+      "/setnewpassword",
+      validateReqBody(setNewPasswordDto),
+      this.setNewPasswordController.setPassword
+    );
+    this.router.post(
+      "/googleauth",
+      validateReqBody(googleAuthDto),
+      this.googleAuthController.auth
+    );
+  }
 
-const forgotPasswordController  =  new ForgotPasswordController(
-    diContainer.forgotPasswordUseCase(),
-    diContainer.getSendForgotPasswordEmailServiceUseCase()
-);
-
-const setNewPasswordController = new SetNewPasswordController(
-    diContainer.setNewPasswordUseCase()
-);
-
-const googleAuthController = new GoogleAuthController(
-    diContainer.googelAuthUseCase(),
-    diContainer.setTokensUseCase()
-
-);
-
-//////////////////////////////////////////
-
-
-router.post('/signup' , validateReqBody(signUpDto) , signUpController.signUp );
-router.post('/verifyotp', validateReqBody(otpSchemaDto), otpVerifyController.verify);
-router.post('/resendotp', validateReqBody(resendOtpSchemaDto), resendOtpController.resend);
-router.post('/signin', validateReqBody(signInDto), signInController.signIn);
-router.post('/signout' , signOutController.singOut );
-router.post('/forgotpassword' , validateReqBody(forgotPasswordDto) , forgotPasswordController.forgot );
-router.post('/setnewpassword' , validateReqBody(setNewPasswordDto) , setNewPasswordController.setPassword);
-router.post('/googleauth', validateReqBody(googleAuthDto) , googleAuthController.auth);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-export { router as mentorRoutes };
+  public getRouter(): Router {
+    return this.router;
+  }
+}

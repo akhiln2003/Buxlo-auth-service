@@ -33,7 +33,7 @@
     "typescript-eslint": "^8.17.0"
   },
   "dependencies": {
-    "@buxlo/common": "^1.0.55",
+    "@buxlo/common": "^1.0.74",
     "@grpc/grpc-js": "^1.12.5",
     "@grpc/proto-loader": "^0.7.13",
     "bcrypt": "^5.1.1",

@@ -12,7 +12,7 @@ export class OtpVerification implements IotpVerification {
   constructor(
     private redisRepository: IredisRepository,
     private userRepository: IuserRepository,
-    private jwtservice: ItokenService
+    private jwtservice: ItokenService,
   ) {}
 
   async execute({
@@ -48,8 +48,7 @@ export class OtpVerification implements IotpVerification {
         unverifiedUser.isBlocked,
         unverifiedUser.avatar
       );
-
-      const newUser = await this.userRepository.create(user); // Add new user in mongoDb
+      const newUser = await this.userRepository.create(user); // Add new user in mongoDb     
       await this.redisRepository.removeUnverifiedUser(email); // removing unverifiedUser from redis
       const accessToken = this.jwtservice.generateAccessToken(user); // generating access token
       const refreshToken = this.jwtservice.generateRefreshToken(user); // generating referesh token

@@ -5,7 +5,7 @@ import { IblockAndUnblockUseCase } from "../../interfaces/IblockAndUnblockUseCas
 export class BlockAndUnblockUseCase implements IblockAndUnblockUseCase {
   constructor(private userRepositary: IuserRepository) {}
 
- async execute(id: string, isBlocked: boolean): Promise<User | any > {
-    return await this.userRepositary.update(id,{ isBlocked });
+  async execute(id: string, isBlocked: boolean): Promise<User | any> {
+    return await this.userRepositary.update(id, { isBlocked });
   }
 }
