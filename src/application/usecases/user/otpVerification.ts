@@ -2,6 +2,7 @@ import { User } from "../../../domain/entities/User";
 import { IredisRepository } from "../../../domain/interfaces/IcacheUserRepo";
 import { ItokenService } from "../../../domain/interfaces/ItokenService";
 import { IuserRepository } from "../../../domain/interfaces/IuserRepository";
+import { UserCreatedProducer } from "../../../infrastructure/MessageBroker/kafka/producer/userCreatedProducer";
 import {
   IotpVerification,
   IotpVerificationParams,
@@ -13,6 +14,7 @@ export class OtpVerification implements IotpVerification {
     private redisRepository: IredisRepository,
     private userRepository: IuserRepository,
     private jwtservice: ItokenService,
+    private userCreatedProducer: UserCreatedProducer
   ) {}
 
   async execute({
@@ -48,11 +50,22 @@ export class OtpVerification implements IotpVerification {
         unverifiedUser.isBlocked,
         unverifiedUser.avatar
       );
-      const newUser = await this.userRepository.create(user); // Add new user in mongoDb     
+      const newUser = await this.userRepository.create(user); // Add new user in mongoDb
       await this.redisRepository.removeUnverifiedUser(email); // removing unverifiedUser from redis
       const accessToken = this.jwtservice.generateAccessToken(user); // generating access token
       const refreshToken = this.jwtservice.generateRefreshToken(user); // generating referesh token
 
+      const data = {
+        id: newUser.id as string,
+        name: newUser.name,
+        email: newUser.email,
+        avatar: newUser.avatar,
+        isAdmin: newUser.isAdmin,
+        isBlocked: newUser.isBlocked,
+        isGoogle: newUser.isGoogle,
+        role: newUser.role as "user" | "admin" | "mentor",
+      };
+      await this.userCreatedProducer.produce(data); // producing message to kafka
       return { success: true, accessToken, refreshToken, user: newUser };
     } catch (error) {
       console.error("Error from OTP varification : ", error);

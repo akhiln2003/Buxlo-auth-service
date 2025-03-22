@@ -17,9 +17,7 @@ export class App {
 
   async initialize(): Promise<void> {
     await this.connectDB();
-    await this.connectKafka().then(() => {
-      console.log("Kafka connected test");
-    });
+    await this.connectKafka();
     this.registerMiddleware();
     this.registerRoutes();
     this.registerErrorHandler();

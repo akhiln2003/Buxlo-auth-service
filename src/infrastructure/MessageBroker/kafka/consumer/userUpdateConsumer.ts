@@ -14,7 +14,6 @@ export class UserUpdatedConsumer extends KafkaConsumer<UserUpdatedEvent> {
     data: UserUpdatedEvent["data"],
     msg: KafkaMessage
   ): Promise<void> {
-    console.log("heloo from consumer", data);
     try {
       const userRepository = new UserRepository();
       await userRepository.update(data.id, data.query);

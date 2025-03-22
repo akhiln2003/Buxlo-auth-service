@@ -35,8 +35,10 @@ import { SetTokensUseCase } from "../../application/usecases/user/setTokensUseCa
 import { IsetTokensUseCase } from "../../application/interfaces/IsetTokensUseCase";
 import { IauthTokenUseCase } from "../../application/interfaces/IauthTokenUseCase";
 import { AuthTokenUseCase } from "../../application/usecases/user/authTokenUseCase";
-import { UserUpdatedProducer } from "../MessageBroker/kafka/producer/userUpdateProducer";
 import { messageBroker } from "../MessageBroker/config";
+import { UserCreatedProducer } from "../MessageBroker/kafka/producer/userCreatedProducer";
+import { Is3Service } from "../@types/Is3Service";
+import { S3Service } from "../external-services/s3-client";
 
 class DIContainer {
   private _authRepository: UserRepository;
@@ -44,7 +46,8 @@ class DIContainer {
   private _otpService: OTPService;
   private _nodeMailerService: NodeMailerService;
   private __jwtService: JwtService;
-  private _userUpdatedProducer: UserUpdatedProducer;
+  private _userCreatedProducer: UserCreatedProducer;
+  private _s3Service: Is3Service;
 
   constructor() {
     this._authRepository = new UserRepository();
@@ -52,9 +55,10 @@ class DIContainer {
     this._otpService = new OTPService();
     this._nodeMailerService = new NodeMailerService();
     this.__jwtService = new JwtService();
-    this._userUpdatedProducer = new UserUpdatedProducer(
+    this._userCreatedProducer = new UserCreatedProducer(
       messageBroker.getKafkaClient().producer
     );
+    this._s3Service = new S3Service();
   }
 
   getUserUseCase(): IgetUser {
@@ -80,7 +84,8 @@ class DIContainer {
     return new OtpVerification(
       this._rediseService,
       this._authRepository,
-      this.__jwtService
+      this.__jwtService,
+      this._userCreatedProducer
     );
   }
   setTokensUseCase(): IsetTokensUseCase {
@@ -101,7 +106,12 @@ class DIContainer {
   }
 
   googelAuthUseCase(): IgoogleAuthUseCase {
-    return new GoogelAuthUseCase(this.__jwtService, this._authRepository);
+    return new GoogelAuthUseCase(
+      this.__jwtService,
+      this._authRepository,
+      this._userCreatedProducer,
+      this._s3Service
+    );
   }
 
   listUserUseCase(): IlistUser {
