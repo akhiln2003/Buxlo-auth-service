@@ -8,7 +8,9 @@ export class BlockAndUnblockController {
   action = async (req: Request, res: Response , next: NextFunction) => {
     try {
       const { id, isBlocked } = req.body;
-      const data = this.blockAndUnblockUseCase.execute(id, isBlocked);
+      const data = await this.blockAndUnblockUseCase.execute(id, isBlocked);
+      console.log(data);
+      
       res.status(HttpStatusCode.OK).json({ data });
     } catch (error) {
       console.error(error);
