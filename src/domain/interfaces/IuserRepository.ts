@@ -16,4 +16,9 @@ export interface IuserRepository {
     userId: string,
     data: { avatar?: string }
   ): Promise<User | null>;
+  changePassword(
+    userId: string,
+    currentPassword: string,
+    newPassword: string
+  ): Promise<{ message: string }>;
 }

@@ -11,6 +11,7 @@ import { messageBroker } from "./infrastructure/MessageBroker/config";
 import { AdminRouter } from "./presentation/routes/adminAuthRouts";
 import { UserRouter } from "./presentation/routes/userAuthRouts";
 import { MentorRouter } from "./presentation/routes/mentorAuthRouts";
+import { CommonRouter } from "./presentation/routes/commonAuthRouts";
 
 export class App {
   constructor(private server: IServer) {}
@@ -30,9 +31,12 @@ export class App {
     const userRoutes = new UserRouter().getRouter();
     const mentorRoutes = new MentorRouter().getRouter();
     const adminRoutes = new AdminRouter().getRouter();
+    const commonRoutes = new CommonRouter().getRouter();
+
     this.server.registerRoutes("/api/auth/user", userRoutes);
     this.server.registerRoutes("/api/auth/mentor", mentorRoutes);
     this.server.registerRoutes("/api/auth/admin", adminRoutes);
+    this.server.registerRoutes("/api/auth/common", commonRoutes);
   }
 
   private registerErrorHandler(): void {

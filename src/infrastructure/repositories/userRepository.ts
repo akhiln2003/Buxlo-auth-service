@@ -1,3 +1,5 @@
+import { BadRequest } from "@buxlo/common";
+import { Password } from "../../application/services/passwordHash";
 import { User } from "../../domain/entities/User";
 import { IuserRepository } from "../../domain/interfaces/IuserRepository";
 import { Auth } from "../database";
@@ -71,5 +73,28 @@ export class UserRepository implements IuserRepository {
     } catch (error: any) {
       throw new Error(`db error to update user: ${error.message}`);
     }
+  }
+
+  async changePassword(
+    userId: string,
+    currentPassword: string,
+    newPassword: string
+  ): Promise<{ message: string }> {
+      const user = await Auth.findById(userId);
+    
+      if (!user || !user.password) {
+        throw new BadRequest("User not found or password missing");
+      }
+
+      if (await Password.compare(currentPassword, user.password)) {
+        const newHashPassword = await Password.toHash(newPassword);
+        await Auth.findByIdAndUpdate(userId, {
+          $set: { password: newHashPassword },
+        });
+        return { message: "Password changed successfully" };
+      } else {
+        throw new BadRequest("Current password is incorrect");
+      }
+    
   }
 }

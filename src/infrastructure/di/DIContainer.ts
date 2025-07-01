@@ -39,6 +39,8 @@ import { messageBroker } from "../MessageBroker/config";
 import { UserCreatedProducer } from "../MessageBroker/kafka/producer/userCreatedProducer";
 import { Is3Service } from "../@types/Is3Service";
 import { S3Service } from "../external-services/s3-client";
+import { ChangePasswordUseCase } from "../../application/usecases/user/changePasswordUseCase";
+import { IchangePasswordUseCase } from "../../application/interfaces/IchangePasswordUseCase";
 
 class DIContainer {
   private _authRepository: UserRepository;
@@ -114,6 +116,9 @@ class DIContainer {
     );
   }
 
+  changePasswordUseCase():IchangePasswordUseCase{
+    return new ChangePasswordUseCase(this._authRepository,);
+  }
   listUserUseCase(): IlistUser {
     return new ListUserUseCase(this._authRepository);
   }

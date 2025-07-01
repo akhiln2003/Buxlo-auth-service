@@ -1,4 +1,4 @@
-import JWT from "jsonwebtoken";
+import JWT, { SignOptions } from "jsonwebtoken";
 import { User } from "../../domain/entities/User";
 import { ItokenService } from "../../domain/interfaces/ItokenService";
 import { OAuth2Client } from "google-auth-library";
@@ -23,9 +23,10 @@ export class JwtService implements ItokenService {
       role: user.role,
     };
 
-    const options = {
+    const options: SignOptions = {
       expiresIn: "15m",
     };
+
     return JWT.sign(payload, this.accessTokenSecret, options);
   }
 
