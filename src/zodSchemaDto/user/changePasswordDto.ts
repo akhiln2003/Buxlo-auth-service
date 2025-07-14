@@ -1,5 +1,13 @@
 import { z } from "zod";
 
+const passwordValidation = z
+  .string()
+  .min(6, "Password must be at least 6 characters long")
+  .regex(
+    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]+$/,
+    "Password must contain at least one letter, one number, and one special character"
+  );
+
 export const changePasswordDto = z.object({
   userId: z
     .string({
@@ -13,10 +21,5 @@ export const changePasswordDto = z.object({
     })
     .trim()
     .min(6, "Password must be at least 6 characters long"),
-  newPassword: z
-    .string({
-      required_error: "new password is required",
-    })
-    .trim()
-    .min(6, "Password must be at least 6 characters long"),
+  newPassword: passwordValidation
 });
