@@ -41,8 +41,8 @@ export class UserRepository implements IuserRepository {
     const filter: any = { role };
     if (searchData !== "undefined") {
       filter.$or = [
-        { name: { $regex: searchData, $options: "i" } },
-        { email: { $regex: searchData, $options: "i" } },
+        { name: { $regex: `^${searchData}`, $options: "i" } },
+        { email: { $regex: `^${searchData}`, $options: "i" } },
       ];
     }
 
@@ -80,21 +80,20 @@ export class UserRepository implements IuserRepository {
     currentPassword: string,
     newPassword: string
   ): Promise<{ message: string }> {
-      const user = await Auth.findById(userId);
-    
-      if (!user || !user.password) {
-        throw new BadRequest("User not found or password missing");
-      }
+    const user = await Auth.findById(userId);
 
-      if (await Password.compare(currentPassword, user.password)) {
-        const newHashPassword = await Password.toHash(newPassword);
-        await Auth.findByIdAndUpdate(userId, {
-          $set: { password: newHashPassword },
-        });
-        return { message: "Password changed successfully" };
-      } else {
-        throw new BadRequest("Current password is incorrect");
-      }
-    
+    if (!user || !user.password) {
+      throw new BadRequest("User not found or password missing");
+    }
+
+    if (await Password.compare(currentPassword, user.password)) {
+      const newHashPassword = await Password.toHash(newPassword);
+      await Auth.findByIdAndUpdate(userId, {
+        $set: { password: newHashPassword },
+      });
+      return { message: "Password changed successfully" };
+    } else {
+      throw new BadRequest("Current password is incorrect");
+    }
   }
 }
