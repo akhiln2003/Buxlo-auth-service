@@ -33,7 +33,7 @@ const authSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      require: true
+      required: true
     },
     password: {
       type: String,
@@ -50,24 +50,26 @@ const authSchema = new mongoose.Schema(
       type: Boolean,
       default: false
     },
-    isGoogle:{
+    isGoogle: {
       type: Boolean,
       default: false,
       required: true
     },
     role: {
       type: String,
+      required: true,
       enum: ["user", "mentor"],
     }
   },
   {
     toJSON: {
-      transform(_, ret) {
+      transform(_: any, ret: any) {
         ret.id = ret._id;
         delete ret._id;
         delete ret.__v;
         delete ret.password;
-      }
+        return ret;
+      },
     },
     timestamps: true
   }
