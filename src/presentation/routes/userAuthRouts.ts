@@ -1,24 +1,22 @@
 import { Router } from "express";
 import { SignUpController } from "../controller/user/signUpController";
 import { DIContainer } from "../../infrastructure/di/DIContainer";
-import {
-  otpSchemaDto,
-  resendOtpSchemaDto,
-} from "../../zodSchemaDto/user/otpDto";
+
 import { OtpVerifyController } from "../controller/common/verifyUserController";
 import { ResendOtpController } from "../controller/common/resendOtpController";
-import { signUpDto } from "../../zodSchemaDto/user/signUpDto";
-import { signInDto } from "../../zodSchemaDto/user/signInDto";
 import { SignInController } from "../controller/user/signInController";
 import { singOutController } from "../controller/common/singOutController";
-import { forgotPasswordDto } from "../../zodSchemaDto/user/forgotPasswordDto";
 import { ForgotPasswordController } from "../controller/user/forgotPasswordController";
-import { setNewPasswordDto } from "../../zodSchemaDto/user/setNewPasswordDto";
 import { SetNewPasswordController } from "../controller/common/setNewPasswordController";
-import { googleAuthDto } from "../../zodSchemaDto/user/googleAuthDto";
 import { GoogleAuthController } from "../controller/user/googleAuthController";
 import { RefresgTokenController } from "../controller/common/authTokenController";
 import { validateReqBody } from "@buxlo/common";
+import { signUpDto } from "../../zodSchemaDto/input/user/signUpDto";
+import { otpSchemaDto, resendOtpSchemaDto } from "../../zodSchemaDto/input/user/otpDto";
+import { signInDto } from "../../zodSchemaDto/input/user/signInDto";
+import { forgotPasswordDto } from "../../zodSchemaDto/input/user/forgotPasswordDto";
+import { setNewPasswordDto } from "../../zodSchemaDto/input/user/setNewPasswordDto";
+import { googleAuthDto } from "../../zodSchemaDto/input/user/googleAuthDto";
 
 export class UserRouter {
   private _router: Router;

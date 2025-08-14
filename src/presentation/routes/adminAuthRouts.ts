@@ -1,15 +1,15 @@
 import { Router } from "express";
 import { DIContainer } from "../../infrastructure/di/DIContainer";
-import { signInDto } from "../../zodSchemaDto/user/signInDto";
 import { SignInController } from "../controller/admin/signInController";
 import { ListUserController } from "../controller/admin/listUserController";
 import { singOutController } from "../controller/common/singOutController";
 import { FetchUserController } from "../controller/admin/fetchUserController";
-import { blockAndUnblockDto } from "../../zodSchemaDto/user/blockAndUnblockDto";
 import { BlockAndUnblockController } from "../controller/admin/blockAndUnblockController";
 import { FetchMentorController } from "../controller/admin/fetchmentorsController";
 import { validateReqBody, validateReqQueryParams } from "@buxlo/common";
-import { fetchUsersAndMentorDto } from "../../zodSchemaDto/user/fetchUsersAndMentorDto";
+import { signInDto } from "../../zodSchemaDto/input/user/signInDto";
+import { fetchUsersAndMentorDto } from "../../zodSchemaDto/input/user/fetchUsersAndMentorDto";
+import { blockAndUnblockDto } from "../../zodSchemaDto/input/user/blockAndUnblockDto";
 
 export class AdminRouter {
   private _router: Router;

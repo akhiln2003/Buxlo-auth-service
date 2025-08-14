@@ -1,7 +1,7 @@
 import {
   IemailService,
   IsendOtpEmailInput,
-  IsendOtpEmailUseCase
+  IsendOtpEmailUseCase,
 } from "../../interfaces/IemailService";
 
 export class SendOtpEmailUseCase implements IsendOtpEmailUseCase {

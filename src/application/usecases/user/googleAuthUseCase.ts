@@ -1,3 +1,4 @@
+import { BlockError } from "@buxlo/common";
 import { User } from "../../../domain/entities/User";
 import { ItokenService } from "../../../domain/interfaces/ItokenService";
 import { IuserRepository } from "../../../domain/interfaces/IuserRepository";
@@ -35,7 +36,7 @@ export class GoogelAuthUseCase implements IgoogleAuthUseCase {
         try {
           const response = await axios.get(validat.picture, {
             responseType: "arraybuffer",
-          });          
+          });
           const buffer = await sharp(response.data)
             .resize({ height: 300, width: 300, fit: "cover" })
             .toBuffer();
@@ -57,6 +58,7 @@ export class GoogelAuthUseCase implements IgoogleAuthUseCase {
           console.error("Error downloading or uploading profile image", error);
         }
       }
+      if (existUser?.isBlocked) throw new BlockError();
       if (existUser && existUser.role == role) {
         const accessToken = this._jwtService.generateAccessToken(existUser);
         const refreshToken = this._jwtService.generateRefreshToken(existUser);
@@ -84,7 +86,7 @@ export class GoogelAuthUseCase implements IgoogleAuthUseCase {
           isGoogle: newUser.isGoogle,
           role: newUser.role as "user" | "admin" | "mentor",
         };
-        await this._userCreatedProducer.produce(data); // producing message to kafka
+        await this._userCreatedProducer.produce(data);
         return { success: true, accessToken, refreshToken, user: newUser };
       }
     } catch (error) {

@@ -7,7 +7,7 @@ export class ChangePasswordUseCase implements IchangePasswordUseCase {
     userId: string,
     currentPassword: string,
     newPassword: string
-  ): Promise<any> {
+  ): Promise<{message:string}> {
     return await this._authRepository.changePassword(
       userId,
       currentPassword,

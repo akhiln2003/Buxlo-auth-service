@@ -1,4 +1,5 @@
 import { User } from "../../domain/entities/User";
+import { UserResponseDto } from "../../zodSchemaDto/output/userResponseDto";
 
 export interface IOtpService {
   generateOtp(): string;
@@ -23,7 +24,7 @@ export interface IotpVerificationResponse {
   unverifiedUser?:boolean;
   InternalServer?: boolean;
   error?: any;
-  user?: User | null;
+  user?: UserResponseDto | null;
   refreshToken?: string;
   accessToken?: string;
 }

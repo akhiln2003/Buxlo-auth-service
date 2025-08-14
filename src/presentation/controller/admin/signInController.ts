@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 import { IsignInUserUseCase } from "../../../application/interfaces/IsignInUserUseCase";
 import { USER_ROLE } from "../../../shared/enums/role";
-import { BlockError, NotAuthorizedError, NotFountError } from "@buxlo/common";
 import { IsetTokensUseCase } from "../../../application/interfaces/IsetTokensUseCase";
 
 export class SignInController {
@@ -23,19 +22,6 @@ export class SignInController {
         isAdmin
       );
 
-      // if the user not existing in db return response ( status code and message )
-      if (user.notfount) {
-        throw new NotFountError("This email is invalid");
-      }
-      // if the user password  nto matching db return response ( status code and message )
-      if (user.passwordNotMatch) {
-        throw new NotAuthorizedError(
-          "Invalid credentials. Please check your password and try again."
-        );
-      }
-      if (user.isBlocked) {
-        throw new BlockError();
-      }
       this._setTokensUseCase.execute(res, user.accessToken, user.refreshToken);
 
       res

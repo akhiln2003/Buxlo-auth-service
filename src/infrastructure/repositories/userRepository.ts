@@ -3,17 +3,24 @@ import { Password } from "../../application/services/passwordHash";
 import { User } from "../../domain/entities/User";
 import { IuserRepository } from "../../domain/interfaces/IuserRepository";
 import { Auth } from "../database";
+import {
+  UserMapper,
+  UserResponseDto,
+} from "../../zodSchemaDto/output/userResponseDto";
 
 export class UserRepository implements IuserRepository {
   // creating and save new verified user
-  async create(user: User): Promise<any> {
+  async create(user: User): Promise<UserResponseDto> {
     const newUser = Auth.build(user);
-    return await newUser.save();
+    const newData = await newUser.save();
+    return UserMapper.toDto(newData);
   }
 
   // find user by ther _id
-  async findById(id: string): Promise<User | null> {
-    return await Auth.findById(id);
+  async findById(id: string): Promise<UserResponseDto | null> {
+    const data = await Auth.findById(id);
+    if (!data) return null;
+    return UserMapper.toDto(data);
   }
 
   async findOne(query: object): Promise<User | null> {
@@ -21,19 +28,22 @@ export class UserRepository implements IuserRepository {
   }
 
   // find user by ther emailId
-  async findByEmail(email: string): Promise<User | null> {
-    return Auth.findOne({ email });
+  async findByEmail(email: string): Promise<UserResponseDto | null> {
+    const data = await Auth.findOne({ email });
+    if (!data) return null;
+    return UserMapper.toDto(data);
   }
 
-  async findByRole(role: string): Promise<User[] | null> {
-    return Auth.find({ role });
+  async findByRole(role: string): Promise<UserResponseDto[] | []> {
+    const data = await Auth.find({ role });
+    return data.map((user) => UserMapper.toDto(user));
   }
 
   async find(
     role: string,
     page: number = 1,
     searchData?: string
-  ): Promise<{ users: User[]; totalPages: number } | null> {
+  ): Promise<{ users: UserResponseDto[]; totalPages: number }> {
     const limit = 10; // Number of users per page
     const skip = (page - 1) * limit;
 
@@ -51,25 +61,28 @@ export class UserRepository implements IuserRepository {
     const totalPages = Math.ceil(totalCount / limit);
 
     // Fetch users with pagination
-    const users = await Auth.find(filter).skip(skip).limit(limit);
+    const data = await Auth.find(filter).skip(skip).limit(limit);
+    const users = data.map((user) => UserMapper.toDto(user));
 
     return { users, totalPages };
   }
 
-  async update(_id: string, query: object): Promise<User | null> {
-    return await Auth.findByIdAndUpdate(_id, {
+  async update(_id: string, query: object): Promise<UserResponseDto> {
+    const data = await Auth.findByIdAndUpdate(_id, {
       $set: query,
-    }).select("-password");
+    });
+
+    return UserMapper.toDto(data);
   }
   async deleteUserProfileData(
     userId: string,
     data: { avatar?: string }
-  ): Promise<User | null> {
+  ): Promise<UserResponseDto> {
     try {
       const updatedUser = await Auth.findByIdAndUpdate(userId, {
         $unset: data,
       });
-      return updatedUser;
+      return UserMapper.toDto(updatedUser);
     } catch (error: any) {
       throw new Error(`db error to update user: ${error.message}`);
     }

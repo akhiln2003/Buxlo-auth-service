@@ -1,5 +1,5 @@
-import { User } from "../../../domain/entities/User";
 import { IuserRepository } from "../../../domain/interfaces/IuserRepository";
+import { UserResponseDto } from "../../../zodSchemaDto/output/userResponseDto";
 import { IfetchUserUseCase } from "../../interfaces/IfetchUserUseCase";
 
 export class FetchUsersUseCase implements IfetchUserUseCase {
@@ -8,7 +8,7 @@ export class FetchUsersUseCase implements IfetchUserUseCase {
     role: string,
     page: number,
     searchData: string | undefined
-  ): Promise<{ users: User[]; totalPages: number } | null> {
+  ): Promise<{ users: UserResponseDto[]; totalPages: number } > {
     return await this._userRepositary.find(role, page, searchData);
   }
 }

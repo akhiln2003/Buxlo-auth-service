@@ -1,6 +1,10 @@
-import { User } from "../../../domain/entities/User";
+import { BlockError, NotAuthorizedError, NotFountError } from "@buxlo/common";
 import { ItokenService } from "../../../domain/interfaces/ItokenService";
 import { IuserRepository } from "../../../domain/interfaces/IuserRepository";
+import {
+  UserMapper,
+  UserResponseDto,
+} from "../../../zodSchemaDto/output/userResponseDto";
 import { IsignInUserUseCase } from "../../interfaces/IsignInUserUseCase";
 import { Password } from "../../services/passwordHash";
 
@@ -14,32 +18,32 @@ export class SignInUserUseCase implements IsignInUserUseCase {
     password: string,
     role: string,
     isAdmin: boolean
-  ): Promise<User | any> {
-    const user = await this._userRepository.findOne({email , role });
-    
-    if (!user || user.isAdmin !== isAdmin ) {
-      return {
-        notfount: true,
-      };
+  ): Promise<{
+    user: UserResponseDto;
+    accessToken: string;
+    refreshToken: string;
+  }> {
+    const user = await this._userRepository.findOne({ email, role });
+
+    if (!user || user.isAdmin !== isAdmin) {
+      throw new NotFountError("This email is invalid");
     }
     if (user?.isBlocked) {
-      return {
-        isBlocked: true,
-      };
+      throw new BlockError();
     }
-    
-    if (await Password.compare(password, user.password)) {      
-      const accessToken =  this._jwtService.generateAccessToken(user);
+
+    if (await Password.compare(password, user.password)) {
+      const accessToken = this._jwtService.generateAccessToken(user);
       const refreshToken = this._jwtService.generateRefreshToken(user);
 
       return {
-        user,
+        user: UserMapper.toDto(user),
         accessToken,
         refreshToken,
       };
     }
-    return {
-      passwordNotMatch: true
-    };
+    throw new NotAuthorizedError(
+      "Invalid credentials. Please check your password and try again."
+    );
   }
 }
