@@ -4,30 +4,30 @@ import { redisClientInstance } from "../database/redis/connection";
 import { User } from "../../domain/entities/User";
 
 export class RedisUserRepository implements IredisRepository {
-  private readonly redisClient: RedisClientType;
+  private readonly _redisClient: RedisClientType;
   constructor() {
-    this.redisClient = redisClientInstance.getClient() as RedisClientType;
+    this._redisClient = redisClientInstance.getClient() as RedisClientType;
   }
 
   async saveUnverifiedUser(email: string, user: User): Promise<void> {
-    await this.redisClient.set(`unverified:${email}`, JSON.stringify(user), {
+    await this._redisClient.set(`unverified:${email}`, JSON.stringify(user), {
       EX: 300
     });
   }
   async getUnverifiedUser(email: string): Promise<User | null> {
-    const user = await this.redisClient.get(`unverified:${email}`);
+    const user = await this._redisClient.get(`unverified:${email}`);
     return user ? JSON.parse(user) : null;
   }
   async removeUnverifiedUser(email: string): Promise<void> {
-    await this.redisClient.del(`unverified:${email}`);
+    await this._redisClient.del(`unverified:${email}`);
   }
 
   async storeOtp(email: string, otp: string): Promise<void> {
-    await this.redisClient.set(`otp:${email}`, otp, { EX: 60 });
+    await this._redisClient.set(`otp:${email}`, otp, { EX: 60 });
   }
 
   async getOtp(email: string): Promise<string | null> {
-    const result = await this.redisClient.get(`otp:${email}`);
+    const result = await this._redisClient.get(`otp:${email}`);
     return result ? result : null;
   }
 
@@ -35,14 +35,14 @@ export class RedisUserRepository implements IredisRepository {
 
   async storeToken(token: string, email: string): Promise<void> {
     const tokenKey = `password-reset:${email}`;
-    await this.redisClient.set(tokenKey, token, { EX: 1800 }); //30m
+    await this._redisClient.set(tokenKey, token, { EX: 1800 }); //30m
   }
   async verifyToken(email: string): Promise<any> {
     const tokenKey = `password-reset:${email}`;
-    return await this.redisClient.get(tokenKey);
+    return await this._redisClient.get(tokenKey);
   }
   async deleteToken(email: string): Promise<void> {
     const tokenKey = `password-reset:${email}`;
-    await this.redisClient.del(tokenKey);
+    await this._redisClient.del(tokenKey);
   }
 }

@@ -11,10 +11,10 @@ import {
 
 export class OtpVerification implements IotpVerification {
   constructor(
-    private redisRepository: IredisRepository,
-    private userRepository: IuserRepository,
-    private jwtservice: ItokenService,
-    private userCreatedProducer: UserCreatedProducer
+    private _redisRepository: IredisRepository,
+    private _userRepository: IuserRepository,
+    private _jwtservice: ItokenService,
+    private _userCreatedProducer: UserCreatedProducer
   ) {}
 
   async execute({
@@ -22,7 +22,7 @@ export class OtpVerification implements IotpVerification {
     email,
   }: IotpVerificationParams): Promise<IotpVerificationResponse> {
     try {
-      const storedOTP = await this.redisRepository.getOtp(email); // finding otp from redis stor
+      const storedOTP = await this._redisRepository.getOtp(email); // finding otp from redis stor
       if (!storedOTP)
         return {
           gone: true,
@@ -34,7 +34,7 @@ export class OtpVerification implements IotpVerification {
         };
 
       const unverifiedUser =
-        await this.redisRepository.getUnverifiedUser(email); // finding unverified user from redis
+        await this._redisRepository.getUnverifiedUser(email); // finding unverified user from redis
 
       if (!unverifiedUser)
         return {
@@ -50,10 +50,10 @@ export class OtpVerification implements IotpVerification {
         unverifiedUser.isBlocked,
         unverifiedUser.avatar
       );
-      const newUser = await this.userRepository.create(user); // Add new user in mongoDb
-      await this.redisRepository.removeUnverifiedUser(email); // removing unverifiedUser from redis
-      const accessToken = this.jwtservice.generateAccessToken(user); // generating access token
-      const refreshToken = this.jwtservice.generateRefreshToken(user); // generating referesh token
+      const newUser = await this._userRepository.create(user); // Add new user in mongoDb
+      await this._redisRepository.removeUnverifiedUser(email); // removing unverifiedUser from redis
+      const accessToken = this._jwtservice.generateAccessToken(user); // generating access token
+      const refreshToken = this._jwtservice.generateRefreshToken(user); // generating referesh token
 
       const data = {
         id: newUser.id as string,
@@ -65,7 +65,7 @@ export class OtpVerification implements IotpVerification {
         isGoogle: newUser.isGoogle,
         role: newUser.role as "user" | "admin" | "mentor",
       };
-      await this.userCreatedProducer.produce(data); // producing message to kafka
+      await this._userCreatedProducer.produce(data); // producing message to kafka
       return { success: true, accessToken, refreshToken, user: newUser };
     } catch (error) {
       console.error("Error from OTP varification : ", error);

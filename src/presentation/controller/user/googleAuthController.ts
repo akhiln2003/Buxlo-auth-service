@@ -7,15 +7,15 @@ import { registerUser } from "../../../infrastructure/rpc/grpc/client";
 
 export class GoogleAuthController {
   constructor(
-    private googleAuthUseCase: IgoogleAuthUseCase,
-    private setTokensUseCase: IsetTokensUseCase
+    private _googleAuthUseCase: IgoogleAuthUseCase,
+    private _setTokensUseCase: IsetTokensUseCase
   ) {}
 
   auth = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { token } = req.body;
       const role = USER_ROLE.USER;
-      const response = await this.googleAuthUseCase.execute(token, role);
+      const response = await this._googleAuthUseCase.execute(token, role);
       if (response.success) {
         await registerUser({
           id: response.user!.id,
@@ -25,7 +25,7 @@ export class GoogleAuthController {
           role: response.user!.role,
           isGoogle: response.user!.isGoogle,
         });
-        this.setTokensUseCase.execute(
+        this._setTokensUseCase.execute(
           res,
           response.accessToken as string,
           response.refreshToken as string

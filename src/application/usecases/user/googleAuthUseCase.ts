@@ -11,15 +11,15 @@ import sharp from "sharp";
 
 export class GoogelAuthUseCase implements IgoogleAuthUseCase {
   constructor(
-    private jwtService: ItokenService,
-    private userRepository: IuserRepository,
-    private userCreatedProducer: UserCreatedProducer,
-    private s3Service: Is3Service
+    private _jwtService: ItokenService,
+    private _userRepository: IuserRepository,
+    private _userCreatedProducer: UserCreatedProducer,
+    private _s3Service: Is3Service
   ) {}
 
   async execute(token: string, role: string): Promise<any> {
     try {
-      const validat = await this.jwtService.verifyGoogleToken(token);
+      const validat = await this._jwtService.verifyGoogleToken(token);
 
       if (!validat) {
         return {
@@ -29,7 +29,7 @@ export class GoogelAuthUseCase implements IgoogleAuthUseCase {
 
       const hashPassword = (await Password.toHash(validat.sub)) as string;
 
-      const existUser = await this.userRepository.findByEmail(validat.email);
+      const existUser = await this._userRepository.findByEmail(validat.email);
       let randomImageName: any;
       if (validat.picture) {
         try {
@@ -41,7 +41,7 @@ export class GoogelAuthUseCase implements IgoogleAuthUseCase {
             .toBuffer();
 
           randomImageName = Math.random() + Date.now();
-          const uploadResponse = await this.s3Service.uploadImageToBucket(
+          const uploadResponse = await this._s3Service.uploadImageToBucket(
             buffer,
             "image/jpeg",
             role == USER_ROLE.USER
@@ -58,8 +58,8 @@ export class GoogelAuthUseCase implements IgoogleAuthUseCase {
         }
       }
       if (existUser && existUser.role == role) {
-        const accessToken = this.jwtService.generateAccessToken(existUser);
-        const refreshToken = this.jwtService.generateRefreshToken(existUser);
+        const accessToken = this._jwtService.generateAccessToken(existUser);
+        const refreshToken = this._jwtService.generateRefreshToken(existUser);
         return { success: true, accessToken, refreshToken, user: existUser };
       } else {
         // Creating new User
@@ -71,9 +71,9 @@ export class GoogelAuthUseCase implements IgoogleAuthUseCase {
           false,
           randomImageName
         );
-        const newUser = await this.userRepository.create(user);
-        const accessToken = this.jwtService.generateAccessToken(user);
-        const refreshToken = this.jwtService.generateRefreshToken(user);
+        const newUser = await this._userRepository.create(user);
+        const accessToken = this._jwtService.generateAccessToken(user);
+        const refreshToken = this._jwtService.generateRefreshToken(user);
         const data = {
           id: newUser.id as string,
           name: newUser.name,
@@ -84,7 +84,7 @@ export class GoogelAuthUseCase implements IgoogleAuthUseCase {
           isGoogle: newUser.isGoogle,
           role: newUser.role as "user" | "admin" | "mentor",
         };
-        await this.userCreatedProducer.produce(data); // producing message to kafka
+        await this._userCreatedProducer.produce(data); // producing message to kafka
         return { success: true, accessToken, refreshToken, user: newUser };
       }
     } catch (error) {

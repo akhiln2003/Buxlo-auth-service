@@ -5,34 +5,34 @@ import { changePasswordDto } from "../../zodSchemaDto/user/changePasswordDto";
 import { ChangePasswordController } from "../controller/common/changePasswordController";
 
 export class CommonRouter {
-  private router: Router;
-  private diContainer: DIContainer;
+  private _router: Router;
+  private _diContainer: DIContainer;
 
   // Controllers
-  private changePasswordController!: ChangePasswordController;
+  private _changePasswordController!: ChangePasswordController;
 
   constructor() {
-    this.router = Router();
-    this.diContainer = new DIContainer();
-    this.initializeControllers();
-    this.initializeRoutes();
+    this._router = Router();
+    this._diContainer = new DIContainer();
+    this._initializeControllers();
+    this._initializeRoutes();
   }
 
-  private initializeControllers(): void {
-    this.changePasswordController = new ChangePasswordController(
-      this.diContainer.changePasswordUseCase()
+  private _initializeControllers(): void {
+    this._changePasswordController = new ChangePasswordController(
+      this._diContainer.changePasswordUseCase()
     );
   }
 
-  private initializeRoutes(): void {
-    this.router.patch(
+  private _initializeRoutes(): void {
+    this._router.patch(
       "/changepassword",
       validateReqBody(changePasswordDto),
-      this.changePasswordController.change
+      this._changePasswordController.change
     );
   }
 
   public getRouter(): Router {
-    return this.router;
+    return this._router;
   }
 }

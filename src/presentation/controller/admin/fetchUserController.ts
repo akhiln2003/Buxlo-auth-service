@@ -4,13 +4,13 @@ import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 import { USER_ROLE } from "../../../shared/enums/role";
 
 export class FetchUserController {
-  constructor(private fetchUserUseCase: IfetchUserUseCase) {}
+  constructor(private _fetchUserUseCase: IfetchUserUseCase) {}
 
   fetchUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const role = USER_ROLE.USER;
       const { page, searchData } = req.query;
-      const data = await this.fetchUserUseCase.execute(
+      const data = await this._fetchUserUseCase.execute(
         role,
         Number(page),
         String(searchData)

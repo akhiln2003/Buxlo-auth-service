@@ -8,9 +8,9 @@ import { ConflictError } from "@buxlo/common";
 
 export class SignUpController {
   constructor(
-    private getUserUseCase: IgetUser,
-    private temporaryStoreAndOtpUseCase: IregisterUserTemporarily,
-    private sendOtpEmailUseCase: IsendOtpEmailUseCase
+    private _getUserUseCase: IgetUser,
+    private _temporaryStoreAndOtpUseCase: IregisterUserTemporarily,
+    private _sendOtpEmailUseCase: IsendOtpEmailUseCase
   ) {}
 
   signUp = async (req: Request, res: Response, next: NextFunction) => {
@@ -18,14 +18,14 @@ export class SignUpController {
       const { email, password, name, avatar } = req.body;
       const role = USER_ROLE.MENTOR;
       // Check if user exists
-      const userExist = await this.getUserUseCase.execute({ email, role });
-      
+      const userExist = await this._getUserUseCase.execute({ email, role });
+
       if (userExist) {
-       throw new ConflictError("User already exist with this email");
+        throw new ConflictError("User already exist with this email");
       }
 
       // Store user temporarily and generate OTP
-      const otp = (await this.temporaryStoreAndOtpUseCase.execute({
+      const otp = (await this._temporaryStoreAndOtpUseCase.execute({
         name,
         email,
         password,
@@ -34,7 +34,7 @@ export class SignUpController {
       })) as string;
 
       // Send OTP via email
-      await this.sendOtpEmailUseCase.execute({ email, name, otp });
+      await this._sendOtpEmailUseCase.execute({ email, name, otp });
       console.log("Your OTP is: ", otp);
       res
         .status(HttpStatusCode.OK)

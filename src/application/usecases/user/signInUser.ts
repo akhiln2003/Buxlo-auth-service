@@ -6,8 +6,8 @@ import { Password } from "../../services/passwordHash";
 
 export class SignInUserUseCase implements IsignInUserUseCase {
   constructor(
-    private userRepository: IuserRepository,
-    private jwtService: ItokenService
+    private _userRepository: IuserRepository,
+    private _jwtService: ItokenService
   ) {}
   async execute(
     email: string,
@@ -15,7 +15,7 @@ export class SignInUserUseCase implements IsignInUserUseCase {
     role: string,
     isAdmin: boolean
   ): Promise<User | any> {
-    const user = await this.userRepository.findOne({email , role });
+    const user = await this._userRepository.findOne({email , role });
     
     if (!user || user.isAdmin !== isAdmin ) {
       return {
@@ -29,8 +29,8 @@ export class SignInUserUseCase implements IsignInUserUseCase {
     }
     
     if (await Password.compare(password, user.password)) {      
-      const accessToken =  this.jwtService.generateAccessToken(user);
-      const refreshToken = this.jwtService.generateRefreshToken(user);
+      const accessToken =  this._jwtService.generateAccessToken(user);
+      const refreshToken = this._jwtService.generateRefreshToken(user);
 
       return {
         user,

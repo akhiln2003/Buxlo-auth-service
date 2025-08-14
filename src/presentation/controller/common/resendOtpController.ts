@@ -5,16 +5,16 @@ import { IresendOtpUseCase } from "../../../application/interfaces/Iotp";
 
 export class ResendOtpController {
   constructor(
-    private sendEmailServiceUseCase: IsendOtpEmailUseCase,
-    private resendOtpUseCase: IresendOtpUseCase
+    private _sendEmailServiceUseCase: IsendOtpEmailUseCase,
+    private _resendOtpUseCase: IresendOtpUseCase
   ) {}
 
   resend = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { email, name } = req.body;
 
-      const otp = (await this.resendOtpUseCase.execute({ email })) as string; // regnerating otp
-      await this.sendEmailServiceUseCase.execute({ email, name, otp }); // sending otp to email
+      const otp = (await this._resendOtpUseCase.execute({ email })) as string; // regnerating otp
+      await this._sendEmailServiceUseCase.execute({ email, name, otp }); // sending otp to email
       console.log("Your OTP is: ", otp);
 
       res.status(HttpStatusCode.OK).json({

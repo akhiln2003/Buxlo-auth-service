@@ -7,7 +7,7 @@ import {
 export class SendForgotPasswordEmailUseCase
   implements IsendForgotPasswordEmailUseCase
 {
-  constructor(private emailService: IemailService) {}
+  constructor(private _emailService: IemailService) {}
 
   async execute(input: IsendForgotPasswordEmailInput): Promise<void | boolean> {
     try {
@@ -27,7 +27,7 @@ export class SendForgotPasswordEmailUseCase
     </div>
 </body>
 `;
-      await this.emailService.sendMail(input.email, subject, body);
+      await this._emailService.sendMail(input.email, subject, body);
       return true;
     } catch (error) {
       console.error(error);

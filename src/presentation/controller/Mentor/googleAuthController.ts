@@ -8,15 +8,15 @@ import { registerUser } from "../../../infrastructure/rpc/grpc/client";
 
 export class GoogleAuthController {
   constructor(
-    private googleAuthUseCase: IgoogleAuthUseCase,
-    private setTokensUseCase: IsetTokensUseCase
+    private _googleAuthUseCase: IgoogleAuthUseCase,
+    private _setTokensUseCase: IsetTokensUseCase
   ) {}
 
   auth = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { token } = req.body;
       const role = USER_ROLE.MENTOR;
-      const response = await this.googleAuthUseCase.execute(token, role);
+      const response = await this._googleAuthUseCase.execute(token, role);
       if (response.validat) {
         throw new BadRequest("validation faild please try again");
       }
@@ -29,7 +29,7 @@ export class GoogleAuthController {
           isGoogle: response.user!.isGoogle,
           avatar: response.user!.avatar,
         });
-        this.setTokensUseCase.execute(
+        this._setTokensUseCase.execute(
           res,
           response.accessToken as string,
           response.refreshToken as string

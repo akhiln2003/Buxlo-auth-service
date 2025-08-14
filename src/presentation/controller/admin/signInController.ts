@@ -6,14 +6,17 @@ import { BlockError, NotAuthorizedError, NotFountError } from "@buxlo/common";
 import { IsetTokensUseCase } from "../../../application/interfaces/IsetTokensUseCase";
 
 export class SignInController {
-  constructor(private signInUserUseCase: IsignInUserUseCase , private setTokensUseCase:IsetTokensUseCase) {}
+  constructor(
+    private _signInUserUseCase: IsignInUserUseCase,
+    private _setTokensUseCase: IsetTokensUseCase
+  ) {}
 
   signIn = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { email, password } = req.body;
       const role = USER_ROLE.ADMIN,
         isAdmin = true;
-      const user = await this.signInUserUseCase.execute(
+      const user = await this._signInUserUseCase.execute(
         email,
         password,
         role,
@@ -33,7 +36,7 @@ export class SignInController {
       if (user.isBlocked) {
         throw new BlockError();
       }
-      this.setTokensUseCase.execute(res,user.accessToken , user.refreshToken);
+      this._setTokensUseCase.execute(res, user.accessToken, user.refreshToken);
 
       res
         .status(HttpStatusCode.OK)

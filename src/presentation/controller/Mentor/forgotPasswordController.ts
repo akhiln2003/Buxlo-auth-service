@@ -6,20 +6,24 @@ import { IsendForgotPasswordEmailUseCase } from "../../../application/interfaces
 import { USER_ROLE } from "../../../shared/enums/role";
 
 export class ForgotPasswordController {
-  constructor(private forgotPasswordUseCase: IforgotPassword,
-  private sendEmailServiceUseCase: IsendForgotPasswordEmailUseCase
+  constructor(
+    private _forgotPasswordUseCase: IforgotPassword,
+    private _sendEmailServiceUseCase: IsendForgotPasswordEmailUseCase
   ) {}
   forgot = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { email } = req.body;
       const role = USER_ROLE.MENTOR;
-      const response = await this.forgotPasswordUseCase.execute(email , role);
+      const response = await this._forgotPasswordUseCase.execute(email, role);
       if (response?.notfount) {
         throw new NotFountError("This email is invalid");
       }
       if (response?.resetPasswordUrl) {
-        
-        await this.sendEmailServiceUseCase.execute({ email: response.user.email, name: response.user.name, link: response.resetPasswordUrl }); // sending otp to email
+        await this._sendEmailServiceUseCase.execute({
+          email: response.user.email,
+          name: response.user.name,
+          link: response.resetPasswordUrl,
+        }); // sending otp to email
         res.status(HttpStatusCode.OK).json({
           message:
             "Password reset link sent succesfully. Please check your email!",

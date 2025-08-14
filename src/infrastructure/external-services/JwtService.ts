@@ -5,16 +5,16 @@ import { OAuth2Client } from "google-auth-library";
 import { Response } from "express";
 
 export class JwtService implements ItokenService {
-  private readonly accessTokenSecret: string;
-  private readonly refreshTokenSecret: string;
-  private readonly forgotPasswordSecret: string;
-  private readonly googleClientId: string;
+  private readonly _accessTokenSecret: string;
+  private readonly _refreshTokenSecret: string;
+  private readonly _forgotPasswordSecret: string;
+  private readonly _googleClientId: string;
 
   constructor() {
-    this.accessTokenSecret = process.env.JWT_ACCESS_SECRET as string;
-    this.refreshTokenSecret = process.env.JWT_REFRESH_SECRET as string;
-    this.forgotPasswordSecret = process.env.JWT_FORGOTPASSWORD_SECRET as string;
-    this.googleClientId = process.env.GOOGLE_CLIENT_ID as string;
+    this._accessTokenSecret = process.env.JWT_ACCESS_SECRET as string;
+    this._refreshTokenSecret = process.env.JWT_REFRESH_SECRET as string;
+    this._forgotPasswordSecret = process.env.JWT_FORGOTPASSWORD_SECRET as string;
+    this._googleClientId = process.env.GOOGLE_CLIENT_ID as string;
   }
   generateAccessToken(user: Pick<User, "id" | "email" | "role">): string {
     const payload = {
@@ -27,13 +27,13 @@ export class JwtService implements ItokenService {
       expiresIn: "15m",
     };
 
-    return JWT.sign(payload, this.accessTokenSecret, options);
+    return JWT.sign(payload, this._accessTokenSecret, options);
   }
 
   generateRefreshToken(user: Pick<User, "id" | "email" | "role">): string {
     return JWT.sign(
       { id: user.id, email: user.email, role: user.role },
-      this.refreshTokenSecret,
+      this._refreshTokenSecret,
       { expiresIn: "7d" }
     );
   }
@@ -41,7 +41,7 @@ export class JwtService implements ItokenService {
   generateResentPasswordToken(user: Pick<User, "email" | "id">): string {
     return JWT.sign(
       { id: user.id, email: user.email },
-      this.forgotPasswordSecret,
+      this._forgotPasswordSecret,
       { expiresIn: "15m" }
     );
   }
@@ -71,12 +71,12 @@ export class JwtService implements ItokenService {
   }
 
   async verifyGoogleToken(token: string) {
-    const client = new OAuth2Client(this.googleClientId);
+    const client = new OAuth2Client(this._googleClientId);
 
     // Verify the token
     const verify = await client.verifyIdToken({
       idToken: token,
-      audience: this.googleClientId,
+      audience: this._googleClientId,
     });
     return verify.getPayload();
   }

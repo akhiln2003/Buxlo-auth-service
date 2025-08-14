@@ -12,75 +12,75 @@ import { validateReqBody, validateReqQueryParams } from "@buxlo/common";
 import { fetchUsersAndMentorDto } from "../../zodSchemaDto/user/fetchUsersAndMentorDto";
 
 export class AdminRouter {
-  private router: Router;
-  private diContainer: DIContainer;
+  private _router: Router;
+  private _diContainer: DIContainer;
 
   // Controllers
-  private signInController!: SignInController;
-  private listUserController!: ListUserController;
-  private signOutController!: singOutController;
-  private fetchUsersController!: FetchUserController;
-  private fetchMentorsController!: FetchMentorController;
-  private blockAndUnblockController!: BlockAndUnblockController;
+  private _signInController!: SignInController;
+  private _listUserController!: ListUserController;
+  private _signOutController!: singOutController;
+  private _fetchUsersController!: FetchUserController;
+  private _fetchMentorsController!: FetchMentorController;
+  private _blockAndUnblockController!: BlockAndUnblockController;
 
   constructor() {
-    this.router = Router();
-    this.diContainer = new DIContainer();
-    this.initializeControllers();
-    this.initializeRoutes();
+    this._router = Router();
+    this._diContainer = new DIContainer();
+    this._initializeControllers();
+    this._initializeRoutes();
   }
 
-  private initializeControllers(): void {
-    this.signInController = new SignInController(
-      this.diContainer.signInUserUseCase(),
-      this.diContainer.setTokensUseCase()
+  private _initializeControllers(): void {
+    this._signInController = new SignInController(
+      this._diContainer.signInUserUseCase(),
+      this._diContainer.setTokensUseCase()
     );
 
-    this.listUserController = new ListUserController(
-      this.diContainer.listUserUseCase()
+    this._listUserController = new ListUserController(
+      this._diContainer.listUserUseCase()
     );
 
-    this.signOutController = new singOutController();
+    this._signOutController = new singOutController();
 
-    this.fetchUsersController = new FetchUserController(
-      this.diContainer.fetchUsersUseCase()
+    this._fetchUsersController = new FetchUserController(
+      this._diContainer.fetchUsersUseCase()
     );
 
-    this.fetchMentorsController = new FetchMentorController(
-      this.diContainer.fetchUsersUseCase()
+    this._fetchMentorsController = new FetchMentorController(
+      this._diContainer.fetchUsersUseCase()
     );
 
-    this.blockAndUnblockController = new BlockAndUnblockController(
-      this.diContainer.blockAndUnBlockUseCase()
+    this._blockAndUnblockController = new BlockAndUnblockController(
+      this._diContainer.blockAndUnBlockUseCase()
     );
   }
 
-  private initializeRoutes(): void {
-    this.router.post(
+  private _initializeRoutes(): void {
+    this._router.post(
       "/signin",
       validateReqBody(signInDto),
-      this.signInController.signIn
+      this._signInController.signIn
     );
-    this.router.get("/profile/userlist", this.listUserController.listUser);
-    this.router.post("/signout", this.signOutController.singOut);
-    this.router.get(
+    this._router.get("/profile/userlist", this._listUserController.listUser);
+    this._router.post("/signout", this._signOutController.singOut);
+    this._router.get(
       "/profile/fetchusers",
       validateReqQueryParams(fetchUsersAndMentorDto),
-      this.fetchUsersController.fetchUsers
+      this._fetchUsersController.fetchUsers
     );
-    this.router.get(
+    this._router.get(
       "/profile/fetchmentor",
       validateReqQueryParams(fetchUsersAndMentorDto),
-      this.fetchMentorsController.fetchMentors
+      this._fetchMentorsController.fetchMentors
     );
-    this.router.put(
+    this._router.put(
       "/profile/blockandunblock",
       validateReqBody(blockAndUnblockDto),
-      this.blockAndUnblockController.action
+      this._blockAndUnblockController.action
     );
   }
 
   public getRouter(): Router {
-    return this.router;
+    return this._router;
   }
 }

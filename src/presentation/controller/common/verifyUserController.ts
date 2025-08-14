@@ -7,8 +7,8 @@ import { registerUser } from "../../../infrastructure/rpc/grpc/client";
 
 export class OtpVerifyController {
   constructor(
-    private verifyUserUseCase: IotpVerification,
-    private setTokensUseCase: IsetTokensUseCase
+    private _verifyUserUseCase: IotpVerification,
+    private _setTokensUseCase: IsetTokensUseCase
   ) {}
 
   verify = async (
@@ -18,7 +18,7 @@ export class OtpVerifyController {
   ): Promise<void> => {
     try {
       const { otp, email } = req.body;
-      const response = await this.verifyUserUseCase.execute({ otp, email });
+      const response = await this._verifyUserUseCase.execute({ otp, email });
       if (response.gone) {
         throw new GoneError(
           "OTP not found or has expired. try with currect otp"
@@ -41,7 +41,7 @@ export class OtpVerifyController {
           isGoogle: response.user!.isGoogle,
           avatar: response.user!.avatar,
         });
-        this.setTokensUseCase.execute(
+        this._setTokensUseCase.execute(
           res,
           response.accessToken as string,
           response.refreshToken as string

@@ -3,11 +3,11 @@ import { IchangePasswordUseCase } from "../../../application/interfaces/IchangeP
 import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 
 export class ChangePasswordController {
-  constructor(private changePasswordUseCase: IchangePasswordUseCase) {}
+  constructor(private _changePasswordUseCase: IchangePasswordUseCase) {}
   change = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { userId, currentPassword, newPassword } = req.body;
-      const result = await this.changePasswordUseCase.execute(
+      const result = await this._changePasswordUseCase.execute(
         userId,
         currentPassword,
         newPassword

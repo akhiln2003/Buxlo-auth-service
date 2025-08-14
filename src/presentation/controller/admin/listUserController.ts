@@ -4,11 +4,11 @@ import { USER_ROLE } from "../../../shared/enums/role";
 import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 
 export class ListUserController {
-  constructor(private listUserUseCase: IlistUser) {}
+  constructor(private _listUserUseCase: IlistUser) {}
 
   listUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const data = this.listUserUseCase.execute(USER_ROLE.USER);
+      const data = this._listUserUseCase.execute(USER_ROLE.USER);
       res.send(HttpStatusCode.OK).json({ data });
     } catch (error) {
       console.error(error);

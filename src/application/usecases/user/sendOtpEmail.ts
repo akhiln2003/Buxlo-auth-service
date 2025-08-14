@@ -5,7 +5,7 @@ import {
 } from "../../interfaces/IemailService";
 
 export class SendOtpEmailUseCase implements IsendOtpEmailUseCase {
-  constructor(private emailService: IemailService) {}
+  constructor(private _emailService: IemailService) {}
 
   async execute(input: IsendOtpEmailInput): Promise<void | boolean> {
     try {
@@ -25,7 +25,7 @@ export class SendOtpEmailUseCase implements IsendOtpEmailUseCase {
                                     <div style="background-color: #232f3e; color: #fff; padding: 20px; text-align: center; font-size: 14px;">&copy; 2023 Buxlo. All rights reserved.</div>
                                 </div>
                             </body>`;
-      await this.emailService.sendMail(input.email, subject, body);
+      await this._emailService.sendMail(input.email, subject, body);
       return true;
     } catch (error) {
       console.error(error);

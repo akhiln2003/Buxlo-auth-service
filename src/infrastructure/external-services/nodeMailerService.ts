@@ -5,12 +5,12 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export class NodeMailerService implements IemailService {
-  private readonly transporter;
+  private readonly _transporter;
   constructor() {
     if (!process.env.EMAIL_USER) {
       throw new Error("process.env.EMAIL_USER is not getting");
     }
-    this.transporter = nodemailer.createTransport({
+    this._transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 465,
       secure: true,
@@ -29,6 +29,6 @@ export class NodeMailerService implements IemailService {
       subject,
       html: body
     };
-    await this.transporter.sendMail(mailOptions);
+    await this._transporter.sendMail(mailOptions);
   }
 }

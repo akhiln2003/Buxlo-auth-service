@@ -4,11 +4,11 @@ import { NotFountError } from "@buxlo/common";
 import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 
 export class SetNewPasswordController {
-  constructor(private setNewPasswordUseCase: IsetNewPasswordUseCase) {}
+  constructor(private _setNewPasswordUseCase: IsetNewPasswordUseCase) {}
   setPassword = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { password, token } = req.body;
-      const response = await this.setNewPasswordUseCase.execute(
+      const response = await this._setNewPasswordUseCase.execute(
         password,
         token
       );

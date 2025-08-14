@@ -21,112 +21,112 @@ import { RefresgTokenController } from "../controller/common/authTokenController
 import { validateReqBody } from "@buxlo/common";
 
 export class UserRouter {
-  private router: Router;
-  private diContainer: DIContainer;
+  private _router: Router;
+  private _diContainer: DIContainer;
 
   // Controllers
-  private signUpController!: SignUpController;
-  private otpVerifyController!: OtpVerifyController;
-  private resendOtpController!: ResendOtpController;
-  private signInController!: SignInController;
-  private signOutController!: singOutController;
-  private forgotPasswordController!: ForgotPasswordController;
-  private setNewPasswordController!: SetNewPasswordController;
-  private googleAuthController!: GoogleAuthController;
-  private tokenController!: RefresgTokenController;
+  private _signUpController!: SignUpController;
+  private _otpVerifyController!: OtpVerifyController;
+  private _resendOtpController!: ResendOtpController;
+  private _signInController!: SignInController;
+  private _signOutController!: singOutController;
+  private _forgotPasswordController!: ForgotPasswordController;
+  private _setNewPasswordController!: SetNewPasswordController;
+  private _googleAuthController!: GoogleAuthController;
+  private _tokenController!: RefresgTokenController;
 
   constructor() {
-    this.router = Router();
-    this.diContainer = new DIContainer();
-    this.initializeControllers();
-    this.initializeRoutes();
+    this._router = Router();
+    this._diContainer = new DIContainer();
+    this._initializeControllers();
+    this._initializeRoutes();
   }
 
-  private initializeControllers(): void {
-    this.signUpController = new SignUpController(
-      this.diContainer.getUserUseCase(),
-      this.diContainer.getTemporaryStoreUseCase(),
-      this.diContainer.getSendOtpEmailServiceUseCase()
+  private _initializeControllers(): void {
+    this._signUpController = new SignUpController(
+      this._diContainer.getUserUseCase(),
+      this._diContainer.getTemporaryStoreUseCase(),
+      this._diContainer.getSendOtpEmailServiceUseCase()
     );
 
-    this.otpVerifyController = new OtpVerifyController(
-      this.diContainer.verifyUserUseCase(),
-      this.diContainer.setTokensUseCase()
+    this._otpVerifyController = new OtpVerifyController(
+      this._diContainer.verifyUserUseCase(),
+      this._diContainer.setTokensUseCase()
     );
 
-    this.resendOtpController = new ResendOtpController(
-      this.diContainer.getSendOtpEmailServiceUseCase(),
-      this.diContainer.getResendOtpUseCase()
+    this._resendOtpController = new ResendOtpController(
+      this._diContainer.getSendOtpEmailServiceUseCase(),
+      this._diContainer.getResendOtpUseCase()
     );
 
-    this.signInController = new SignInController(
-      this.diContainer.signInUserUseCase(),
-      this.diContainer.setTokensUseCase()
+    this._signInController = new SignInController(
+      this._diContainer.signInUserUseCase(),
+      this._diContainer.setTokensUseCase()
     );
 
-    this.signOutController = new singOutController();
+    this._signOutController = new singOutController();
 
-    this.forgotPasswordController = new ForgotPasswordController(
-      this.diContainer.forgotPasswordUseCase(),
-      this.diContainer.getSendForgotPasswordEmailServiceUseCase()
+    this._forgotPasswordController = new ForgotPasswordController(
+      this._diContainer.forgotPasswordUseCase(),
+      this._diContainer.getSendForgotPasswordEmailServiceUseCase()
     );
 
-    this.setNewPasswordController = new SetNewPasswordController(
-      this.diContainer.setNewPasswordUseCase()
+    this._setNewPasswordController = new SetNewPasswordController(
+      this._diContainer.setNewPasswordUseCase()
     );
 
-    this.googleAuthController = new GoogleAuthController(
-      this.diContainer.googelAuthUseCase(),
-      this.diContainer.setTokensUseCase()
+    this._googleAuthController = new GoogleAuthController(
+      this._diContainer.googelAuthUseCase(),
+      this._diContainer.setTokensUseCase()
     );
 
-    this.tokenController = new RefresgTokenController(
-      this.diContainer.authTokenUseCase(),
-      this.diContainer.setTokensUseCase()
+    this._tokenController = new RefresgTokenController(
+      this._diContainer.authTokenUseCase(),
+      this._diContainer.setTokensUseCase()
     );
   }
 
-  private initializeRoutes(): void {
-    this.router.post(
+  private _initializeRoutes(): void {
+    this._router.post(
       "/signup",
       validateReqBody(signUpDto),
-      this.signUpController.signUp
+      this._signUpController.signUp
     );
-    this.router.post(
+    this._router.post(
       "/verifyotp",
       validateReqBody(otpSchemaDto),
-      this.otpVerifyController.verify
+      this._otpVerifyController.verify
     );
-    this.router.post(
+    this._router.post(
       "/resendotp",
       validateReqBody(resendOtpSchemaDto),
-      this.resendOtpController.resend
+      this._resendOtpController.resend
     );
-    this.router.post(
+    this._router.post(
       "/signin",
       validateReqBody(signInDto),
-      this.signInController.signIn
+      this._signInController.signIn
     );
-    this.router.post("/signout", this.signOutController.singOut);
-    this.router.post(
+    this._router.post("/signout", this._signOutController.singOut);
+    this._router.post(
       "/forgotpassword",
       validateReqBody(forgotPasswordDto),
-      this.forgotPasswordController.forgot
+      this._forgotPasswordController.forgot
     );
-    this.router.post(
+    this._router.post(
       "/setnewpassword",
       validateReqBody(setNewPasswordDto),
-      this.setNewPasswordController.setPassword
+      this._setNewPasswordController.setPassword
     );
-    this.router.post(
+    this._router.post(
       "/googleauth",
       validateReqBody(googleAuthDto),
-      this.googleAuthController.auth
+      this._googleAuthController.auth
     );
-    this.router.post("/refreshtoken", this.tokenController.validate);
+    this._router.post("/refreshtoken", this._tokenController.validate);
   }
 
   public getRouter(): Router {
-    return this.router;
+    return this._router;
   }
 }

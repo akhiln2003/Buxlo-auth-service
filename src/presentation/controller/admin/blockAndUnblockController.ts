@@ -3,12 +3,12 @@ import { IblockAndUnblockUseCase } from "../../../application/interfaces/IblockA
 import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 
 export class BlockAndUnblockController {
-  constructor(private blockAndUnblockUseCase: IblockAndUnblockUseCase) {}
+  constructor(private _blockAndUnblockUseCase: IblockAndUnblockUseCase) {}
 
   action = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id, isBlocked } = req.body;
-      const data = await this.blockAndUnblockUseCase.execute(id, isBlocked);
+      const data = await this._blockAndUnblockUseCase.execute(id, isBlocked);
 
       res.status(HttpStatusCode.OK).json({ data });
     } catch (error) {

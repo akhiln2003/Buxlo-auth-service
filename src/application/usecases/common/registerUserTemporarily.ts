@@ -6,8 +6,8 @@ import { Password } from "../../services/passwordHash";
 
 export class RegisterUserTemporarily implements IregisterUserTemporarily {
   constructor(
-    private redisRepository: IredisRepository,
-    private otpService: IOtpService
+    private _redisRepository: IredisRepository,
+    private _otpService: IOtpService
   ) {}
 
   async execute(
@@ -15,13 +15,13 @@ export class RegisterUserTemporarily implements IregisterUserTemporarily {
   ): Promise<string | void> {
     try {
       const hashPassword = (await Password.toHash(user.password)) as string;
-      await this.redisRepository.saveUnverifiedUser(user.email, {
+      await this._redisRepository.saveUnverifiedUser(user.email, {
         ...user,
         password: hashPassword
       });
 
-      const otp = this.otpService.generateOtp();
-      await this.redisRepository.storeOtp(user.email, otp);
+      const otp = this._otpService.generateOtp();
+      await this._redisRepository.storeOtp(user.email, otp);
       return otp;
     } catch (err) {
       console.error(err);

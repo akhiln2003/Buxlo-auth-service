@@ -14,18 +14,18 @@ import { MentorRouter } from "./presentation/routes/mentorAuthRouts";
 import { CommonRouter } from "./presentation/routes/commonAuthRouts";
 
 export class App {
-  constructor(private server: IServer) {}
+  constructor(private _server: IServer) {}
 
   async initialize(): Promise<void> {
-    await this.connectDB();
-    await this.connectKafka();
-    this.registerMiddleware();
+    await this._connectDB();
+    await this._connectKafka();
+    this._registerMiddleware();
     this.registerRoutes();
-    this.registerErrorHandler();
+    this._registerErrorHandler();
   }
 
-  private registerMiddleware(): void {
-    this.server.registerMiddleware(loggerMiddleware);
+  private _registerMiddleware(): void {
+    this._server.registerMiddleware(loggerMiddleware);
   }
   registerRoutes(): void {
     const userRoutes = new UserRouter().getRouter();
@@ -33,18 +33,18 @@ export class App {
     const adminRoutes = new AdminRouter().getRouter();
     const commonRoutes = new CommonRouter().getRouter();
 
-    this.server.registerRoutes("/api/auth/user", userRoutes);
-    this.server.registerRoutes("/api/auth/mentor", mentorRoutes);
-    this.server.registerRoutes("/api/auth/admin", adminRoutes);
-    this.server.registerRoutes("/api/auth/common", commonRoutes);
+    this._server.registerRoutes("/api/auth/user", userRoutes);
+    this._server.registerRoutes("/api/auth/mentor", mentorRoutes);
+    this._server.registerRoutes("/api/auth/admin", adminRoutes);
+    this._server.registerRoutes("/api/auth/common", commonRoutes);
   }
 
-  private registerErrorHandler(): void {
-    this.server.registerErrorHandler(errorHandler as any);
+  private _registerErrorHandler(): void {
+    this._server.registerErrorHandler(errorHandler as any);
   }
 
   async start(port: number): Promise<void> {
-    await this.server.start(port);
+    await this._server.start(port);
   }
 
   async shutdown(): Promise<void> {
@@ -52,7 +52,7 @@ export class App {
     await messageBroker.disconnect();
     console.log("Shut dow server");
   }
-  private async connectDB() {
+  private async _connectDB() {
     try {
       await connectDB();
       await redisClientInstance.connect();
@@ -61,7 +61,7 @@ export class App {
       process.exit(1);
     }
   }
-  private async connectKafka(): Promise<void> {
+  private async _connectKafka(): Promise<void> {
     await messageBroker.connect();
   }
 }

@@ -4,13 +4,13 @@ import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 import { USER_ROLE } from "../../../shared/enums/role";
 
 export class FetchMentorController {
-  constructor(private fetchUserUseCase: IfetchUserUseCase) {}
+  constructor(private _fetchUserUseCase: IfetchUserUseCase) {}
 
   fetchMentors = async (req: Request, res: Response , next: NextFunction) => {
     try {
       const  role  = USER_ROLE.MENTOR;
       const { page , searchData } = req.query;      
-      const data = await this.fetchUserUseCase.execute(role , Number(page) , String(searchData));
+      const data = await this._fetchUserUseCase.execute(role , Number(page) , String(searchData));
       
       res.status(HttpStatusCode.OK).json({ data });
     } catch (error) {

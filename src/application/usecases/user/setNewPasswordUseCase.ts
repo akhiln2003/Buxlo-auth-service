@@ -5,12 +5,12 @@ import { Password } from "../../services/passwordHash";
 
 export class SetNewPasswordUseCase implements IsetNewPasswordUseCase {
   constructor(
-    private userRepositary: IuserRepository,
-    private jwtservice: ItokenService
+    private _userRepositary: IuserRepository,
+    private _jwtservice: ItokenService
   ) {}
   async execute(password: string, token: string): Promise<any> {
     try {
-      const { id } = (await this.jwtservice.verifyToken(
+      const { id } = (await this._jwtservice.verifyToken(
         token,
         process.env.JWT_FORGOTPASSWORD_SECRET as string
       )) as {
@@ -22,7 +22,7 @@ export class SetNewPasswordUseCase implements IsetNewPasswordUseCase {
 
       const hashPassword = (await Password.toHash(password)) as string;
 
-      await this.userRepositary.update(id, { password: hashPassword });
+      await this._userRepositary.update(id, { password: hashPassword });
 
       return {
         ok: true,
