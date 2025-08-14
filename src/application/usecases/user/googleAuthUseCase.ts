@@ -1,4 +1,3 @@
-import { BlockError } from "@buxlo/common";
 import { User } from "../../../domain/entities/User";
 import { ItokenService } from "../../../domain/interfaces/ItokenService";
 import { IuserRepository } from "../../../domain/interfaces/IuserRepository";
@@ -31,6 +30,7 @@ export class GoogelAuthUseCase implements IgoogleAuthUseCase {
       const hashPassword = (await Password.toHash(validat.sub)) as string;
 
       const existUser = await this._userRepository.findByEmail(validat.email);
+      if (existUser?.isBlocked) return { blocked: true };
       let randomImageName: any;
       if (validat.picture) {
         try {
@@ -58,7 +58,6 @@ export class GoogelAuthUseCase implements IgoogleAuthUseCase {
           console.error("Error downloading or uploading profile image", error);
         }
       }
-      if (existUser?.isBlocked) throw new BlockError();
       if (existUser && existUser.role == role) {
         const accessToken = this._jwtService.generateAccessToken(existUser);
         const refreshToken = this._jwtService.generateRefreshToken(existUser);

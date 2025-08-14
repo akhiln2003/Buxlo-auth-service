@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { IgoogleAuthUseCase } from "../../../application/interfaces/IgoogleAuthUseCase";
 import { USER_ROLE } from "../../../shared/enums/role";
 import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
-import { BadRequest, InternalServerError } from "@buxlo/common";
+import { BadRequest, BlockError, InternalServerError } from "@buxlo/common";
 import { IsetTokensUseCase } from "../../../application/interfaces/IsetTokensUseCase";
 import { registerUser } from "../../../infrastructure/rpc/grpc/client";
 
@@ -35,6 +35,9 @@ export class GoogleAuthController {
           response.refreshToken as string
         );
         res.status(HttpStatusCode.OK).json({ user: response.user });
+      }
+      if (response.blocked) {
+        throw new BlockError();
       } else {
         throw new InternalServerError();
       }
