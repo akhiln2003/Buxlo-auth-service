@@ -1,4 +1,4 @@
-import { UserResponseDto } from "../../zodSchemaDto/output/userResponseDto";
+import { UserResponseDto } from "../../domain/zodSchemaDto/output/userResponseDto";
 
 export interface IfetchUserUseCase {
   execute(

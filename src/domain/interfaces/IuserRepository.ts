@@ -1,22 +1,22 @@
-import { UserResponseDto } from "../../zodSchemaDto/output/userResponseDto";
 import { User } from "../entities/User";
 
 export interface IuserRepository {
-  create(user: User): Promise<UserResponseDto>;
-  findByEmail(email: string): Promise<UserResponseDto | null>;
-  findById(id: string): Promise<UserResponseDto | null>;
-  update(_id: string, query: object): Promise<UserResponseDto>;
-  findByRole(role: string): Promise<UserResponseDto[] | []>;
+  create(user: User): Promise<User>;
+  findByEmail(email: string): Promise<User | null>;
+  findById(id: string): Promise<User | null>;
+  update(_id: string, query: object): Promise<User>;
+  findByRole(role: string): Promise<User[] | []>;
   findOne(query: object): Promise<User | null>;
   find(
     role: string,
     page: number,
     searchData: string | undefined
-  ): Promise<{ users: UserResponseDto[]; totalPages: number }>;
+  ): Promise<{ users: User[]; totalPages: number }>;
+  getUserDetails(userId: string): Promise<User | null>;
   deleteUserProfileData(
     userId: string,
     data: { avatar?: string }
-  ): Promise<UserResponseDto>;
+  ): Promise<User>;
   changePassword(
     userId: string,
     currentPassword: string,

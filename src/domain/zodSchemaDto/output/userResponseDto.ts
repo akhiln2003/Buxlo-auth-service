@@ -11,11 +11,10 @@ export const userResponseDto = z.object({
   createdAt: z.date(),
   updatedAt: z.date(),
   avatar: z.string().optional(),
+  isPremium: z.boolean().optional(),
 });
 
 export type UserResponseDto = z.infer<typeof userResponseDto>;
-
-
 
 export class UserMapper {
   static toDto(user: any): UserResponseDto {
@@ -28,6 +27,7 @@ export class UserMapper {
       isBlocked: user.isBlocked,
       isGoogle: user.isGoogle,
       role: user.role,
+      isPremium: user.isPremium ?? undefined,
       createdAt: new Date(user.createdAt),
       updatedAt: new Date(user.updatedAt),
     });

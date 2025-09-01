@@ -3,47 +3,51 @@ import { Password } from "../../application/services/passwordHash";
 import { User } from "../../domain/entities/User";
 import { IuserRepository } from "../../domain/interfaces/IuserRepository";
 import { Auth } from "../database";
-import {
-  UserMapper,
-  UserResponseDto,
-} from "../../zodSchemaDto/output/userResponseDto";
 
 export class UserRepository implements IuserRepository {
   // creating and save new verified user
-  async create(user: User): Promise<UserResponseDto> {
+  async create(user: User): Promise<User> {
     const newUser = Auth.build(user);
     const newData = await newUser.save();
-    return UserMapper.toDto(newData);
+    return newData;
   }
 
   // find user by ther _id
-  async findById(id: string): Promise<UserResponseDto | null> {
+  async findById(id: string): Promise<User | null> {
     const data = await Auth.findById(id);
     if (!data) return null;
-    return UserMapper.toDto(data);
+    return data;
   }
 
   async findOne(query: object): Promise<User | null> {
     return await Auth.findOne(query);
   }
 
-  // find user by ther emailId
-  async findByEmail(email: string): Promise<UserResponseDto | null> {
-    const data = await Auth.findOne({ email });
-    if (!data) return null;
-    return UserMapper.toDto(data);
+  async getUserDetails(userId: string): Promise<User | null> {
+    try {
+      const userDetails = await Auth.findById(userId);
+      return userDetails ? userDetails : null;
+    } catch (error: any) {
+      throw new BadRequest(`Failed to get userDetails: ${error.message}`);
+    }
   }
 
-  async findByRole(role: string): Promise<UserResponseDto[] | []> {
-    const data = await Auth.find({ role });
-    return data.map((user) => UserMapper.toDto(user));
+  // find user by ther emailId
+  async findByEmail(email: string): Promise<User | null> {
+    const data = await Auth.findOne({ email });
+    if (!data) return null;
+    return data;
+  }
+
+  async findByRole(role: string): Promise<User[] | []> {
+    return await Auth.find({ role });
   }
 
   async find(
     role: string,
     page: number = 1,
     searchData?: string
-  ): Promise<{ users: UserResponseDto[]; totalPages: number }> {
+  ): Promise<{ users: User[]; totalPages: number }> {
     const limit = 10; // Number of users per page
     const skip = (page - 1) * limit;
 
@@ -61,28 +65,29 @@ export class UserRepository implements IuserRepository {
     const totalPages = Math.ceil(totalCount / limit);
 
     // Fetch users with pagination
-    const data = await Auth.find(filter).skip(skip).limit(limit);
-    const users = data.map((user) => UserMapper.toDto(user));
+    const users = await Auth.find(filter).skip(skip).limit(limit);
 
     return { users, totalPages };
   }
 
-  async update(_id: string, query: object): Promise<UserResponseDto> {
+  async update(_id: string, query: object): Promise<User> {
     const data = await Auth.findByIdAndUpdate(_id, {
       $set: query,
     });
-
-    return UserMapper.toDto(data);
+    if (!data) throw new BadRequest("Faild to find user invalid userId ");
+    return data;
   }
   async deleteUserProfileData(
     userId: string,
     data: { avatar?: string }
-  ): Promise<UserResponseDto> {
+  ): Promise<User> {
     try {
       const updatedUser = await Auth.findByIdAndUpdate(userId, {
         $unset: data,
       });
-      return UserMapper.toDto(updatedUser);
+      if (!updatedUser)
+        throw new BadRequest("Faild to find user invalid userId ");
+      return updatedUser;
     } catch (error: any) {
       throw new Error(`db error to update user: ${error.message}`);
     }
@@ -110,3 +115,6 @@ export class UserRepository implements IuserRepository {
     }
   }
 }
+
+
+

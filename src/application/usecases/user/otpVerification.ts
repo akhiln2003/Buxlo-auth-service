@@ -2,6 +2,7 @@ import { User } from "../../../domain/entities/User";
 import { IredisRepository } from "../../../domain/interfaces/IcacheUserRepo";
 import { ItokenService } from "../../../domain/interfaces/ItokenService";
 import { IuserRepository } from "../../../domain/interfaces/IuserRepository";
+import { UserMapper } from "../../../domain/zodSchemaDto/output/userResponseDto";
 import { UserCreatedProducer } from "../../../infrastructure/MessageBroker/kafka/producer/userCreatedProducer";
 import {
   IotpVerification,
@@ -50,7 +51,8 @@ export class OtpVerification implements IotpVerification {
         unverifiedUser.isBlocked,
         unverifiedUser.avatar
       );
-      const newUser = await this._userRepository.create(user); // Add new user in mongoDb
+      const userData = await this._userRepository.create(user); // Add new user in mongoDb
+      const newUser = UserMapper.toDto(userData);
       await this._redisRepository.removeUnverifiedUser(email); // removing unverifiedUser from redis
       const accessToken = this._jwtservice.generateAccessToken(user); // generating access token
       const refreshToken = this._jwtservice.generateRefreshToken(user); // generating referesh token

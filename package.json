@@ -35,7 +35,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.772.0",
     "@aws-sdk/s3-request-presigner": "^3.772.0",
-    "@buxlo/common": "^1.0.90",
+    "@buxlo/common": "^1.0.99",
     "@grpc/grpc-js": "^1.12.5",
     "@grpc/proto-loader": "^0.7.13",
     "axios": "^1.8.4",

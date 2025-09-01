@@ -1,5 +1,5 @@
 import { User } from "../../domain/entities/User";
-import { UserResponseDto } from "../../zodSchemaDto/output/userResponseDto";
+import { UserResponseDto } from "../../domain/zodSchemaDto/output/userResponseDto";
 
 export interface IOtpService {
   generateOtp(): string;

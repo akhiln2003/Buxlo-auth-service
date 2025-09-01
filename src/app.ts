@@ -5,19 +5,20 @@ import {
   disconnectDB,
 } from "./infrastructure/database/mongodb/connection";
 import { redisClientInstance } from "./infrastructure/database/redis/connection";
-
 import loggerMiddleware from "./presentation/middlewares/loggerMiddleware";
 import { messageBroker } from "./infrastructure/MessageBroker/config";
 import { AdminRouter } from "./presentation/routes/adminAuthRouts";
 import { UserRouter } from "./presentation/routes/userAuthRouts";
 import { MentorRouter } from "./presentation/routes/mentorAuthRouts";
 import { CommonRouter } from "./presentation/routes/commonAuthRouts";
+// import { grpcSubscriptionService } from "./infrastructure/rpc/grpc/subscriptionService";
 
 export class App {
   constructor(private _server: IServer) {}
 
   async initialize(): Promise<void> {
     await this._connectDB();
+    // await this._connectGrpc();
     await this._connectKafka();
     this._registerMiddleware();
     this.registerRoutes();
@@ -64,6 +65,15 @@ export class App {
   private async _connectKafka(): Promise<void> {
     await messageBroker.connect();
   }
+
+  // private async _connectGrpc(): Promise<void> {
+  //   try {
+  //     await grpcSubscriptionService.start();
+  //     console.log("gRPC server started successfully.");
+  //   } catch (error) {
+  //     console.error("Failed to start gRPC server:", error);
+  //   }
+  // }
 }
 
 export default App;

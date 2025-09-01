@@ -1,12 +1,10 @@
 import { BlockError, NotAuthorizedError, NotFountError } from "@buxlo/common";
 import { ItokenService } from "../../../domain/interfaces/ItokenService";
 import { IuserRepository } from "../../../domain/interfaces/IuserRepository";
-import {
-  UserMapper,
-  UserResponseDto,
-} from "../../../zodSchemaDto/output/userResponseDto";
+
 import { IsignInUserUseCase } from "../../interfaces/IsignInUserUseCase";
 import { Password } from "../../services/passwordHash";
+import { UserMapper, UserResponseDto } from "../../../domain/zodSchemaDto/output/userResponseDto";
 
 export class SignInUserUseCase implements IsignInUserUseCase {
   constructor(

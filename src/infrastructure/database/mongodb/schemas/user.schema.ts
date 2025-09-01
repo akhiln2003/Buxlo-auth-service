@@ -5,6 +5,7 @@ interface AuthAttr {
   email: string;
   password: string;
   avatar?: string;
+  isPremium?: boolean;
 }
 
 interface AuthDoc extends mongoose.Document {
@@ -16,6 +17,7 @@ interface AuthDoc extends mongoose.Document {
   isBlocked: boolean;
   isGoogle: boolean;
   role: "user" | "mentor";
+  isPremium?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -29,37 +31,40 @@ const authSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true
+      required: true,
     },
     email: {
       type: String,
-      required: true
+      required: true,
     },
     password: {
       type: String,
-      required: true
+      required: true,
     },
     avatar: {
-      type: String
+      type: String,
     },
     isAdmin: {
       type: Boolean,
-      default: false
+      default: false,
     },
     isBlocked: {
       type: Boolean,
-      default: false
+      default: false,
     },
     isGoogle: {
       type: Boolean,
       default: false,
-      required: true
+      required: true,
     },
     role: {
       type: String,
       required: true,
       enum: ["user", "mentor"],
-    }
+    },
+    isPremium: {
+      type: Boolean,
+    },
   },
   {
     toJSON: {
@@ -71,7 +76,7 @@ const authSchema = new mongoose.Schema(
         return ret;
       },
     },
-    timestamps: true
+    timestamps: true,
   }
 );
 
