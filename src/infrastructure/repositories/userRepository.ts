@@ -1,10 +1,10 @@
 import { BadRequest } from "@buxlo/common";
 import { Password } from "../../application/services/passwordHash";
 import { User } from "../../domain/entities/User";
-import { IuserRepository } from "../../domain/interfaces/IuserRepository";
+import { IUserRepository } from "../../domain/interfaces/IUserRepository";
 import { Auth } from "../database";
 
-export class UserRepository implements IuserRepository {
+export class UserRepository implements IUserRepository {
   // creating and save new verified user
   async create(user: User): Promise<User> {
     const newUser = Auth.build(user);

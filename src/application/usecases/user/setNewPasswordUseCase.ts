@@ -1,12 +1,12 @@
-import { ItokenService } from "../../../domain/interfaces/ItokenService";
-import { IuserRepository } from "../../../domain/interfaces/IuserRepository";
-import { IsetNewPasswordUseCase } from "../../interfaces/IsetNewPasswordUseCase";
+import { ITokenService } from "../../../domain/interfaces/ITokenService";
+import { IUserRepository } from "../../../domain/interfaces/IUserRepository";
+import { ISetNewPasswordUseCase } from "../../interfaces/ISetNewPasswordUseCase";
 import { Password } from "../../services/passwordHash";
 
-export class SetNewPasswordUseCase implements IsetNewPasswordUseCase {
+export class SetNewPasswordUseCase implements ISetNewPasswordUseCase {
   constructor(
-    private _userRepositary: IuserRepository,
-    private _jwtservice: ItokenService
+    private _userRepositary: IUserRepository,
+    private _jwtservice: ITokenService
   ) {}
   async execute(password: string, token: string): Promise<any> {
     try {

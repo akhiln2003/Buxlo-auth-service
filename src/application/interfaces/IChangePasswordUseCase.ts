@@ -1,5 +1,5 @@
 
-export interface IchangePasswordUseCase {
+export interface IChangePasswordUseCase {
   execute(
     userId: string,
     currentPassword: string,

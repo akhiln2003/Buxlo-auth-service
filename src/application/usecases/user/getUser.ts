@@ -1,9 +1,9 @@
 import { User } from "../../../domain/entities/User";
-import { IuserRepository } from "../../../domain/interfaces/IuserRepository";
-import { IgetUser } from "../../interfaces/IgetUser";
+import { IUserRepository } from "../../../domain/interfaces/IUserRepository";
+import { IGetUser } from "../../interfaces/IGetUser";
 
-export class GetUserUseCase implements IgetUser {
-  constructor(private _userRepositary: IuserRepository) {}
+export class GetUserUseCase implements IGetUser {
+  constructor(private _userRepositary: IUserRepository) {}
 
   async execute({
     email,

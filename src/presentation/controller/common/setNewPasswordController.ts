@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import { IsetNewPasswordUseCase } from "../../../application/interfaces/IsetNewPasswordUseCase";
+import { ISetNewPasswordUseCase } from "../../../application/interfaces/ISetNewPasswordUseCase";
 import { NotFountError } from "@buxlo/common";
 import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 
 export class SetNewPasswordController {
-  constructor(private _setNewPasswordUseCase: IsetNewPasswordUseCase) {}
+  constructor(private _setNewPasswordUseCase: ISetNewPasswordUseCase) {}
   setPassword = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { password, token } = req.body;

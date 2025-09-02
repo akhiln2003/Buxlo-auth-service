@@ -1,6 +1,6 @@
 import { Response } from "express";
 
-export interface ItokenService {
+export interface ITokenService {
   generateAccessToken(payload: object): string;
   generateRefreshToken(payload: object): string;
   generateResentPasswordToken(payload:object):string;

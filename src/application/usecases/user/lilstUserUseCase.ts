@@ -1,9 +1,9 @@
-import { IuserRepository } from "../../../domain/interfaces/IuserRepository";
+import { IUserRepository } from "../../../domain/interfaces/IUserRepository";
 import { UserMapper, UserResponseDto } from "../../../domain/zodSchemaDto/output/userResponseDto";
-import { IlistUser } from "../../interfaces/IlistUserUsecase";
+import { IListUser } from "../../interfaces/IListUserUsecase";
 
-export class ListUserUseCase implements IlistUser {
-  constructor(private _userRepositary: IuserRepository) {}
+export class ListUserUseCase implements IListUser {
+  constructor(private _userRepositary: IUserRepository) {}
   async execute(role: string): Promise<UserResponseDto[] | []> {
     const data = await this._userRepositary.findByRole(role);
     return data.map((user) => UserMapper.toDto(user));

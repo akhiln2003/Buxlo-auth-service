@@ -1,10 +1,10 @@
 import JWT, { SignOptions } from "jsonwebtoken";
 import { User } from "../../domain/entities/User";
-import { ItokenService } from "../../domain/interfaces/ItokenService";
+import { ITokenService } from "../../domain/interfaces/ITokenService";
 import { OAuth2Client } from "google-auth-library";
 import { Response } from "express";
 
-export class JwtService implements ItokenService {
+export class JwtService implements ITokenService {
   private readonly _accessTokenSecret: string;
   private readonly _refreshTokenSecret: string;
   private readonly _forgotPasswordSecret: string;

@@ -1,16 +1,16 @@
 import { NextFunction, Request, Response } from "express";
-import { IgetUser } from "../../../application/interfaces/IgetUser";
-import { IregisterUserTemporarily } from "../../../application/interfaces/IregisterUserTemporarily";
-import { IsendOtpEmailUseCase } from "../../../application/interfaces/IemailService";
+import { IGetUser } from "../../../application/interfaces/IGetUser";
+import { IRegisterUserTemporarily } from "../../../application/interfaces/IRegisterUserTemporarily";
+import { ISendOtpEmailUseCase } from "../../../application/interfaces/IEmailService";
 import { USER_ROLE } from "../../../shared/enums/role";
 import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 import { ConflictError } from "@buxlo/common";
 
 export class SignUpController {
   constructor(
-    private _getUserUseCase: IgetUser,
-    private _temporaryStoreAndOtpUseCase: IregisterUserTemporarily,
-    private _sendOtpEmailUseCase: IsendOtpEmailUseCase
+    private _getUserUseCase: IGetUser,
+    private _temporaryStoreAndOtpUseCase: IRegisterUserTemporarily,
+    private _sendOtpEmailUseCase: ISendOtpEmailUseCase
   ) {}
   signUp = async (req: Request, res: Response, next: NextFunction) => {
     try {

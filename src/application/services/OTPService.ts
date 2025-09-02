@@ -1,4 +1,4 @@
-import { IOtpService } from "../interfaces/Iotp";
+import { IOtpService } from "../interfaces/IOtp";
 
 export class OTPService implements IOtpService {
   generateOtp(): string {

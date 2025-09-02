@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from "express";
 import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
-import { IsignInUserUseCase } from "../../../application/interfaces/IsignInUserUseCase";
+import { ISignInUserUseCase } from "../../../application/interfaces/ISignInUserUseCase";
 import { USER_ROLE } from "../../../shared/enums/role";
-import { IsetTokensUseCase } from "../../../application/interfaces/IsetTokensUseCase";
+import { ISetTokensUseCase } from "../../../application/interfaces/ISetTokensUseCase";
 
 export class SignInController {
   constructor(
-    private _signInUserUseCase: IsignInUserUseCase,
-    private _setTokensUseCase: IsetTokensUseCase
+    private _signInUserUseCase: ISignInUserUseCase,
+    private _setTokensUseCase: ISetTokensUseCase
   ) {}
 
   signIn = async (req: Request, res: Response, next: NextFunction) => {

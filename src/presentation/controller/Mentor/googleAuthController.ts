@@ -1,15 +1,15 @@
 import { NextFunction, Request, Response } from "express";
-import { IgoogleAuthUseCase } from "../../../application/interfaces/IgoogleAuthUseCase";
+import { IGoogleAuthUseCase } from "../../../application/interfaces/IGoogleAuthUseCase";
 import { USER_ROLE } from "../../../shared/enums/role";
 import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 import { BadRequest, BlockError, InternalServerError } from "@buxlo/common";
-import { IsetTokensUseCase } from "../../../application/interfaces/IsetTokensUseCase";
+import { ISetTokensUseCase } from "../../../application/interfaces/ISetTokensUseCase";
 import { registerUser } from "../../../infrastructure/rpc/grpc/client";
 
 export class GoogleAuthController {
   constructor(
-    private _googleAuthUseCase: IgoogleAuthUseCase,
-    private _setTokensUseCase: IsetTokensUseCase
+    private _googleAuthUseCase: IGoogleAuthUseCase,
+    private _setTokensUseCase: ISetTokensUseCase
   ) {}
 
   auth = async (req: Request, res: Response, next: NextFunction) => {

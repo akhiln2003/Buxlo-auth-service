@@ -1,6 +1,6 @@
 import { UserResponseDto } from "../../domain/zodSchemaDto/output/userResponseDto";
 
-export interface IsignInUserUseCase {
+export interface ISignInUserUseCase {
   execute(
     email: string,
     password: string,

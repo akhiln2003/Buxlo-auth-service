@@ -1,10 +1,10 @@
 import { User } from "../../../domain/entities/User";
-import { IredisRepository } from "../../../domain/interfaces/IcacheUserRepo";
-import { IOtpService, IresendOtpUseCase } from "../../interfaces/Iotp";
+import { IRedisRepository } from "../../../domain/interfaces/ICacheUserRepo";
+import { IOtpService, IresendOtpUseCase } from "../../interfaces/IOtp";
 
 export class ResendOtpUseCase implements IresendOtpUseCase {
   constructor(
-    private _redisRepository: IredisRepository,
+    private _redisRepository: IRedisRepository,
     private _otpService: IOtpService
   ) {}
   async execute(user: Pick<User, "email">): Promise<string | void> {

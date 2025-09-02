@@ -1,12 +1,12 @@
-import { ItokenService } from "../../../domain/interfaces/ItokenService";
-import { IuserRepository } from "../../../domain/interfaces/IuserRepository";
+import { ITokenService } from "../../../domain/interfaces/ITokenService";
+import { IUserRepository } from "../../../domain/interfaces/IUserRepository";
 import { USER_ROLE } from "../../../shared/enums/role";
-import { IforgotPassword } from "../../interfaces/IforgotPassword";
+import { IForgotPassword } from "../../interfaces/IForgotPassword";
 
-export class ForgotPasswordUseCase implements IforgotPassword {
+export class ForgotPasswordUseCase implements IForgotPassword {
   constructor(
-    private _userRepositary: IuserRepository,
-    private _jwtservice: ItokenService
+    private _userRepositary: IUserRepository,
+    private _jwtservice: ITokenService
   ) {}
   async execute(email: string, role: string): Promise<any> {
     try {

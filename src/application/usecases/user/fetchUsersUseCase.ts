@@ -1,12 +1,12 @@
-import { IuserRepository } from "../../../domain/interfaces/IuserRepository";
+import { IUserRepository } from "../../../domain/interfaces/IUserRepository";
 import {
   UserMapper,
   UserResponseDto,
 } from "../../../domain/zodSchemaDto/output/userResponseDto";
-import { IfetchUserUseCase } from "../../interfaces/IfetchUserUseCase";
+import { IFetchUserUseCase } from "../../interfaces/IFetchUserUseCase";
 
-export class FetchUsersUseCase implements IfetchUserUseCase {
-  constructor(private _userRepositary: IuserRepository) {}
+export class FetchUsersUseCase implements IFetchUserUseCase {
+  constructor(private _userRepositary: IUserRepository) {}
   async execute(
     role: string,
     page: number,

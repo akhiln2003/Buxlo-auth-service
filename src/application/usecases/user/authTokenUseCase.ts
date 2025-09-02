@@ -1,8 +1,8 @@
-import { ItokenService } from "../../../domain/interfaces/ItokenService";
-import { IauthTokenUseCase } from "../../interfaces/IauthTokenUseCase";
+import { ITokenService } from "../../../domain/interfaces/ITokenService";
+import { IAuthTokenUseCase } from "../../interfaces/IAuthTokenUseCase";
 
-export class AuthTokenUseCase implements IauthTokenUseCase {
-  constructor(private _jwtService: ItokenService) {}
+export class AuthTokenUseCase implements IAuthTokenUseCase {
+  constructor(private _jwtService: ITokenService) {}
   async execute(refreshToken: string): Promise<any> {
     try {
       const response:any = await this._jwtService.verifyToken(

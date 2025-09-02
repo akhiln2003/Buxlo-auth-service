@@ -1,9 +1,9 @@
 import { RedisClientType } from "redis";
-import { IredisRepository } from "../../domain/interfaces/IcacheUserRepo";
+import { IRedisRepository } from "../../domain/interfaces/ICacheUserRepo";
 import { redisClientInstance } from "../database/redis/connection";
 import { User } from "../../domain/entities/User";
 
-export class RedisUserRepository implements IredisRepository {
+export class RedisUserRepository implements IRedisRepository {
   private readonly _redisClient: RedisClientType;
   constructor() {
     this._redisClient = redisClientInstance.getClient() as RedisClientType;
@@ -11,7 +11,7 @@ export class RedisUserRepository implements IredisRepository {
 
   async saveUnverifiedUser(email: string, user: User): Promise<void> {
     await this._redisClient.set(`unverified:${email}`, JSON.stringify(user), {
-      EX: 300
+      EX: 300,
     });
   }
   async getUnverifiedUser(email: string): Promise<User | null> {

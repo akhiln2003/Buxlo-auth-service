@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { IblockAndUnblockUseCase } from "../../../application/interfaces/IblockAndUnblockUseCase";
+import { IBlockAndUnblockUseCase } from "../../../application/interfaces/IBlockAndUnblockUseCase";
 import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 
 export class BlockAndUnblockController {
-  constructor(private _blockAndUnblockUseCase: IblockAndUnblockUseCase) {}
+  constructor(private _blockAndUnblockUseCase: IBlockAndUnblockUseCase) {}
 
   action = async (req: Request, res: Response, next: NextFunction) => {
     try {

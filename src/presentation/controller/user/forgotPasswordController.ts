@@ -1,14 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import { NotFountError } from "@buxlo/common";
-import { IforgotPassword } from "../../../application/interfaces/IforgotPassword";
+import { IForgotPassword } from "../../../application/interfaces/IForgotPassword";
 import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
-import { IsendForgotPasswordEmailUseCase } from "../../../application/interfaces/IemailService";
+import { ISendForgotPasswordEmailUseCase } from "../../../application/interfaces/IEmailService";
 import { USER_ROLE } from "../../../shared/enums/role";
 
 export class ForgotPasswordController {
   constructor(
-    private _forgotPasswordUseCase: IforgotPassword,
-    private _sendEmailServiceUseCase: IsendForgotPasswordEmailUseCase
+    private _forgotPasswordUseCase: IForgotPassword,
+    private _sendEmailServiceUseCase: ISendForgotPasswordEmailUseCase
   ) {}
   forgot = async (req: Request, res: Response, next: NextFunction) => {
     try {

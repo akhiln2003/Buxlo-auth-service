@@ -1,5 +1,5 @@
 import { errorHandler } from "@buxlo/common";
-import { IServer } from "./domain/interfaces/Iserver";
+import { IServer } from "./domain/interfaces/IServer";
 import {
   connectDB,
   disconnectDB,

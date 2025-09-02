@@ -1,10 +1,10 @@
-import { IemailService } from "../../application/interfaces/IemailService";
+import { IEmailService } from "../../application/interfaces/IEmailService";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-export class NodeMailerService implements IemailService {
+export class NodeMailerService implements IEmailService {
   private readonly _transporter;
   constructor() {
     if (!process.env.EMAIL_USER) {

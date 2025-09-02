@@ -1,15 +1,15 @@
 import {
-  IemailService,
-  IsendForgotPasswordEmailInput,
-  IsendForgotPasswordEmailUseCase,
-} from "../../interfaces/IemailService";
+  IEmailService,
+  ISendForgotPasswordEmailInput,
+  ISendForgotPasswordEmailUseCase,
+} from "../../interfaces/IEmailService";
 
 export class SendForgotPasswordEmailUseCase
-  implements IsendForgotPasswordEmailUseCase
+  implements ISendForgotPasswordEmailUseCase
 {
-  constructor(private _emailService: IemailService) {}
+  constructor(private _emailService: IEmailService) {}
 
-  async execute(input: IsendForgotPasswordEmailInput): Promise<void | boolean> {
+  async execute(input: ISendForgotPasswordEmailInput): Promise<void | boolean> {
     try {
       const subject = "Your forgot Password link";
       const body = `<body style="margin: 0; padding: 0; font-family: 'Amazon Ember', Arial, sans-serif;">

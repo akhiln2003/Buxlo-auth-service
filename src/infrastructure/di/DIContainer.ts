@@ -1,13 +1,13 @@
 import {
-  IsendForgotPasswordEmailUseCase,
-  IsendOtpEmailUseCase,
-} from "../../application/interfaces/IemailService";
-import { IgetUser } from "../../application/interfaces/IgetUser";
+  ISendForgotPasswordEmailUseCase,
+  ISendOtpEmailUseCase,
+} from "../../application/interfaces/IEmailService";
+import { IGetUser } from "../../application/interfaces/IGetUser";
 import {
-  IotpVerification,
+  IOtpVerification,
   IresendOtpUseCase,
-} from "../../application/interfaces/Iotp";
-import { IregisterUserTemporarily } from "../../application/interfaces/IregisterUserTemporarily";
+} from "../../application/interfaces/IOtp";
+import { IRegisterUserTemporarily } from "../../application/interfaces/IRegisterUserTemporarily";
 import { OTPService } from "../../application/services/OTPService";
 import { OtpVerification } from "../../application/usecases/user/otpVerification";
 import { RegisterUserTemporarily } from "../../application/usecases/common/registerUserTemporarily";
@@ -18,29 +18,29 @@ import { NodeMailerService } from "../external-services/nodeMailerService";
 import { RedisUserRepository } from "../repositories/cacheUserRepo";
 import { UserRepository } from "../repositories/userRepository";
 import { GetUserUseCase } from "../../application/usecases/user/getUser";
-import { IsignInUserUseCase } from "../../application/interfaces/IsignInUserUseCase";
+import { ISignInUserUseCase } from "../../application/interfaces/ISignInUserUseCase";
 import { SignInUserUseCase } from "../../application/usecases/user/signInUser";
-import { IforgotPassword } from "../../application/interfaces/IforgotPassword";
+import { IForgotPassword } from "../../application/interfaces/IForgotPassword";
 import { ForgotPasswordUseCase } from "../../application/usecases/user/forgotPasswordUseCase";
 import { SendForgotPasswordEmailUseCase } from "../../application/usecases/user/sendForgotPasswodEmail";
 import { SetNewPasswordUseCase } from "../../application/usecases/user/setNewPasswordUseCase";
-import { IsetNewPasswordUseCase } from "../../application/interfaces/IsetNewPasswordUseCase";
-import { IgoogleAuthUseCase } from "../../application/interfaces/IgoogleAuthUseCase";
+import { ISetNewPasswordUseCase } from "../../application/interfaces/ISetNewPasswordUseCase";
+import { IGoogleAuthUseCase } from "../../application/interfaces/IGoogleAuthUseCase";
 import { GoogelAuthUseCase } from "../../application/usecases/user/googleAuthUseCase";
-import { IlistUser } from "../../application/interfaces/IlistUserUsecase";
+import { IListUser } from "../../application/interfaces/IListUserUsecase";
 import { ListUserUseCase } from "../../application/usecases/user/lilstUserUseCase";
 import { FetchUsersUseCase } from "../../application/usecases/user/fetchUsersUseCase";
 import { BlockAndUnblockUseCase } from "../../application/usecases/user/blockAndUnblockUseCase";
 import { SetTokensUseCase } from "../../application/usecases/user/setTokensUseCase";
-import { IsetTokensUseCase } from "../../application/interfaces/IsetTokensUseCase";
-import { IauthTokenUseCase } from "../../application/interfaces/IauthTokenUseCase";
+import { ISetTokensUseCase } from "../../application/interfaces/ISetTokensUseCase";
+import { IAuthTokenUseCase } from "../../application/interfaces/IAuthTokenUseCase";
 import { AuthTokenUseCase } from "../../application/usecases/user/authTokenUseCase";
 import { messageBroker } from "../MessageBroker/config";
 import { UserCreatedProducer } from "../MessageBroker/kafka/producer/userCreatedProducer";
-import { Is3Service } from "../@types/Is3Service";
+import { IS3Service } from "../@types/IS3Service";
 import { S3Service } from "../external-services/s3-client";
 import { ChangePasswordUseCase } from "../../application/usecases/user/changePasswordUseCase";
-import { IchangePasswordUseCase } from "../../application/interfaces/IchangePasswordUseCase";
+import { IChangePasswordUseCase } from "../../application/interfaces/IChangePasswordUseCase";
 
 class DIContainer {
   private _authRepository: UserRepository;
@@ -49,7 +49,7 @@ class DIContainer {
   private _nodeMailerService: NodeMailerService;
   private __jwtService: JwtService;
   private _userCreatedProducer: UserCreatedProducer;
-  private _s3Service: Is3Service;
+  private _s3Service: IS3Service;
 
   constructor() {
     this._authRepository = new UserRepository();
@@ -63,26 +63,26 @@ class DIContainer {
     this._s3Service = new S3Service();
   }
 
-  getUserUseCase(): IgetUser {
+  getUserUseCase(): IGetUser {
     return new GetUserUseCase(this._authRepository);
   }
   fetchUsersUseCase() {
     return new FetchUsersUseCase(this._authRepository);
   }
 
-  getTemporaryStoreUseCase(): IregisterUserTemporarily {
+  getTemporaryStoreUseCase(): IRegisterUserTemporarily {
     return new RegisterUserTemporarily(this._rediseService, this._otpService);
   }
-  getSendOtpEmailServiceUseCase(): IsendOtpEmailUseCase {
+  getSendOtpEmailServiceUseCase(): ISendOtpEmailUseCase {
     return new SendOtpEmailUseCase(this._nodeMailerService);
   }
-  getSendForgotPasswordEmailServiceUseCase(): IsendForgotPasswordEmailUseCase {
+  getSendForgotPasswordEmailServiceUseCase(): ISendForgotPasswordEmailUseCase {
     return new SendForgotPasswordEmailUseCase(this._nodeMailerService);
   }
   getResendOtpUseCase(): IresendOtpUseCase {
     return new ResendOtpUseCase(this._rediseService, this._otpService);
   }
-  verifyUserUseCase(): IotpVerification {
+  verifyUserUseCase(): IOtpVerification {
     return new OtpVerification(
       this._rediseService,
       this._authRepository,
@@ -90,24 +90,24 @@ class DIContainer {
       this._userCreatedProducer
     );
   }
-  setTokensUseCase(): IsetTokensUseCase {
+  setTokensUseCase(): ISetTokensUseCase {
     return new SetTokensUseCase(this.__jwtService);
   }
-  authTokenUseCase(): IauthTokenUseCase {
+  authTokenUseCase(): IAuthTokenUseCase {
     return new AuthTokenUseCase(this.__jwtService);
   }
-  signInUserUseCase(): IsignInUserUseCase {
+  signInUserUseCase(): ISignInUserUseCase {
     return new SignInUserUseCase(this._authRepository, this.__jwtService);
   }
-  forgotPasswordUseCase(): IforgotPassword {
+  forgotPasswordUseCase(): IForgotPassword {
     return new ForgotPasswordUseCase(this._authRepository, this.__jwtService);
   }
 
-  setNewPasswordUseCase(): IsetNewPasswordUseCase {
+  setNewPasswordUseCase(): ISetNewPasswordUseCase {
     return new SetNewPasswordUseCase(this._authRepository, this.__jwtService);
   }
 
-  googelAuthUseCase(): IgoogleAuthUseCase {
+  googelAuthUseCase(): IGoogleAuthUseCase {
     return new GoogelAuthUseCase(
       this.__jwtService,
       this._authRepository,
@@ -116,10 +116,10 @@ class DIContainer {
     );
   }
 
-  changePasswordUseCase():IchangePasswordUseCase{
-    return new ChangePasswordUseCase(this._authRepository,);
+  changePasswordUseCase(): IChangePasswordUseCase {
+    return new ChangePasswordUseCase(this._authRepository);
   }
-  listUserUseCase(): IlistUser {
+  listUserUseCase(): IListUser {
     return new ListUserUseCase(this._authRepository);
   }
 

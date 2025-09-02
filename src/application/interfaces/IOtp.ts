@@ -5,19 +5,19 @@ export interface IOtpService {
   generateOtp(): string;
 }
 
-export interface IotpVerification {
+export interface IOtpVerification {
   execute({
     otp,
     email
-  }: IotpVerificationParams): Promise<IotpVerificationResponse>;
+  }: IOtpVerificationParams): Promise<IOtpVerificationResponse>;
 }
 
-export interface IotpVerificationParams {
+export interface IOtpVerificationParams {
   otp: string;
   email: string;
 }
 
-export interface IotpVerificationResponse {
+export interface IOtpVerificationResponse {
   success?: boolean;
   gone?: boolean;
   incorrect?:boolean;

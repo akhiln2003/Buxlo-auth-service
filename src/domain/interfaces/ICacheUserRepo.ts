@@ -1,6 +1,6 @@
 import { User } from "../entities/User";
 
-export interface IredisRepository {
+export interface IRedisRepository {
   saveUnverifiedUser(
     email: string,
     user: Pick<User, "avatar" | "email" | "name" | "password">

@@ -1,6 +1,6 @@
 import { Response } from "express";
 
-export interface IsetTokensUseCase{
+export interface ISetTokensUseCase{
     execute( res: Response, accessToken?: string, refreshToken?: string):void;
 
 }

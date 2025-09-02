@@ -1,15 +1,17 @@
 import { BlockError, NotAuthorizedError, NotFountError } from "@buxlo/common";
-import { ItokenService } from "../../../domain/interfaces/ItokenService";
-import { IuserRepository } from "../../../domain/interfaces/IuserRepository";
-
-import { IsignInUserUseCase } from "../../interfaces/IsignInUserUseCase";
+import { ITokenService } from "../../../domain/interfaces/ITokenService";
+import { IUserRepository } from "../../../domain/interfaces/IUserRepository";
+import { ISignInUserUseCase } from "../../interfaces/ISignInUserUseCase";
 import { Password } from "../../services/passwordHash";
-import { UserMapper, UserResponseDto } from "../../../domain/zodSchemaDto/output/userResponseDto";
+import {
+  UserMapper,
+  UserResponseDto,
+} from "../../../domain/zodSchemaDto/output/userResponseDto";
 
-export class SignInUserUseCase implements IsignInUserUseCase {
+export class SignInUserUseCase implements ISignInUserUseCase {
   constructor(
-    private _userRepository: IuserRepository,
-    private _jwtService: ItokenService
+    private _userRepository: IUserRepository,
+    private _jwtService: ITokenService
   ) {}
   async execute(
     email: string,

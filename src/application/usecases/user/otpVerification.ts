@@ -1,27 +1,27 @@
 import { User } from "../../../domain/entities/User";
-import { IredisRepository } from "../../../domain/interfaces/IcacheUserRepo";
-import { ItokenService } from "../../../domain/interfaces/ItokenService";
-import { IuserRepository } from "../../../domain/interfaces/IuserRepository";
+import { IRedisRepository } from "../../../domain/interfaces/ICacheUserRepo";
+import { ITokenService } from "../../../domain/interfaces/ITokenService";
+import { IUserRepository } from "../../../domain/interfaces/IUserRepository";
 import { UserMapper } from "../../../domain/zodSchemaDto/output/userResponseDto";
 import { UserCreatedProducer } from "../../../infrastructure/MessageBroker/kafka/producer/userCreatedProducer";
 import {
-  IotpVerification,
-  IotpVerificationParams,
-  IotpVerificationResponse,
-} from "../../interfaces/Iotp";
+  IOtpVerification,
+  IOtpVerificationParams,
+  IOtpVerificationResponse,
+} from "../../interfaces/IOtp";
 
-export class OtpVerification implements IotpVerification {
+export class OtpVerification implements IOtpVerification {
   constructor(
-    private _redisRepository: IredisRepository,
-    private _userRepository: IuserRepository,
-    private _jwtservice: ItokenService,
+    private _redisRepository: IRedisRepository,
+    private _userRepository: IUserRepository,
+    private _jwtservice: ITokenService,
     private _userCreatedProducer: UserCreatedProducer
   ) {}
 
   async execute({
     otp,
     email,
-  }: IotpVerificationParams): Promise<IotpVerificationResponse> {
+  }: IOtpVerificationParams): Promise<IOtpVerificationResponse> {
     try {
       const storedOTP = await this._redisRepository.getOtp(email); // finding otp from redis stor
       if (!storedOTP)

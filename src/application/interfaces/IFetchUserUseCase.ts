@@ -1,6 +1,6 @@
 import { UserResponseDto } from "../../domain/zodSchemaDto/output/userResponseDto";
 
-export interface IfetchUserUseCase {
+export interface IFetchUserUseCase {
   execute(
     role: string,
     page: number,

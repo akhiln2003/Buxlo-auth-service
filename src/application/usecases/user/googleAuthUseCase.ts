@@ -1,20 +1,20 @@
 import { User } from "../../../domain/entities/User";
-import { ItokenService } from "../../../domain/interfaces/ItokenService";
-import { IuserRepository } from "../../../domain/interfaces/IuserRepository";
-import { Is3Service } from "../../../infrastructure/@types/Is3Service";
+import { ITokenService } from "../../../domain/interfaces/ITokenService";
+import { IUserRepository } from "../../../domain/interfaces/IUserRepository";
+import { IS3Service } from "../../../infrastructure/@types/IS3Service";
 import { UserCreatedProducer } from "../../../infrastructure/MessageBroker/kafka/producer/userCreatedProducer";
 import { USER_ROLE } from "../../../shared/enums/role";
-import { IgoogleAuthUseCase } from "../../interfaces/IgoogleAuthUseCase";
+import { IGoogleAuthUseCase } from "../../interfaces/IGoogleAuthUseCase";
 import { Password } from "../../services/passwordHash";
 import axios from "axios";
 import sharp from "sharp";
 
-export class GoogelAuthUseCase implements IgoogleAuthUseCase {
+export class GoogelAuthUseCase implements IGoogleAuthUseCase {
   constructor(
-    private _jwtService: ItokenService,
-    private _userRepository: IuserRepository,
+    private _jwtService: ITokenService,
+    private _userRepository: IUserRepository,
     private _userCreatedProducer: UserCreatedProducer,
-    private _s3Service: Is3Service
+    private _s3Service: IS3Service
   ) {}
 
   async execute(token: string, role: string): Promise<any> {

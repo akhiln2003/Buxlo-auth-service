@@ -1,14 +1,14 @@
 import { NextFunction, Request, Response } from "express";
-import { IotpVerification } from "../../../application/interfaces/Iotp";
+import { IOtpVerification } from "../../../application/interfaces/IOtp";
 import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 import { BadRequest, GoneError, InternalServerError } from "@buxlo/common";
-import { IsetTokensUseCase } from "../../../application/interfaces/IsetTokensUseCase";
+import { ISetTokensUseCase } from "../../../application/interfaces/ISetTokensUseCase";
 import { registerUser } from "../../../infrastructure/rpc/grpc/client";
 
 export class OtpVerifyController {
   constructor(
-    private _verifyUserUseCase: IotpVerification,
-    private _setTokensUseCase: IsetTokensUseCase
+    private _verifyUserUseCase: IOtpVerification,
+    private _setTokensUseCase: ISetTokensUseCase
   ) {}
 
   verify = async (

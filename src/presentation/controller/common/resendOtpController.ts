@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from "express-serve-static-core";
 import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
-import { IsendOtpEmailUseCase } from "../../../application/interfaces/IemailService";
-import { IresendOtpUseCase } from "../../../application/interfaces/Iotp";
+import { ISendOtpEmailUseCase } from "../../../application/interfaces/IEmailService";
+import { IresendOtpUseCase } from "../../../application/interfaces/IOtp";
 
 export class ResendOtpController {
   constructor(
-    private _sendEmailServiceUseCase: IsendOtpEmailUseCase,
+    private _sendEmailServiceUseCase: ISendOtpEmailUseCase,
     private _resendOtpUseCase: IresendOtpUseCase
   ) {}
 

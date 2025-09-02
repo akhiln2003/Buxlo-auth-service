@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import { IlistUser } from "../../../application/interfaces/IlistUserUsecase";
+import { IListUser } from "../../../application/interfaces/IListUserUsecase";
 import { USER_ROLE } from "../../../shared/enums/role";
 import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 
 export class ListUserController {
-  constructor(private _listUserUseCase: IlistUser) {}
+  constructor(private _listUserUseCase: IListUser) {}
 
   listUser = async (req: Request, res: Response, next: NextFunction) => {
     try {

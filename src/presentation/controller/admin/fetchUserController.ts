@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import { IfetchUserUseCase } from "../../../application/interfaces/IfetchUserUseCase";
+import { IFetchUserUseCase } from "../../../application/interfaces/IFetchUserUseCase";
 import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 import { USER_ROLE } from "../../../shared/enums/role";
 
 export class FetchUserController {
-  constructor(private _fetchUserUseCase: IfetchUserUseCase) {}
+  constructor(private _fetchUserUseCase: IFetchUserUseCase) {}
 
   fetchUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {

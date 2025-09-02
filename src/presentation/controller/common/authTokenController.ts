@@ -1,13 +1,13 @@
 import { NotAuthorizedError } from "@buxlo/common";
 import { NextFunction, Request, Response } from "express";
-import { IauthTokenUseCase } from "../../../application/interfaces/IauthTokenUseCase";
-import { IsetTokensUseCase } from "../../../application/interfaces/IsetTokensUseCase";
+import { IAuthTokenUseCase } from "../../../application/interfaces/IAuthTokenUseCase";
+import { ISetTokensUseCase } from "../../../application/interfaces/ISetTokensUseCase";
 import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 
 export class RefresgTokenController {
   constructor(
-    private _authTokenUseCase: IauthTokenUseCase,
-    private _setTokensUseCase: IsetTokensUseCase
+    private _authTokenUseCase: IAuthTokenUseCase,
+    private _setTokensUseCase: ISetTokensUseCase
   ) {}
   validate = async (req: Request, res: Response, next: NextFunction) => {
     try {

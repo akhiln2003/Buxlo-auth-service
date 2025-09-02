@@ -1,8 +1,8 @@
-import { IuserRepository } from "../../../domain/interfaces/IuserRepository";
-import { IchangePasswordUseCase } from "../../interfaces/IchangePasswordUseCase";
+import { IUserRepository } from "../../../domain/interfaces/IUserRepository";
+import { IChangePasswordUseCase } from "../../interfaces/IChangePasswordUseCase";
 
-export class ChangePasswordUseCase implements IchangePasswordUseCase {
-  constructor(private _authRepository: IuserRepository) {}
+export class ChangePasswordUseCase implements IChangePasswordUseCase {
+  constructor(private _authRepository: IUserRepository) {}
   async execute(
     userId: string,
     currentPassword: string,
