@@ -11,7 +11,7 @@ export const userResponseDto = z.object({
   createdAt: z.date(),
   updatedAt: z.date(),
   avatar: z.string().optional(),
-  isPremium: z.boolean().optional(),
+  premiumId: z.string().optional(),
 });
 
 export type UserResponseDto = z.infer<typeof userResponseDto>;
@@ -27,7 +27,7 @@ export class UserMapper {
       isBlocked: user.isBlocked,
       isGoogle: user.isGoogle,
       role: user.role,
-      isPremium: user.isPremium ?? undefined,
+      premiumId: user.premiumId ?? undefined,
       createdAt: new Date(user.createdAt),
       updatedAt: new Date(user.updatedAt),
     });

@@ -5,7 +5,7 @@ interface AuthAttr {
   email: string;
   password: string;
   avatar?: string;
-  isPremium?: boolean;
+  premiumId?: boolean;
 }
 
 interface AuthDoc extends mongoose.Document {
@@ -17,7 +17,7 @@ interface AuthDoc extends mongoose.Document {
   isBlocked: boolean;
   isGoogle: boolean;
   role: "user" | "mentor";
-  isPremium?: boolean;
+  premiumId?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -62,8 +62,8 @@ const authSchema = new mongoose.Schema(
       required: true,
       enum: ["user", "mentor"],
     },
-    isPremium: {
-      type: Boolean,
+    premiumId: {
+      type: String,
     },
   },
   {
