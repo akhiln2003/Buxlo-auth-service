@@ -6,7 +6,7 @@ import { Password } from "../../services/passwordHash";
 import {
   UserMapper,
   UserResponseDto,
-} from "../../../domain/zodSchemaDto/output/userResponseDto";
+} from "../../../domain/zodSchemaDto/output/userResponse.dto";
 
 export class SignInUserUseCase implements ISignInUserUseCase {
   constructor(

@@ -1,5 +1,5 @@
 import { IUserRepository } from "../../../domain/interfaces/IUserRepository";
-import { UserMapper, UserResponseDto } from "../../../domain/zodSchemaDto/output/userResponseDto";
+import { UserMapper, UserResponseDto } from "../../../domain/zodSchemaDto/output/userResponse.dto";
 import { IListUser } from "../../interfaces/IListUserUsecase";
 
 export class ListUserUseCase implements IListUser {

@@ -1,4 +1,4 @@
-import { User } from "../../../domain/entities/User";
+import { User } from "../../../domain/entities/User.entity";
 import { ITokenService } from "../../../domain/interfaces/ITokenService";
 import { IUserRepository } from "../../../domain/interfaces/IUserRepository";
 import { IS3Service } from "../../../infrastructure/@types/IS3Service";
@@ -11,7 +11,7 @@ import {
 import { Password } from "../../services/passwordHash";
 import axios from "axios";
 import sharp from "sharp";
-import { UserMapper } from "../../../domain/zodSchemaDto/output/userResponseDto";
+import { UserMapper } from "../../../domain/zodSchemaDto/output/userResponse.dto";
 
 interface GooglePayload {
   sub: string;

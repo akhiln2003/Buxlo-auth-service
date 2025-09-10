@@ -7,10 +7,10 @@ import {
 import { redisClientInstance } from "./infrastructure/database/redis/connection";
 import loggerMiddleware from "./presentation/middlewares/loggerMiddleware";
 import { messageBroker } from "./infrastructure/MessageBroker/config";
-import { AdminRouter } from "./presentation/routes/adminAuthRouts";
-import { UserRouter } from "./presentation/routes/userAuthRouts";
-import { MentorRouter } from "./presentation/routes/mentorAuthRouts";
-import { CommonRouter } from "./presentation/routes/commonAuthRouts";
+import { AdminRouter } from "./presentation/routes/adminAuth.routs";
+import { UserRouter } from "./presentation/routes/userAuth.routs";
+import { MentorRouter } from "./presentation/routes/mentorAuth.routs";
+import { CommonRouter } from "./presentation/routes/commonAuth.routs";
 // import { grpcSubscriptionService } from "./infrastructure/rpc/grpc/subscriptionService";
 
 export class App {

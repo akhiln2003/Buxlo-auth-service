@@ -1,4 +1,4 @@
-import { User } from "../../domain/entities/User";
+import { User } from "../../domain/entities/User.entity";
 
 export interface IGetUser {
   execute(params: {

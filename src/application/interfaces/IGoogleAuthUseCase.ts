@@ -1,4 +1,4 @@
-import { UserResponseDto } from "../../domain/zodSchemaDto/output/userResponseDto";
+import { UserResponseDto } from "../../domain/zodSchemaDto/output/userResponse.dto";
 
 export type GoogleAuthResult =
   | { type: "invalidToken" }

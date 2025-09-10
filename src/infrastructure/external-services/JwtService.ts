@@ -1,5 +1,5 @@
 import JWT, { SignOptions } from "jsonwebtoken";
-import { User } from "../../domain/entities/User";
+import { User } from "../../domain/entities/User.entity";
 import {
   ITokenData,
   ITokenService,

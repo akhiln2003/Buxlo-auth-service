@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { DIContainer } from "../../infrastructure/di/DIContainer";
 import { validateReqBody } from "@buxlo/common";
-import { ChangePasswordController } from "../controller/common/changePasswordController";
-import { changePasswordDto } from "../../domain/zodSchemaDto/input/user/changePasswordDto";
+import { ChangePasswordController } from "../controller/common/changePassword.controller";
+import { changePasswordDto } from "../../domain/zodSchemaDto/input/user/changePassword.dto";
 
 export class CommonRouter {
   private _router: Router;

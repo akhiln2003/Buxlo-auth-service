@@ -1,6 +1,6 @@
 import { BadRequest } from "@buxlo/common";
 import { Password } from "../../application/services/passwordHash";
-import { User } from "../../domain/entities/User";
+import { User } from "../../domain/entities/User.entity";
 import { IUserRepository } from "../../domain/interfaces/IUserRepository";
 import { Auth } from "../database";
 
