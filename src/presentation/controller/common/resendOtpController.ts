@@ -13,7 +13,7 @@ export class ResendOtpController {
     try {
       const { email, name } = req.body;
 
-      const otp = (await this._resendOtpUseCase.execute({ email })) as string; // regnerating otp
+      const otp = (await this._resendOtpUseCase.execute(email)) as string; 
       await this._sendEmailServiceUseCase.execute({ email, name, otp }); // sending otp to email
       console.log("Your OTP is: ", otp);
 

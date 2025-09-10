@@ -5,7 +5,8 @@ interface AuthAttr {
   email: string;
   password: string;
   avatar?: string;
-  premiumId?: boolean;
+  premiumId?: string;
+  role: "user" | "mentor" | "admin";
 }
 
 interface AuthDoc extends mongoose.Document {
@@ -16,8 +17,8 @@ interface AuthDoc extends mongoose.Document {
   isAdmin: boolean;
   isBlocked: boolean;
   isGoogle: boolean;
-  role: "user" | "mentor";
-  premiumId?: boolean;
+  role: "user" | "mentor" | "admin";
+  premiumId?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -60,7 +61,7 @@ const authSchema = new mongoose.Schema(
     role: {
       type: String,
       required: true,
-      enum: ["user", "mentor"],
+      enum: ["user", "mentor", "admin"],
     },
     premiumId: {
       type: String,

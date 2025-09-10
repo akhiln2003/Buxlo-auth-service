@@ -1,8 +1,12 @@
 import JWT, { SignOptions } from "jsonwebtoken";
 import { User } from "../../domain/entities/User";
-import { ITokenService } from "../../domain/interfaces/ITokenService";
+import {
+  ITokenData,
+  ITokenService,
+} from "../../domain/interfaces/ITokenService";
 import { OAuth2Client } from "google-auth-library";
 import { Response } from "express";
+import { BadRequest } from "@buxlo/common";
 
 export class JwtService implements ITokenService {
   private readonly _accessTokenSecret: string;
@@ -13,7 +17,8 @@ export class JwtService implements ITokenService {
   constructor() {
     this._accessTokenSecret = process.env.JWT_ACCESS_SECRET as string;
     this._refreshTokenSecret = process.env.JWT_REFRESH_SECRET as string;
-    this._forgotPasswordSecret = process.env.JWT_FORGOTPASSWORD_SECRET as string;
+    this._forgotPasswordSecret = process.env
+      .JWT_FORGOTPASSWORD_SECRET as string;
     this._googleClientId = process.env.GOOGLE_CLIENT_ID as string;
   }
   generateAccessToken(user: Pick<User, "id" | "email" | "role">): string {
@@ -46,8 +51,14 @@ export class JwtService implements ITokenService {
     );
   }
 
-  verifyToken(token: string, secret: string): unknown {
-    return JWT.verify(token, secret);
+  verifyToken(token: string, secret: string): ITokenData {
+    const decoded = JWT.verify(token, secret);
+
+    if (typeof decoded === "string") {
+      throw new BadRequest("Invalid token payload: expected object but got string");
+    }
+
+    return decoded as ITokenData;
   }
 
   setTokens(res: Response, accessToken?: string, refreshToken?: string): void {

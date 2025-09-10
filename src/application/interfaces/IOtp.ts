@@ -1,4 +1,3 @@
-import { User } from "../../domain/entities/User";
 import { UserResponseDto } from "../../domain/zodSchemaDto/output/userResponseDto";
 
 export interface IOtpService {
@@ -8,7 +7,7 @@ export interface IOtpService {
 export interface IOtpVerification {
   execute({
     otp,
-    email
+    email,
   }: IOtpVerificationParams): Promise<IOtpVerificationResponse>;
 }
 
@@ -20,8 +19,8 @@ export interface IOtpVerificationParams {
 export interface IOtpVerificationResponse {
   success?: boolean;
   gone?: boolean;
-  incorrect?:boolean;
-  unverifiedUser?:boolean;
+  incorrect?: boolean;
+  unverifiedUser?: boolean;
   InternalServer?: boolean;
   error?: any;
   user?: UserResponseDto | null;
@@ -30,5 +29,5 @@ export interface IOtpVerificationResponse {
 }
 
 export interface IresendOtpUseCase {
-  execute(user: Pick<User, "email">): Promise<string | void>;
+  execute(email: string): Promise<string | void>;
 }

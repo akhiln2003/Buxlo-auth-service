@@ -10,6 +10,6 @@ export interface IRedisRepository {
   storeOtp(email: string, otp: string): Promise<void>;
   getOtp(email: string): Promise<string | null>;
   storeToken(token: string, email: string): Promise<void>;
-  verifyToken(email: string): Promise<boolean>;
+  // verifyToken(email: string): Promise<boolean>;
   deleteToken(email: string): Promise<void>;
 }

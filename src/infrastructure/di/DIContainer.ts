@@ -26,7 +26,7 @@ import { SendForgotPasswordEmailUseCase } from "../../application/usecases/user/
 import { SetNewPasswordUseCase } from "../../application/usecases/user/setNewPasswordUseCase";
 import { ISetNewPasswordUseCase } from "../../application/interfaces/ISetNewPasswordUseCase";
 import { IGoogleAuthUseCase } from "../../application/interfaces/IGoogleAuthUseCase";
-import { GoogelAuthUseCase } from "../../application/usecases/user/googleAuthUseCase";
+import { GoogleAuthUseCase } from "../../application/usecases/user/googleAuthUseCase";
 import { IListUser } from "../../application/interfaces/IListUserUsecase";
 import { ListUserUseCase } from "../../application/usecases/user/lilstUserUseCase";
 import { FetchUsersUseCase } from "../../application/usecases/user/fetchUsersUseCase";
@@ -108,7 +108,7 @@ class DIContainer {
   }
 
   googelAuthUseCase(): IGoogleAuthUseCase {
-    return new GoogelAuthUseCase(
+    return new GoogleAuthUseCase(
       this.__jwtService,
       this._authRepository,
       this._userCreatedProducer,

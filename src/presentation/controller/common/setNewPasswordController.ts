@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import { ISetNewPasswordUseCase } from "../../../application/interfaces/ISetNewPasswordUseCase";
-import { NotFountError } from "@buxlo/common";
 import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 
 export class SetNewPasswordController {
@@ -12,9 +11,7 @@ export class SetNewPasswordController {
         password,
         token
       );
-      if (response?.notfount) {
-        throw new NotFountError();
-      }
+
       if (response.ok) {
         res
           .status(HttpStatusCode.OK)

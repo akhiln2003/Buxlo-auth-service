@@ -1,7 +1,10 @@
-import { User } from "../../domain/entities/User";
-
+export interface IRegisterUserTemporarilyProps {
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+  avatar?: string;
+}
 export interface IRegisterUserTemporarily {
-  execute(
-    user: Pick<User, "avatar" | "email" | "name" | "password" | "role">
-  ): Promise<string | void>;
+  execute(user: IRegisterUserTemporarilyProps): Promise<string | void>;
 }

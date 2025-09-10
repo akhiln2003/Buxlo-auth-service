@@ -1,11 +1,16 @@
-import { ITokenService } from "../../../domain/interfaces/ITokenService";
+import {
+  ITokenData,
+  ITokenService,
+} from "../../../domain/interfaces/ITokenService";
 import { IAuthTokenUseCase } from "../../interfaces/IAuthTokenUseCase";
 
 export class AuthTokenUseCase implements IAuthTokenUseCase {
   constructor(private _jwtService: ITokenService) {}
-  async execute(refreshToken: string): Promise<any> {
+  async execute(
+    refreshToken: string
+  ): Promise<{ accessToken?: string; notAuth?: boolean }> {
     try {
-      const response:any = await this._jwtService.verifyToken(
+      const response: ITokenData = this._jwtService.verifyToken(
         refreshToken,
         process.env.JWT_REFRESH_SECRET as string
       );
@@ -18,7 +23,6 @@ export class AuthTokenUseCase implements IAuthTokenUseCase {
       return {
         accessToken,
       };
-
     } catch (error) {
       console.error(error);
       return { notAuth: true };

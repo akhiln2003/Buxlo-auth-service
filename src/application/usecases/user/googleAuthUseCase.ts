@@ -4,12 +4,23 @@ import { IUserRepository } from "../../../domain/interfaces/IUserRepository";
 import { IS3Service } from "../../../infrastructure/@types/IS3Service";
 import { UserCreatedProducer } from "../../../infrastructure/MessageBroker/kafka/producer/userCreatedProducer";
 import { USER_ROLE } from "../../../shared/enums/role";
-import { IGoogleAuthUseCase } from "../../interfaces/IGoogleAuthUseCase";
+import {
+  GoogleAuthResult,
+  IGoogleAuthUseCase,
+} from "../../interfaces/IGoogleAuthUseCase";
 import { Password } from "../../services/passwordHash";
 import axios from "axios";
 import sharp from "sharp";
+import { UserMapper } from "../../../domain/zodSchemaDto/output/userResponseDto";
 
-export class GoogelAuthUseCase implements IGoogleAuthUseCase {
+interface GooglePayload {
+  sub: string;
+  email: string;
+  given_name: string;
+  picture?: string;
+}
+
+export class GoogleAuthUseCase implements IGoogleAuthUseCase {
   constructor(
     private _jwtService: ITokenService,
     private _userRepository: IUserRepository,
@@ -17,35 +28,36 @@ export class GoogelAuthUseCase implements IGoogleAuthUseCase {
     private _s3Service: IS3Service
   ) {}
 
-  async execute(token: string, role: string): Promise<any> {
+  async execute(token: string, role: string): Promise<GoogleAuthResult> {
     try {
-      const validat = await this._jwtService.verifyGoogleToken(token);
+      const payload = (await this._jwtService.verifyGoogleToken(
+        token
+      )) as GooglePayload | null;
 
-      if (!validat) {
-        return {
-          validat: true,
-        };
+      if (!payload) {
+        return { type: "invalidToken" };
       }
 
-      const hashPassword = (await Password.toHash(validat.sub)) as string;
+      const hashPassword = await Password.toHash(payload.sub);
 
-      const existUser = await this._userRepository.findByEmail(validat.email);
-      if (existUser?.isBlocked) return { blocked: true };
-      let randomImageName: any;
-      if (validat.picture) {
+      const existUser = await this._userRepository.findByEmail(payload.email);
+      if (existUser?.isBlocked) return { type: "blocked" };
+
+      let randomImageName: string | undefined;
+      if (payload.picture) {
         try {
-          const response = await axios.get(validat.picture, {
+          const response = await axios.get<ArrayBuffer>(payload.picture, {
             responseType: "arraybuffer",
           });
-          const buffer = await sharp(response.data)
+          const buffer = await sharp(Buffer.from(response.data))
             .resize({ height: 300, width: 300, fit: "cover" })
             .toBuffer();
 
-          randomImageName = Math.random() + Date.now();
+          randomImageName = `${Math.random()}${Date.now()}`;
           const uploadResponse = await this._s3Service.uploadImageToBucket(
             buffer,
             "image/jpeg",
-            role == USER_ROLE.USER
+            role === USER_ROLE.USER
               ? `UserProfiles/${randomImageName}`
               : `MentorProfiles/${randomImageName}`
           );
@@ -58,24 +70,32 @@ export class GoogelAuthUseCase implements IGoogleAuthUseCase {
           console.error("Error downloading or uploading profile image", error);
         }
       }
-      if (existUser && existUser.role == role) {
+
+      if (existUser && existUser.role === role) {
         const accessToken = this._jwtService.generateAccessToken(existUser);
         const refreshToken = this._jwtService.generateRefreshToken(existUser);
-        return { success: true, accessToken, refreshToken, user: existUser };
+        return {
+          type: "success",
+          accessToken,
+          refreshToken,
+          user: UserMapper.toDto(existUser),
+        };
       } else {
-        // Creating new User
+        // Create new user
         const user = new User(
-          validat.given_name,
-          validat.email,
-          hashPassword,
-          role,
+          payload.given_name,
+          payload.email,
+          hashPassword as string,
+          role as USER_ROLE,
           false,
           randomImageName
         );
         const newUser = await this._userRepository.create(user);
-        const accessToken = this._jwtService.generateAccessToken(user);
-        const refreshToken = this._jwtService.generateRefreshToken(user);
-        const data = {
+
+        const accessToken = this._jwtService.generateAccessToken(newUser);
+        const refreshToken = this._jwtService.generateRefreshToken(newUser);
+
+        await this._userCreatedProducer.produce({
           id: newUser.id as string,
           name: newUser.name,
           email: newUser.email,
@@ -84,13 +104,18 @@ export class GoogelAuthUseCase implements IGoogleAuthUseCase {
           isBlocked: newUser.isBlocked,
           isGoogle: newUser.isGoogle,
           role: newUser.role as "user" | "admin" | "mentor",
+        });
+
+        return {
+          type: "success",
+          accessToken,
+          refreshToken,
+          user: UserMapper.toDto(newUser),
         };
-        await this._userCreatedProducer.produce(data);
-        return { success: true, accessToken, refreshToken, user: newUser };
       }
     } catch (error) {
-      console.error("Error from OTP varification : ", error);
-      return { InternalServer: true, error };
+      console.error("Error from GoogleAuthUseCase:", error);
+      return { type: "error", error };
     }
   }
 }

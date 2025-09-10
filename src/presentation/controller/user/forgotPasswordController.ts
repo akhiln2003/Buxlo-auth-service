@@ -10,29 +10,35 @@ export class ForgotPasswordController {
     private _forgotPasswordUseCase: IForgotPassword,
     private _sendEmailServiceUseCase: ISendForgotPasswordEmailUseCase
   ) {}
+
   forgot = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { email } = req.body;
       const role = USER_ROLE.USER;
+
       const response = await this._forgotPasswordUseCase.execute(email, role);
-      if (response?.notfount) {
-        throw new NotFountError("This email is invalid");
-      }
-      if (response?.resetPasswordUrl) {
-        await this._sendEmailServiceUseCase.execute({
-          email: response.user.email,
-          name: response.user.name,
-          link: response.resetPasswordUrl,
-        }); // sending otp to email
-        res.status(HttpStatusCode.OK).json({
-          message:
-            "Password reset link sent succesfully. Please check your email!",
-        });
-      }
-      if (response?.error) {
-        res
-          .status(HttpStatusCode.InternalServerError)
-          .json({ error: response.error });
+
+      switch (response.type) {
+        case "notFound":
+          throw new NotFountError("This email is invalid");
+
+        case "success":
+          await this._sendEmailServiceUseCase.execute({
+            email: response.user.email,
+            name: response.user.name,
+            link: response.resetPasswordUrl,
+          });
+          res.status(HttpStatusCode.OK).json({
+            message:
+              "Password reset link sent successfully. Please check your email!",
+          });
+          break;
+
+        case "error":
+          res
+            .status(HttpStatusCode.InternalServerError)
+            .json({ error: response.error });
+          break;
       }
     } catch (error) {
       next(error);

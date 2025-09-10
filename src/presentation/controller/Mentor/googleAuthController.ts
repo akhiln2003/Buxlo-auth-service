@@ -17,32 +17,36 @@ export class GoogleAuthController {
       const { token } = req.body;
       const role = USER_ROLE.MENTOR;
       const response = await this._googleAuthUseCase.execute(token, role);
-      if (response.validat) {
-        throw new BadRequest("validation faild please try again");
-      }
-      if (response.success) {
-        await registerUser({
-          id: response.user!.id,
-          email: response.user!.email,
-          name: response.user!.name,
-          role: response.user!.role,
-          isGoogle: response.user!.isGoogle,
-          avatar: response.user!.avatar,
-        });
-        this._setTokensUseCase.execute(
-          res,
-          response.accessToken as string,
-          response.refreshToken as string
-        );
-        res.status(HttpStatusCode.OK).json({ user: response.user });
-      }
-      if (response.blocked) {
-        throw new BlockError();
-      } else {
-        throw new InternalServerError();
+
+      switch (response.type) {
+        case "success":
+          await registerUser({
+            id: response.user.id,
+            name: response.user.name,
+            email: response.user.email,
+            avatar: response.user.avatar,
+            role: response.user.role,
+            isGoogle: response.user.isGoogle,
+          });
+          this._setTokensUseCase.execute(
+            res,
+            response.accessToken,
+            response.refreshToken
+          );
+           res.status(HttpStatusCode.OK).json({ user: response.user });
+           break;
+
+        case "blocked":
+          throw new BlockError();
+
+        case "invalidToken":
+          throw new BadRequest("Invalid Google token");
+
+        case "error":
+          throw new InternalServerError();
       }
     } catch (error) {
-      console.error("Error in OTP verification controller:", error);
+      console.error("Error in GoogleAuthController:", error);
       next(error);
     }
   };

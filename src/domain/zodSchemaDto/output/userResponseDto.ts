@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { User } from "../../entities/User";
 
 export const userResponseDto = z.object({
   id: z.string(),
@@ -17,9 +18,9 @@ export const userResponseDto = z.object({
 export type UserResponseDto = z.infer<typeof userResponseDto>;
 
 export class UserMapper {
-  static toDto(user: any): UserResponseDto {
+  static toDto(user: User): UserResponseDto {
     return userResponseDto.parse({
-      id: user._id?.toString() ?? user.id,
+      id:  user.id,
       name: user.name,
       email: user.email,
       avatar: user.avatar,
@@ -28,8 +29,8 @@ export class UserMapper {
       isGoogle: user.isGoogle,
       role: user.role,
       premiumId: user.premiumId ?? undefined,
-      createdAt: new Date(user.createdAt),
-      updatedAt: new Date(user.updatedAt),
+      createdAt: new Date(user.createdAt as Date),
+      updatedAt: new Date(user.updatedAt as Date),
     });
   }
 }
