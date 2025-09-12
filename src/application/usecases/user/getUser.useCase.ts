@@ -1,5 +1,8 @@
-import { User } from "../../../domain/entities/User.entity";
 import { IUserRepository } from "../../../domain/interfaces/IUserRepository";
+import {
+  UserMapper,
+  UserResponseDto,
+} from "../../../domain/zodSchemaDto/output/userResponse.dto";
 import { IGetUser } from "../../interfaces/IGetUser";
 
 export class GetUserUseCase implements IGetUser {
@@ -11,7 +14,8 @@ export class GetUserUseCase implements IGetUser {
   }: {
     email: string;
     role: string;
-  }): Promise<User | null> {
-    return await this._userRepositary.findOne({ email, role });
+  }): Promise<UserResponseDto | null> {
+    const user = await this._userRepositary.findOne({ email, role });
+    return user ? UserMapper.toDto(user) : null;
   }
 }
