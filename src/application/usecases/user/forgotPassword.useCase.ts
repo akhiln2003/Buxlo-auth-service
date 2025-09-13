@@ -1,6 +1,6 @@
 import { ITokenService } from "../../../domain/interfaces/ITokenService";
 import { IUserRepository } from "../../../domain/interfaces/IUserRepository";
-import { UserMapper } from "../../../domain/zodSchemaDto/output/userResponse.dto";
+import { UserMapper } from "../../dto/userResponse.dto";
 import { USER_ROLE } from "../../../shared/enums/role";
 import {
   IForgotPassword,

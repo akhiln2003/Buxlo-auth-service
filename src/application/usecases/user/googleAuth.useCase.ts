@@ -11,7 +11,7 @@ import {
 import { Password } from "../../services/passwordHash";
 import axios from "axios";
 import sharp from "sharp";
-import { UserMapper } from "../../../domain/zodSchemaDto/output/userResponse.dto";
+import { UserMapper } from "../../dto/userResponse.dto";
 
 interface GooglePayload {
   sub: string;

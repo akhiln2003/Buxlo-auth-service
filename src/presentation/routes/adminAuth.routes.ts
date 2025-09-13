@@ -7,9 +7,9 @@ import { FetchUserController } from "../controller/admin/fetchUser.controller";
 import { BlockAndUnblockController } from "../controller/admin/blockAndUnblock.controller";
 import { FetchMentorController } from "../controller/admin/fetchmentors.controller";
 import { validateReqBody, validateReqQueryParams } from "@buxlo/common";
-import { signInDto } from "../../domain/zodSchemaDto/input/user/signIn.dto";
-import { fetchUsersAndMentorDto } from "../../domain/zodSchemaDto/input/user/fetchUsersAndMentor.dto";
-import { blockAndUnblockDto } from "../../domain/zodSchemaDto/input/user/blockAndUnblock.dto";
+import { signInDto } from "../dto/signIn.dto";
+import { fetchUsersAndMentorDto } from "../dto/fetchUsersAndMentor.dto";
+import { blockAndUnblockDto } from "../dto/blockAndUnblock.dto";
 
 export class AdminRouter {
   private _router: Router;

@@ -9,15 +9,15 @@ import { ForgotPasswordController } from "../controller/Mentor/forgotPassword.co
 import { SetNewPasswordController } from "../controller/common/setNewPassword.controller";
 import { GoogleAuthController } from "../controller/Mentor/googleAuth.controller";
 import { validateReqBody } from "@buxlo/common";
-import { signUpDto } from "../../domain/zodSchemaDto/input/user/signUp.dto";
+import { signUpDto } from "../dto/signUp.dto";
 import {
   otpSchemaDto,
   resendOtpSchemaDto,
-} from "../../domain/zodSchemaDto/input/user/otp.dto";
-import { signInDto } from "../../domain/zodSchemaDto/input/user/signIn.dto";
-import { forgotPasswordDto } from "../../domain/zodSchemaDto/input/user/forgotPassword.dto";
-import { setNewPasswordDto } from "../../domain/zodSchemaDto/input/user/setNewPassword.dto";
-import { googleAuthDto } from "../../domain/zodSchemaDto/input/user/googleAuth.dto";
+} from "../dto/otp.dto";
+import { signInDto } from "../dto/signIn.dto";
+import { forgotPasswordDto } from "../dto/forgotPassword.dto";
+import { setNewPasswordDto } from "../dto/setNewPassword.dto";
+import { googleAuthDto } from "../dto/googleAuth.dto";
 
 export class MentorRouter {
   private _router: Router;

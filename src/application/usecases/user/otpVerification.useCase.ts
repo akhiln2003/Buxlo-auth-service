@@ -2,7 +2,7 @@ import { User } from "../../../domain/entities/User.entity";
 import { IRedisRepository } from "../../../domain/interfaces/ICacheUserRepo";
 import { ITokenService } from "../../../domain/interfaces/ITokenService";
 import { IUserRepository } from "../../../domain/interfaces/IUserRepository";
-import { UserMapper } from "../../../domain/zodSchemaDto/output/userResponse.dto";
+import { UserMapper } from "../../dto/userResponse.dto";
 import { UserCreatedProducer } from "../../../infrastructure/MessageBroker/kafka/producer/userCreatedProducer";
 import {
   IOtpVerification,
