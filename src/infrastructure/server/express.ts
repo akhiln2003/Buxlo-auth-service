@@ -10,14 +10,22 @@ export class ExpressWebServer implements IServer {
 
   constructor() {
     this._app = express();
-    this._app.use(cookieParser());
+    const allowedOrigins = process.env.FRONTEND_URL!.split(",");
+
     this._app.use(
       cors({
-        origin: "http://localhost:5173",  // Frontend origin
+        origin: (origin, callback) => {
+          if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+          } else {
+            callback(new Error("Not allowed by CORS"));
+          }
+        },
         methods: ["GET", "POST", "PUT", "DELETE"], // Allowed methods
         credentials: true, // If you're sending cookies or authorization headers
       })
     );
+    this._app.use(cookieParser());
     this._app.use(express.urlencoded({ extended: true }));
     this._app.use(express.json());
 
@@ -25,7 +33,7 @@ export class ExpressWebServer implements IServer {
   }
   registerMiddleware(middleware: RequestHandler): void {
     this._app.use(middleware);
-}
+  }
   registerRoutes(path: string, router: Router): void {
     this._app.use(path, router);
   }
@@ -45,7 +53,7 @@ export class ExpressWebServer implements IServer {
   async close(): Promise<void> {
     if (this._server) {
       return new Promise((resolve, reject) => {
-        this._server.close((err?:Error) => {
+        this._server.close((err?: Error) => {
           if (err) {
             console.error("Error closing", err);
             return reject(err);

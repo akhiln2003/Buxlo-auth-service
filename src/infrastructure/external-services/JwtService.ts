@@ -55,7 +55,9 @@ export class JwtService implements ITokenService {
     const decoded = JWT.verify(token, secret);
 
     if (typeof decoded === "string") {
-      throw new BadRequest("Invalid token payload: expected object but got string");
+      throw new BadRequest(
+        "Invalid token payload: expected object but got string"
+      );
     }
 
     return decoded as ITokenData;
@@ -63,19 +65,23 @@ export class JwtService implements ITokenService {
 
   setTokens(res: Response, accessToken?: string, refreshToken?: string): void {
     const isProduction = process.env.NODE_ENV === "production";
+
+    const cookieOptions = {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: (isProduction ? "none" : "lax") as "none" | "lax",
+    };
+
     if (accessToken) {
       res.cookie("userAccessToken", accessToken, {
-        httpOnly: true,
-        secure: isProduction,
-        sameSite: "strict", // strict for added CSRF protection
+        ...cookieOptions,
         maxAge: 15 * 60 * 1000, // 15 minutes
       });
     }
+
     if (refreshToken) {
       res.cookie("userRefreshToken", refreshToken, {
-        httpOnly: true,
-        secure: isProduction,
-        sameSite: "strict", // strict for added CSRF protection
+        ...cookieOptions,
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       });
     }

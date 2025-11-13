@@ -21,7 +21,7 @@ export class ForgotPasswordUseCase implements IForgotPassword {
       }
 
       const token = this._jwtservice.generateResentPasswordToken(user);
-      const resetPasswordUrl = `${process.env.FORGOT_PASSWORD_FRONTEND_BASE_URL}${
+      const resetPasswordUrl = `${process.env.FRONTEND_URL}${
         role === USER_ROLE.MENTOR ? "mentor/" : ""
       }resetpassword/${token}`;
 
